@@ -1,0 +1,22 @@
+#
+# Required packages to run Pyrede
+#
+Django>=1.4
+django-registration
+feedparser
+celery==2.5.5
+django-celery==2.5.5
+#PIL : PIL failed on Debian to find jpeg libs
+# use python-imaging package or fix PIL
+#
+#  following package are for running tests
+#
+nosexcover
+django-nose
+pep8
+flake8
+#
+#  If you use jenkins you can add
+#
+django-jenkins
+gcovr
