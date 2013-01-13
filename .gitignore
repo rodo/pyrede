@@ -1,0 +1,9 @@
+*.pyc
+*~
+settings.py
+local_settings.py
+data/
+docs/_build/
+whoosh_index
+.coverage
+coverage.xml
