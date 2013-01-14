@@ -21,7 +21,6 @@ Unit tests for Pyrede.Provider management commands
 """
 from datetime import datetime
 from django.test import TestCase
-from django.test import Client
 from django.core.management import call_command
 from pyrede.drp.models import Package
 from pyrede.drp.models import PackageVersion
@@ -63,11 +62,11 @@ class CommandsTests(TestCase):  # pylint: disable-msg=R0904
                                       link='http://www.foo.bar',
                                       description='lorem ipsum')
 
-        version = PackageVersion.objects.create(package=pack,
-                                                version='0.0.1',
-                                                link='http://www.foo.bar',
-                                                description='lorem ipsum',
-                                                pubdate=datetime.today())
+        PackageVersion.objects.create(package=pack,
+                                      version='0.0.1',
+                                      link='http://www.foo.bar',
+                                      description='lorem ipsum',
+                                      pubdate=datetime.today())
 
         http = TestServer()
         http.start()
@@ -80,21 +79,21 @@ class CommandsTests(TestCase):  # pylint: disable-msg=R0904
 
     def test_split_title_simple(self):
         """
-        Split title 
+        Split title
         """
         result = split_title("foo 1.0.0")
         self.assertEqual(result, ["foo", "1.0.0"])
 
     def test_split_title_double(self):
         """
-        Split title 
+        Split title
         """
         result = split_title("foo bar 1.0.0")
         self.assertEqual(result, ["foo bar", "1.0.0"])
 
     def test_split_title_triple(self):
         """
-        Split title 
+        Split title
         """
         result = split_title("foo bar lorem 1.0.0")
         self.assertEqual(result, ["foo bar lorem", "1.0.0"])
