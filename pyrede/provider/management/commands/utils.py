@@ -26,6 +26,7 @@ from pyrede.drp.models import PackageVersion
 
 logger = logging.getLogger(__name__)
 
+
 def split_title(title):
     """
     Split the title
@@ -35,6 +36,7 @@ def split_title(title):
     data = [" ".join(parts[:-1]), parts[-1]]
 
     return data
+
 
 def create_update_pack(item, name, version):
     """
@@ -56,6 +58,7 @@ def create_update_pack(item, name, version):
 
     return count
 
+
 def create_pack(item, name, version):
     logger.debug('add %s %s' % (name, version))
 
@@ -70,6 +73,7 @@ def create_pack(item, name, version):
                                   description=item['description'][:2000],
                                   pubdate=datetime.today())
 
+
 def update_pack(item, pack, version):
     logger.debug('update %s from %s to %s' % (pack.name,
                                               pack.latest_version,
@@ -82,4 +86,4 @@ def update_pack(item, pack, version):
                                   version=version,
                                   link=item['link'],
                                   description=item['description'],
-                                  pubdate=datetime.strptime(item['published'], '%d %b %Y %H:%M:%S %Z'))
+                                  pubdate=datetime.today())
