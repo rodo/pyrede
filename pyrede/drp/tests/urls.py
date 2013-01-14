@@ -26,7 +26,7 @@ from pyrede.drp.models import Package
 
 class UrlsTests(TestCase):  # pylint: disable-msg=R0904
     """
-    The unitests for Package model
+    Test all available urls
 
     """
     def setUp(self):
@@ -35,9 +35,9 @@ class UrlsTests(TestCase):  # pylint: disable-msg=R0904
         """
         Package.objects.all().delete()
 
-    def test_create(self):
+    def test_pypilist(self):
         """
-        Create a Package
+        The list of pypis packages
         """
         pack = Package.objects.create(name='aeHohee1',
                                       latest_version='1.0.0',
@@ -45,6 +45,6 @@ class UrlsTests(TestCase):  # pylint: disable-msg=R0904
                                       description='lorem ipsum')
 
         client = Client()
-        response = client.get('/packages/')
+        response = client.get('/pypis/')
 
         self.assertContains(response, pack.name, status_code=200)
