@@ -68,7 +68,6 @@ class CommandsTests(TestCase):  # pylint: disable-msg=R0904
                                                 description='lorem ipsum',
                                                 pubdate=datetime.today())
 
-
         http = TestServer()
         http.start()
         url = 'http://127.0.0.1:%d/rss' % (http.port)

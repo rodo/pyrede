@@ -20,6 +20,7 @@ The django views
 """
 from django.views.generic import ListView
 from pyrede.drp.models import Package
+from pyrede.drp.models import Distribution
 
 
 class PackageList(ListView):
@@ -27,3 +28,10 @@ class PackageList(ListView):
     paginate_by = 17
     template_name = 'packages.html'
     context_object_name = 'packages'
+
+
+class DistributionList(ListView):
+    queryset = Distribution.objects.all().order_by("name")
+    paginate_by = 17
+    template_name = 'distributions.html'
+    context_object_name = 'distributions'
