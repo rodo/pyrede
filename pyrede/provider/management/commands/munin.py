@@ -17,16 +17,16 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 """
-import last package
+Output stats for munin on stdout
 """
 import logging
-import feedparser
 from django.core.management.base import BaseCommand
 from pyrede.drp.models import Package
 from pyrede.drp.models import PackageVersion
 from pyrede.drp.models import DisPack
 
 logger = logging.getLogger(__name__)
+
 
 class Command(BaseCommand):
     args = '<ircnick>'
@@ -36,7 +36,7 @@ class Command(BaseCommand):
 
         pack = Package.objects.all().count()
         dispack = DisPack.objects.all().count()
-        packversion = Package.objects.all().count()
+        packversion = PackageVersion.objects.all().count()
         print "%s.value %s" % ('package', pack)
         print "%s.value %s" % ('packageversion', packversion)
         print "%s.value %s" % ('dispack', dispack)
