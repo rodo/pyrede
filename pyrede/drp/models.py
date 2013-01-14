@@ -26,6 +26,7 @@ class Package(models.Model):
     A package from Pypi
     """
     name = models.CharField(max_length=300,
+                            unique=True,
                             blank=True)
 
     latest_version = models.CharField(max_length=30)
@@ -51,7 +52,7 @@ class PackageVersion(models.Model):
 
 class Distribution(models.Model):
     """
-    The package
+    A distribution
     """
     name = models.CharField(max_length=30,
                             blank=True)
