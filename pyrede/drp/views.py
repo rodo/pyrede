@@ -27,4 +27,3 @@ class PackageList(ListView):
     paginate_by = 17
     template_name = 'packages.html'
     context_object_name = 'packages'
-

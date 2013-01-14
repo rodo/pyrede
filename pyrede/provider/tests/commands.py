@@ -16,39 +16,64 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 """
-Unit tests for Package
+Unit tests for Pyrede.Provider management commands
 
 """
 from datetime import datetime
 from django.test import TestCase
+from django.test import Client
+from django.core.management import call_command
 from pyrede.drp.models import Package
 from pyrede.drp.models import PackageVersion
+from pyrede.provider.tests.httpserver import TestServer
 
 
-class PackageVersionTests(TestCase):  # pylint: disable-msg=R0904
+class CommandsTests(TestCase):  # pylint: disable-msg=R0904
     """
-    The unitests for PackageVersion model
+    The unitests for Package model
 
     """
     def setUp(self):
         """
         Init
         """
+        PackageVersion.objects.all().delete()
         Package.objects.all().delete()
 
     def test_create(self):
         """
         Create a Package
         """
+        http = TestServer()
+        http.start()
+        url = 'http://127.0.0.1:%d/rss' % (http.port)
+
+        call_command('import_latest', url)
+
+        self.assertEqual(Package.objects.all().count(), 2)
+        self.assertEqual(PackageVersion.objects.all().count(), 2)
+
+    def test_update(self):
+        """
+        Test when a package will be update
+        """
         pack = Package.objects.create(name='python-dikbm-adapter',
-                                      latest_version='2.0.0',
+                                      latest_version='0.0.1',
                                       link='http://www.foo.bar',
                                       description='lorem ipsum')
 
         version = PackageVersion.objects.create(package=pack,
-                                                version='2.0.0',
+                                                version='0.0.1',
                                                 link='http://www.foo.bar',
                                                 description='lorem ipsum',
                                                 pubdate=datetime.today())
 
-        self.assertGreater(version.id, 0)
+
+        http = TestServer()
+        http.start()
+        url = 'http://127.0.0.1:%d/rss' % (http.port)
+
+        call_command('import_latest', url)
+
+        self.assertEqual(Package.objects.all().count(), 2)
+        self.assertEqual(PackageVersion.objects.all().count(), 3)

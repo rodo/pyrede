@@ -48,4 +48,3 @@ class UrlsTests(TestCase):  # pylint: disable-msg=R0904
         response = client.get('/packages/')
 
         self.assertContains(response, pack.name, status_code=200)
-

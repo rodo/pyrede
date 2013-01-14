@@ -34,15 +34,20 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         nbp = 40
+        url = 'http://pypi.python.org/pypi?%3Aaction=rss'
+        if len(args):
+            url = args[0]
+
+        logger.debug('parse %s' % url)
 
         while nbp == 40:
-            nbp = self.parse('http://pypi.python.org/pypi?%3Aaction=rss')
+            nbp = self.parse(url)
+            logger.debug('found %s package' % nbp)
 
     def parse(self, url):
         count = 0
         d = feedparser.parse(url)
         for item in d['items']:
-
             name, version = item['title'].split(' ')
             exs = Package.objects.filter(name=name,
                                          latest_version=version)
@@ -62,7 +67,7 @@ class Command(BaseCommand):
         return count
 
     def create_pack(self, item, name, version):
-        logger.debug('add %s %s', (name, version))
+        logger.debug('add %s %s' % (name, version))
 
         pack = Package.objects.create(name=name,
                                       latest_version=version,
@@ -76,7 +81,9 @@ class Command(BaseCommand):
                                       pubdate=datetime.strptime(item['published'], '%d %b %Y %H:%M:%S %Z'))
 
     def update_pack(self, item, pack, version):
-        logger.debug('add %s %s', (pack.name, version))
+        logger.debug('update %s from %s to %s' % (pack.name,
+                                                  pack.latest_version,
+                                                  version))
 
         pack.latest_version = version
         pack.save()
