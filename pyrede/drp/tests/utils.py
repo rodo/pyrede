@@ -20,31 +20,36 @@ Unit tests for all urls
 
 """
 from django.test import TestCase
-from django.test import Client
-from pyrede.drp.models import Package
+from pyrede.utils.reqparser import requ_parser
 
 
-class UrlsTests(TestCase):  # pylint: disable-msg=R0904
+class UtilsTests(TestCase):  # pylint: disable-msg=R0904
     """
     The unitests for Package model
 
     """
-    def setUp(self):
-        """
-        Init
-        """
-        Package.objects.all().delete()
 
-    def test_create(self):
+    def test_equal(self):
         """
         Create a Package
         """
-        pack = Package.objects.create(name='aeHohee1',
-                                      latest_version='1.0.0',
-                                      link='http://www.foo.bar',
-                                      description='lorem ipsum')
+        result = requ_parser("foo==1\n")
+        attend = [['foo', '==', '1']]
+        self.assertEqual(result, attend)
 
-        client = Client()
-        response = client.get('/packages/')
+    def test_sup(self):
+        """
+        Create a Package
+        """
+        result = requ_parser("foo>=1.0\n")
+        attend = [['foo', '>=', '1.0']]
+        self.assertEqual(result, attend)
 
-        self.assertContains(response, pack.name, status_code=200)
+    def test_2lines(self):
+        """
+        Test with 2 lines
+        """
+        result = requ_parser("foo>=1.0\nDjango>=1.3.4")
+        attend = [['foo', '>=', '1.0'],
+                  ['Django', '>=', '1.3.4']]
+        self.assertEqual(result, attend)

@@ -26,6 +26,7 @@ from django.core.management import call_command
 from pyrede.drp.models import Package
 from pyrede.drp.models import PackageVersion
 from pyrede.provider.tests.httpserver import TestServer
+from pyrede.provider.management.commands.utils import split_title
 
 
 class CommandsTests(TestCase):  # pylint: disable-msg=R0904
@@ -76,3 +77,24 @@ class CommandsTests(TestCase):  # pylint: disable-msg=R0904
 
         self.assertEqual(Package.objects.all().count(), 2)
         self.assertEqual(PackageVersion.objects.all().count(), 3)
+
+    def test_split_title_simple(self):
+        """
+        Split title 
+        """
+        result = split_title("foo 1.0.0")
+        self.assertEqual(result, ["foo", "1.0.0"])
+
+    def test_split_title_double(self):
+        """
+        Split title 
+        """
+        result = split_title("foo bar 1.0.0")
+        self.assertEqual(result, ["foo bar", "1.0.0"])
+
+    def test_split_title_triple(self):
+        """
+        Split title 
+        """
+        result = split_title("foo bar lorem 1.0.0")
+        self.assertEqual(result, ["foo bar lorem", "1.0.0"])

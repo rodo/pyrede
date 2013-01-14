@@ -15,30 +15,34 @@
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-"""
-The django views
-"""
-from django.views.generic import ListView
-from django.views.generic import DetailView
-from pyrede.drp.models import Package
-from pyrede.drp.models import DisPack
 
+def requ_parser(requirements):
 
-class PackageList(ListView):
-    queryset = Package.objects.all().order_by("name")
-    paginate_by = 17
-    template_name = 'packages.html'
-    context_object_name = 'packages'
+    datas = []
 
+    for req in requirements.split('\n'):
+        data = parse_line(req.strip())
+        if data is not None:
+            datas.append(data)
 
-class PackageDetail(DetailView):
+    return datas
 
-    model = Package
+def parse_line(line):
 
-    def get_slug_field(self):
-        return 'name'
-
-    def get_context_data(self, **kwargs):
-        context = super(PackageDetail, self).get_context_data(**kwargs)
-        context['dispacks'] = DisPack.objects.filter(package=self.object)
-        return context
+    if line.startswith('#'):
+        # remove comments
+        return None
+    elif line.startswith('-'):
+        return None
+    else:
+        if '==' in line:
+            parts = line.split('==')
+            return [parts[0], '==', parts[1]]
+        elif '>=' in line:
+            parts = line.split('>=')
+            return [parts[0], '>=', parts[1]]
+        else:
+            if line != '':
+                return line
+            else:
+                return None

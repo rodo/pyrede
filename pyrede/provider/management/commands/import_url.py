@@ -20,16 +20,16 @@
 import last package
 """
 import logging
-import feedparser
+import requests
+import json
 from datetime import datetime
 from django.core.management.base import BaseCommand
 from pyrede.drp.models import Package
 from pyrede.drp.models import PackageVersion
-from pyrede.provider.management.commands.utils import create_update_pack
-from pyrede.provider.management.commands.utils import split_title
+from pyrede.provider.management.commands.utils import create_pack
+from pyrede.provider.management.commands.utils import update_pack
 
 logger = logging.getLogger(__name__)
-
 
 class Command(BaseCommand):
     args = '<ircnick>'
@@ -37,24 +37,25 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         nbp = 40
-        url = 'http://pypi.python.org/pypi?%3Aaction=rss'
-        if len(args):
-            url = args[0]
+        if len(args) == 0:
+            return 'Missing url'
 
-        logger.debug('parse %s' % url)
+        logger.debug('parse %s' % args[0])
 
-        while nbp == 40:
-            nbp = self.parse(url)
-            logger.debug('found %s package' % nbp)
+        nbp = self.parse(args[0])
 
-    def parse(self, url):
+    def parse(self, package):
         count = 0
-        datas = feedparser.parse(url)
-        for item in datas['items']:
-            try:
-                name, version = split_title(item['title'])
-                count = create_update_pack(item, name, version)
-            except:
-                logger.error("cant split %s" % item['title'])
 
-        return count
+        url = "http://pypi.python.org/pypi"
+
+        params= {':action': 'json',
+                 'name': package}
+
+        headers = {'content-type': 'application/json'}
+
+        r = requests.get(url, params=params, headers=headers)
+        datas = json.loads(r.content)
+        print datas['info']['author']
+
+        create_pack
