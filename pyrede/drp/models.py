@@ -73,5 +73,6 @@ class DisPack(models.Model):
     version = models.CharField(max_length=30)
 
     distribution = models.ForeignKey(Distribution)
+
     package = models.ForeignKey(Package)
     package_version = models.CharField(max_length=30)
