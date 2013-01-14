@@ -47,9 +47,7 @@ class Command(BaseCommand):
 
         url = "http://pypi.python.org/pypi"
 
-        params= {':action': 'json',
-                 'name': package}
-
+        params= {':action': 'json', 'name': package}
         headers = {'content-type': 'application/json'}
 
         item = {}

@@ -1,32 +1,25 @@
+{% extends "base.html" %}
 {% load i18n %}
-{% include "header.html" %}
-{% include "navbar.html" %}
-<div id="container" class="container">
-  <div class="row">
-    <div class="span12">
-      {{nowe}}
-      <table class="table table-striped">
-	<thead>
-	  <tr>
-	    <th class="span6">{% trans "Name" %}</th>
-	    <th class="span2">{% trans "Version" %}</th>
-	    <th class="span4">Link</th>
-	  </tr>
-	</thead>
-	<tbody>
-	  <tr>
-	    <td>{{package.name}}</a></td>
-	    <td>
-	      <span class="badge badge-info">{{package.latest_version}}</span> 
-	    </td>
-	    <td>
-	      <a href="{{package.link}}" target="_blank">pypi</a>
-	    </td>
-	  </tr>
-	</tbody>
-      </table>
-            
-    </div><!--/row-->
-  </div><!--/row-->
-</div><!--/.container-->
-{% include "footer.html" %}
+{% block content %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="span6">{% trans "Name" %}</th>
+      <th class="span2">{% trans "Version" %}</th>
+      <th class="span4">Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{package.name}}</td>
+      <td>
+	<span class="badge badge-info">{{package.latest_version}}</span> 
+      </td>
+      <td>
+	<a href="{{package.link}}" target="_blank">pypi</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+{% endblock %}
+
