@@ -22,10 +22,8 @@ import last package
 import logging
 import requests
 import json
-from datetime import datetime
 from django.core.management.base import BaseCommand
 from pyrede.provider.management.commands.utils import create_update_pack
-from pyrede.provider.management.commands.utils import split_title
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +33,9 @@ class Command(BaseCommand):
     help = 'Import recursively all ogg file in a directory'
 
     def handle(self, *args, **options):
-        nbp = 40
+        """
+        Handle the command
+        """
         if len(args) == 0:
             return 'Missing url'
 
@@ -61,4 +61,3 @@ class Command(BaseCommand):
         item['link'] = datas['info']['package_url']
         logger.debug("import %s" % package)
         create_update_pack(item, package, version)
-
