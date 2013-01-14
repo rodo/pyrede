@@ -50,5 +50,5 @@ class PackageVersionTests(TestCase):  # pylint: disable-msg=R0904
                                                 link='http://www.foo.bar',
                                                 description='lorem ipsum',
                                                 pubdate=datetime.today())
-        
+
         self.assertGreater(version.id, 0)
