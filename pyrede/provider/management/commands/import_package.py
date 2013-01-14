@@ -24,12 +24,11 @@ import requests
 import json
 from datetime import datetime
 from django.core.management.base import BaseCommand
-from pyrede.drp.models import Package
-from pyrede.drp.models import PackageVersion
-from pyrede.provider.management.commands.utils import create_pack
-from pyrede.provider.management.commands.utils import update_pack
+from pyrede.provider.management.commands.utils import create_update_pack
+from pyrede.provider.management.commands.utils import split_title
 
 logger = logging.getLogger(__name__)
+
 
 class Command(BaseCommand):
     args = '<ircnick>'
@@ -45,7 +44,6 @@ class Command(BaseCommand):
         nbp = self.parse(args[0])
 
     def parse(self, package):
-        count = 0
 
         url = "http://pypi.python.org/pypi"
 
@@ -54,8 +52,13 @@ class Command(BaseCommand):
 
         headers = {'content-type': 'application/json'}
 
-        r = requests.get(url, params=params, headers=headers)
-        datas = json.loads(r.content)
-        print datas['info']['author']
+        item = {}
 
-        create_pack
+        req = requests.get(url, params=params, headers=headers)
+        datas = json.loads(req.content)
+        version = datas['info']['version']
+        item['description'] = datas['info']['description']
+        item['link'] = datas['info']['package_url']
+        logger.debug("import %s" % package)
+        create_update_pack(item, package, version)
+

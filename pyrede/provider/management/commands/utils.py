@@ -68,7 +68,7 @@ def create_pack(item, name, version):
                                   version=version,
                                   link=item['link'],
                                   description=item['description'],
-                                  pubdate=datetime.strptime(item['published'], '%d %b %Y %H:%M:%S %Z'))
+                                  pubdate=datetime.today())
 
 def update_pack(item, pack, version):
     logger.debug('update %s from %s to %s' % (pack.name,
