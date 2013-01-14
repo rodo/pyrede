@@ -35,6 +35,8 @@ class Package(models.Model):
 
     description = models.CharField(max_length=1000)
 
+    def __str__(self):
+        return '%s %s' % (self.name, self.latest_version)
 
 class PackageVersion(models.Model):
     """
@@ -62,6 +64,9 @@ class Distribution(models.Model):
 
     version_number = models.CharField(max_length=30)
 
+
+    def __str__(self):
+        return '%s %s' % (self.name, self.version_name)
 
 class DisPack(models.Model):
     """

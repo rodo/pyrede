@@ -15,24 +15,15 @@
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-"""
-The django views
-"""
-from django.views.generic import ListView
-from django.views.generic import DetailView
-from pyrede.drp.models import Package
+from pyrede.drp.models import DisPack
+from django.contrib import admin
 
 
-class PackageList(ListView):
-    queryset = Package.objects.all().order_by("name")
-    paginate_by = 17
-    template_name = 'packages.html'
-    context_object_name = 'packages'
+class DisPackAdmin(admin.ModelAdmin):
+    """
+    Custom Admin for DisPack
+    """
+    list_display = ('name', 'distribution')
+    list_filter = ['distribution']
 
-
-class PackageDetail(DetailView):
-
-    model = Package
-
-    def get_slug_field(self):
-        return 'name'
+admin.site.register(DisPack, DisPackAdmin)

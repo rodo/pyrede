@@ -4,28 +4,6 @@
 <div id="container" class="container">
   <div class="row">
     <div class="span12">
-      <div class="pager">
-	<ul>
-	  {% if page_obj.has_previous %}
-	  <li class="previous">
-	    {% if SEARCHQ %}
-	    <a href="?q={{ SEARCHQ }}&amp;page={{songs.previous_page_number}}">&larr; Recule</a>
-	    {% else %}
-	    <a href="?page={{page_obj.previous_page_number}}">&larr; Recule</a>
-	    {% endif %}
-	  </li>
-	  {% endif %}
-	  {% if page_obj.has_next %}
-	  <li class="next">
-	    {% if SEARCHQ %}
-	    <a href="?q={{SEARCHQ}}&amp;page={{page_obj.next_page_number}}">Avance &rarr;</a>
-	    {% else %}
-	    <a href="?page={{page_obj.next_page_number}}">Avance &rarr;</a>
-	    {% endif %}
-	  </li>
-	  {% endif %}
-	</ul>
-      </div>
       
       <table class="table table-striped">
 	<thead>
@@ -36,7 +14,6 @@
 	  </tr>
 	</thead>
 	<tbody>
-	  {% for package in packages %}
 	  <tr>
 	    <td><a href="/package/{{package.name}}">{{package.name}}</a></td>
 	    <td>
@@ -46,7 +23,6 @@
 	      <a href="{{package.link}}" target="_blank">pypi</a>
 	    </td>
 	  </tr>
-	  {% endfor %}
 	</tbody>
       </table>
             
