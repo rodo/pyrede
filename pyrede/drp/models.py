@@ -38,6 +38,7 @@ class Package(models.Model):
     def __str__(self):
         return '%s %s' % (self.name, self.latest_version)
 
+
 class PackageVersion(models.Model):
     """
     The package
@@ -64,9 +65,9 @@ class Distribution(models.Model):
 
     version_number = models.CharField(max_length=30)
 
-
     def __str__(self):
         return '%s %s' % (self.name, self.version_name)
+
 
 class DisPack(models.Model):
     """
