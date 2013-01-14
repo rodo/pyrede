@@ -4,6 +4,7 @@
 Django>=1.4
 django-registration
 feedparser
+requests
 celery==2.5.5
 django-celery==2.5.5
 #PIL : PIL failed on Debian to find jpeg libs
