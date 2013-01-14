@@ -34,12 +34,25 @@ class Package(models.Model):
                               verbose_name='artiste name',
                               blank=True)
 
+    latest_version = models.CharField(max_length=30)
+
+    link = models.CharField(max_length=300)
+
+    description = models.CharField(max_length=1000)
+
+
+class PackageVersion(models.Model):
+    """
+    The package
+    """
+    package = models.ForeignKey(Package)
     version = models.CharField(max_length=30)
 
     link = models.CharField(max_length=300)
 
     description = models.CharField(max_length=1000)
 
+    pubdate = models.DateTimeField()
 
 class Deb(models.Model):
     """

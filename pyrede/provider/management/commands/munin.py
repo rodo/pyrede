@@ -23,6 +23,7 @@ import logging
 import feedparser
 from django.core.management.base import BaseCommand
 from pyrede.drp.models import Package
+from pyrede.drp.models import PackageVersion
 from pyrede.drp.models import Deb
 
 logger = logging.getLogger(__name__)
@@ -34,6 +35,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         pack = Package.objects.all().count()
+        packversion = Package.objects.all().count()
         print "%s.value %s" % ('package', pack)
+        print "%s.value %s" % ('packageversion', packversion)
         deb = Deb.objects.all().count()
         print "%s.value %s" % ('deb', deb)

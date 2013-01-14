@@ -21,8 +21,10 @@ import last package
 """
 import logging
 import feedparser
+from datetime import datetime
 from django.core.management.base import BaseCommand
 from pyrede.drp.models import Package
+from pyrede.drp.models import PackageVersion
 
 logger = logging.getLogger(__name__)
 
@@ -43,13 +45,44 @@ class Command(BaseCommand):
 
             name, version = item['title'].split(' ')
             exs = Package.objects.filter(name=name,
-                                         version=version)
+                                         latest_version=version)
 
             if len(exs) == 0:
-                logger.debug('add %s %s', (name, version))
-                count +=1
-                Package.objects.create(name=name,
-                                       version=version,                                  
-                                       link=item['link'],
-                                       description=item['description'])
+
+                packs = Package.objects.filter(name=name)
+
+                if len(packs) == 0:
+                    count +=1
+                    self.create_pack(item, name, version)
+
+                else:
+                    count +=1
+                    self.update_pack(item, packs[0], version)
+
         return count
+
+    def create_pack(self, item, name, version):
+        logger.debug('add %s %s', (name, version))
+
+        pack = Package.objects.create(name=name,
+                                      latest_version=version,
+                                      link=item['link'],
+                                      description=item['description'])
+
+        PackageVersion.objects.create(package=pack,
+                                      version=version,
+                                      link=item['link'],
+                                      description=item['description'],
+                                      pubdate=datetime.strptime(item['published'], '%d %b %Y %H:%M:%S %Z'))
+
+    def update_pack(self, item, pack, version):
+        logger.debug('add %s %s', (pack.name, version))
+
+        pack.latest_version = version
+        pack.save()
+
+        PackageVersion.objects.create(package=pack,
+                                      version=version,
+                                      link=item['link'],
+                                      description=item['description'],
+                                      pubdate=datetime.strptime(item['published'], '%d %b %Y %H:%M:%S %Z'))
