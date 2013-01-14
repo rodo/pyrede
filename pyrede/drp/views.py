@@ -18,8 +18,6 @@
 """
 The django views
 """
-import json
-import logging
 from django.views.generic import ListView
 from pyrede.drp.models import Package
 
