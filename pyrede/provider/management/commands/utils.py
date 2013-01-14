@@ -62,12 +62,12 @@ def create_pack(item, name, version):
     pack = Package.objects.create(name=name,
                                   latest_version=version,
                                   link=item['link'],
-                                  description=item['description'])
+                                  description=item['description'][:2000])
 
     PackageVersion.objects.create(package=pack,
                                   version=version,
                                   link=item['link'],
-                                  description=item['description'],
+                                  description=item['description'][:2000],
                                   pubdate=datetime.today())
 
 def update_pack(item, pack, version):
