@@ -1,0 +1,34 @@
+{% load i18n %}
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+
+      <a class="brand" href="{{prefix_url}}/">Pyrede</a>
+
+      <form class="navbar-search pull-left" action="/songs/">
+	<input type="text" class="search-query" name="q" placeholder="You're looking to me ?">
+      </form>
+     
+      <div class="nav-collapse">
+        <ul class="nav">
+          <li><a href="packages/">Packages</a></li>
+        </ul>
+
+        <p class="navbar-text pull-right">
+	    {% if user.is_authenticated %}
+	    Salut à toi <a href="/accounts/profile/">{{ user.username }}</a> /
+	    <a href="/accounts/logout/">Déconnexion</a>
+	    {% else %}
+	    <a href="/accounts/login/">log in</a>
+	    {% endif %}
+	</p>
+      </div><!--/.nav-collapse -->
+    </div><!--/.container -->
+  </div><!--/.navbar-inner -->
+
+</div><!--/.navbar -->

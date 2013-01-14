@@ -31,12 +31,14 @@ class Command(BaseCommand):
     help = 'Import recursively all ogg file in a directory'
 
     def handle(self, *args, **options):
-        
-        self.parse('http://pypi.python.org/pypi?%3Aaction=rss')
+        nbp = 40
+
+        while nbp == 40:
+            nbp = self.parse('http://pypi.python.org/pypi?%3Aaction=rss')
 
     def parse(self, url):
+        count = 0
         d = feedparser.parse(url)
-        
         for item in d['items']:
 
             name, version = item['title'].split(' ')
@@ -45,7 +47,9 @@ class Command(BaseCommand):
 
             if len(exs) == 0:
                 logger.debug('add %s %s', (name, version))
+                count +=1
                 Package.objects.create(name=name,
                                        version=version,                                  
                                        link=item['link'],
                                        description=item['description'])
+        return count

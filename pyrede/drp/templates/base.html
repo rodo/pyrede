@@ -1,0 +1,11 @@
+{% load i18n %}
+{% include "header.html" %}
+{% include "navbar.html" %}
+<div id="container" class="container">
+  <div class="row">    
+    <div class="span12">
+        {% block content %}{% endblock %}	
+    </div><!--/span-->
+  </div><!--/row-->  
+</div><!--/.container-->
+{% include "footer.html" %}

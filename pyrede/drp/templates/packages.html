@@ -1,0 +1,56 @@
+{% load i18n %}
+{% include "header.html" %}
+{% include "navbar.html" %}
+<div id="container" class="container">
+  <div class="row">
+    <div class="span12">
+      <div class="pager">
+	<ul>
+	  {% if page_obj.has_previous %}
+	  <li class="previous">
+	    {% if SEARCHQ %}
+	    <a href="?q={{ SEARCHQ }}&amp;page={{songs.previous_page_number}}">&larr; Recule</a>
+	    {% else %}
+	    <a href="?page={{page_obj.previous_page_number}}">&larr; Recule</a>
+	    {% endif %}
+	  </li>
+	  {% endif %}
+	  {% if page_obj.has_next %}
+	  <li class="next">
+	    {% if SEARCHQ %}
+	    <a href="?q={{SEARCHQ}}&amp;page={{page_obj.next_page_number}}">Avance &rarr;</a>
+	    {% else %}
+	    <a href="?page={{page_obj.next_page_number}}">Avance &rarr;</a>
+	    {% endif %}
+	  </li>
+	  {% endif %}
+	</ul>
+      </div>
+      
+      <table class="table table-striped">
+	<thead>
+	  <tr>
+	    <th class="span6">{% trans "Name" %}</th>
+	    <th class="span2">{% trans "Version" %}</th>
+	    <th class="span4">Link</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  {% for package in packages %}
+	  <tr>
+	    <td>{{package.name}}</td>
+	    <td>
+	      <span class="badge badge-info">{{package.version}}</span> 
+	    </td>
+	    <td>
+	      <a href="{{package.link}}" target="_blank">pypi</a>
+	    </td>
+	  </tr>
+	  {% endfor %}
+	</tbody>
+      </table>
+            
+    </div><!--/row-->
+  </div><!--/row-->
+</div><!--/.container-->
+{% include "footer.html" %}

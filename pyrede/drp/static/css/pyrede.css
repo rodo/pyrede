@@ -1,0 +1,19 @@
+/*
+ *
+ *
+ */
+
+.table td { line-height: 14px; }
+
+div.page-header { 
+                  border-bottom: none;
+                  margin: 0px;
+                  padding-bottom: 12px;
+                  }
+
+
+span.badge:hover{ 
+             cursor:default;
+             } 
+
+#container {  padding-top: 20px; } 
