@@ -14,7 +14,7 @@ admin.autodiscover()
 urlpatterns = patterns('',                       
                        url(r'^$', PackageList.as_view()),
                        url(r'^pypis/$', PackageList.as_view()),
-                       url(r'^pypi/(?P<slug>[\w-]+)/$', PackageDetail.as_view()),
+                       url(r'^pypi/(?P<slug>.*)/$', PackageDetail.as_view()),
                        url(r'^distributions/$', ListView.as_view(model=Distribution)),
                        url(r'^packages/$', ListView.as_view(model=DisPack)),
                        url(r'^admin/', include(admin.site.urls)),
