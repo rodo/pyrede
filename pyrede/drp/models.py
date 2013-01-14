@@ -28,10 +28,9 @@ from django.db import models
 
 class Package(models.Model):
     """
-    The package
+    A package from Pypi
     """
     name = models.CharField(max_length=300,
-                              verbose_name='artiste name',
                               blank=True)
 
     latest_version = models.CharField(max_length=30)
@@ -54,12 +53,29 @@ class PackageVersion(models.Model):
 
     pubdate = models.DateTimeField()
 
-class Deb(models.Model):
+
+class Distribution(models.Model):
     """
     The package
     """
+    name = models.CharField(max_length=30,
+                            blank=True)
+    
+    version_name = models.CharField(max_length=30,
+                                    blank=True)
+
+    version_number = models.CharField(max_length=30)
+
+
+class DisPack(models.Model):
+    """
+    A package from a distribution
+    """
     name = models.CharField(max_length=300,
-                              verbose_name='artiste name',
-                              blank=True)
+                            blank=True)
 
     version = models.CharField(max_length=30)
+
+    distribution = models.ForeignKey(Distribution)
+    package = models.ForeignKey(Package)
+    package_version = models.CharField(max_length=30)

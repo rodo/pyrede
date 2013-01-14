@@ -1,0 +1,15 @@
+[
+  {"pk": 1, 
+  "model": "drp.distribution", 
+  "fields": {"name": "Debian", 
+  	     "version_name": "Squeeze",
+	     "version_number": "6"}
+   },
+  {"pk": 2, 
+  "model": "drp.distribution", 
+  "fields": {"name": "Debian", 
+  	    "version_name": "Wheezy",
+	    "version_number": "7"}   
+   }
+]
+
