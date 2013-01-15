@@ -46,12 +46,12 @@ def parse_line(line):
     else:
         if '==' in line:
             parts = line.split('==')
-            return [parts[0], '==', parts[1]]
+            return [str(parts[0]), '==', str(parts[1])]
         elif '>=' in line:
             parts = line.split('>=')
-            return [parts[0], '>=', parts[1]]
+            return [str(parts[0]), '>=', str(parts[1])]
         else:
             if line != '':
-                return [line]
+                return [str(line)]
             else:
                 return None

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+
+<h3>Your results</h3>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="span4">{% trans "Name" %}</th>
+      <th class="span2">{% trans "Version" %}</th>
+      <th class="span4">Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for pack in founds %}
+    <tr>
+      <td><span id="span_{{pack.0}}">{{pack.0}}</a></td>
+      <td>
+	{% if pack.1 %}
+	<span class="badge badge-info">{{pack.1}} {{pack.2}}</span> 
+	{% endif %}
+      </td>
+      <td><span id="provide_{{pack.0}}">looking up...</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3>Last packages create</h3>
+      
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="span6">{% trans "Name" %}</th>
+      <th class="span2">{% trans "Version" %}</th>
+      <th class="span4">Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for package in dispacks %}
+    <tr>
+      <td><a href="/package/{{package.name}}">{{package.name}}</a></td>
+      <td>
+	<span class="badge badge-info">{{package.latest_version}}</span> 
+      </td>
+      <td>
+	<a href="{{package.link}}" target="_blank">pypi</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+            
+<script type="text/javascript">
+  detect({{jfound|safe}});
+</script>
+{% endblock %}

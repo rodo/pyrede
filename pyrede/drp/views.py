@@ -18,10 +18,16 @@
 """
 The django views
 """
+import json
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.shortcuts import redirect
 from django.views.generic import ListView
 from django.views.generic import DetailView
 from pyrede.drp.models import Package
 from pyrede.drp.models import DisPack
+from pyrede.drp.forms import ReqForm
+from pyrede.utils.reqparser import requ_parser
 
 
 class PackageList(ListView):
@@ -42,3 +48,83 @@ class PackageDetail(DetailView):
         context = super(PackageDetail, self).get_context_data(**kwargs)
         context['dispacks'] = DisPack.objects.filter(package=self.object)
         return context
+
+
+def userreq(request):
+    """
+    The user post a file
+    """
+    queryset = Package.objects.all().order_by("name")[:10]
+    form = ReqForm()
+    return render(request,
+                  'form.html',
+                  {'form': form,
+                   'dispacks': queryset
+                   })
+
+
+def jsonpypi(request, slug):
+    """
+    A json view of pypi
+    """
+    try:
+        pypi = Package.objects.get(name=slug)
+        datas = lookup(pypi)
+    except:
+        datas = {'result': 0}
+
+
+    response = HttpResponse(mimetype='application/json; charset=utf-8')
+
+    response.write(json.dumps(datas))
+
+    return response
+
+
+def lookup(pypi):
+    """
+    look if packages exists
+    """
+    jpack = []
+    dispacks = DisPack.objects.filter(package=pypi)
+
+    for dpack in dispacks:
+        jpack.append({'name': dpack.name,
+                      'version': dpack.version,
+                      'provide': dpack.package_version,
+                      'distribution': {'name': dpack.distribution.name,
+                                       'version': dpack.distribution.version_name
+                                       }
+                      })
+
+    datas = {'result': 1, 
+             'pipy': { 'id': pypi.id,
+                       'nbpack': pypi.nbdispack},
+             'found': len(dispacks),
+             'packages': jpack}
+    
+    
+
+    return datas
+
+def analyze(request):
+    """
+    The user post a file
+    """
+    queryset = Package.objects.all().order_by("name")[:10]
+    if request.method == 'POST':
+        form = ReqForm(request.POST)
+        if form.is_valid():
+            data = requ_parser(form.cleaned_data['content'])
+
+            return render(request,
+                          'analyze.html',
+                          {'form': form,
+                           'dispacks': queryset,
+                           'founds': data,
+                           'jfound': data
+                           })
+
+
+    else:
+        return redirect('/')

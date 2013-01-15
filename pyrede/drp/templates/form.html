@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+
+<form class="well form-horizontal" action="/analyze/" method="post">
+  {% csrf_token %}
+  <fieldset>
+    <h3>copy here the you requirements.txt content</h3>
+    {% if helpform == 'notfound' %}
+    <div class="alert alert-error">
+      {% trans "This email address was not found" %}
+    </div>
+    {% endif %}    
+    <textarea class="span10" id="id_content" rows="17" cols="42" name="content"></textarea>
+    {{form.content.errors}}
+
+    <div class="control-group">
+      <input type="submit" class="btn" value="{% trans 'Send' %}" />
+    </div>	    
+  </fieldset>
+</form>
+      
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="span6">{% trans "Name" %}</th>
+      <th class="span2">{% trans "Version" %}</th>
+      <th class="span4">Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for package in dispacks %}
+    <tr>
+      <td><a href="/package/{{package.name}}">{{package.name}}</a></td>
+      <td>
+	<span class="badge badge-info">{{package.latest_version}}</span> 
+      </td>
+      <td>
+	<a href="{{package.link}}" target="_blank">pypi</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+            
+{% endblock %}
