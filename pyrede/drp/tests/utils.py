@@ -53,3 +53,12 @@ class UtilsTests(TestCase):  # pylint: disable-msg=R0904
         attend = [['foo', '>=', '1.0'],
                   ['Django', '>=', '1.3.4']]
         self.assertEqual(result, attend)
+
+    def test_nover(self):
+        """
+        Test with no version number
+        """
+        result = requ_parser("foo\nDjango>=1.3.4")
+        attend = [['foo'],
+                  ['Django', '>=', '1.3.4']]
+        self.assertEqual(result, attend)
