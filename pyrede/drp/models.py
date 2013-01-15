@@ -19,6 +19,8 @@
 drp Models for Pyrede
 """
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Package(models.Model):
@@ -34,6 +36,8 @@ class Package(models.Model):
     link = models.CharField(max_length=300)
 
     description = models.CharField(max_length=1000)
+
+    nbdispack = models.IntegerField(default=0)
 
     def __str__(self):
         return '%s %s' % (self.name, self.latest_version)
@@ -82,3 +86,13 @@ class DisPack(models.Model):
 
     package = models.ForeignKey(Package)
     package_version = models.CharField(max_length=30)
+
+
+@receiver(post_save, sender=DisPack)
+def create_dispack(sender, instance, created, **kwargs):
+    """Update number of dispack available"""
+    if created:
+        count = DisPack.objects.filter(package=instance.package.id).count()
+        pack = Package.objects.get(pk=instance.package.id)
+        pack.nbdispack=count
+        pack.save()
