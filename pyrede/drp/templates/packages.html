@@ -30,9 +30,10 @@
       <table class="table table-striped">
 	<thead>
 	  <tr>
-	    <th class="span6">{% trans "Name" %}</th>
+	    <th class="span7">{% trans "Name" %}</th>
 	    <th class="span2">{% trans "Version" %}</th>
-	    <th class="span4">Link</th>
+	    <th class="span1">Link</th>
+	    <th class="span2">Pack.</th>
 	  </tr>
 	</thead>
 	<tbody>
@@ -44,6 +45,9 @@
 	    </td>
 	    <td>
 	      <a href="{{package.link}}" target="_blank">pypi</a>
+	    </td>
+	    <td>
+	      <span class="badge badge-success">{{package.nbdispack}}</span> 
 	    </td>
 	  </tr>
 	  {% endfor %}
