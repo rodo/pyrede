@@ -92,11 +92,10 @@ class DisPack(models.Model):
 @receiver(post_save, sender=DisPack)
 def create_dispack(sender, instance, created, **kwargs):
     """Update number of dispack available"""
-    if created:
-        count = DisPack.objects.filter(package=instance.package.id).count()
-        pack = Package.objects.get(pk=instance.package.id)
-        pack.nbdispack=count
-        pack.save()
+    count = DisPack.objects.filter(package=instance.package.id).count()
+    pack = Package.objects.get(pk=instance.package.id)
+    pack.nbdispack=count
+    pack.save()
 
 
 @receiver(post_delete, sender=DisPack)
