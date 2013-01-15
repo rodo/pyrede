@@ -89,12 +89,13 @@ class DisPack(models.Model):
     package_version = models.CharField(max_length=30)
     link = models.URLField(max_length=350)
 
+
 @receiver(post_save, sender=DisPack)
 def create_dispack(sender, instance, created, **kwargs):
     """Update number of dispack available"""
     count = DisPack.objects.filter(package=instance.package.id).count()
     pack = Package.objects.get(pk=instance.package.id)
-    pack.nbdispack=count
+    pack.nbdispack = count
     pack.save()
 
 
@@ -103,5 +104,5 @@ def update_dispack(sender, instance, **kwargs):
     """Update number of dispack available"""
     count = DisPack.objects.filter(package=instance.package.id).count()
     pack = Package.objects.get(pk=instance.package.id)
-    pack.nbdispack=count
+    pack.nbdispack = count
     pack.save()
