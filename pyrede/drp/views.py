@@ -27,7 +27,7 @@ from django.views.generic import DetailView
 from pyrede.drp.models import Package
 from pyrede.drp.models import DisPack
 from pyrede.drp.forms import ReqForm
-from pyrede.drp.utils import look4_pypi_missing
+from pyrede.drp.tasks import look4_pypi_missing
 from pyrede.utils.reqparser import requ_parser
 
 
@@ -122,7 +122,7 @@ def analyze(request):
                     cco = Package.objects.get(name=pack[0])
                 except Package.DoesNotExist:
                     look4_pypi_missing.delay(pack[0])
-
+                    
             return render(request,
                           'analyze.html',
                           {'form': form,
