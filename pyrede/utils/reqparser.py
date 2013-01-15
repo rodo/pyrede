@@ -17,7 +17,16 @@
 #
 
 def requ_parser(requirements):
+    """
+    Parse the content of a requirements.txt
 
+    Return an array of array
+    Each line is an array of 1 or 3 elements
+    - element 1 : package name
+    - element 2 : restriction sign '==' or '>='
+    - element 3 : version number
+    
+    """
     datas = []
 
     for req in requirements.split('\n'):
@@ -43,6 +52,6 @@ def parse_line(line):
             return [parts[0], '>=', parts[1]]
         else:
             if line != '':
-                return line
+                return [line]
             else:
                 return None
