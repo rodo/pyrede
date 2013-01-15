@@ -76,9 +76,7 @@ def jsonpypi(request, slug):
     except:
         datas = {'result': 0}
 
-
     response = HttpResponse(mimetype='application/json; charset=utf-8')
-
     response.write(json.dumps(datas))
 
     return response
@@ -101,13 +99,13 @@ def lookup(pypi):
                       })
 
     datas = {'result': 1,
-             'pipy': { 'id': pypi.id,
-                       'nbpack': pypi.nbdispack},
+             'pipy': {'id': pypi.id,
+                      'nbpack': pypi.nbdispack},
              'found': len(dispacks),
              'packages': jpack}
 
-
     return datas
+
 
 def analyze(request):
     """
@@ -121,10 +119,10 @@ def analyze(request):
 
             for pack in datas:
                 try:
-                    cco = Package.objects.get(name=pack[0])
+                    Package.objects.get(name=pack[0])
                 except Package.DoesNotExist:
                     look4_pypi_missing.delay(pack[0])
-                    
+
             return render(request,
                           'analyze.html',
                           {'form': form,
@@ -133,9 +131,9 @@ def analyze(request):
                            'jfound': datas
                            })
 
-
     else:
         return redirect('/')
+
 
 def adddispack(request, slug):
     """
@@ -143,7 +141,7 @@ def adddispack(request, slug):
     """
     pypi = Package.objects.get(name=slug)
     dispacks = DisPack.objects.filter(package=pypi)
-    dis = Distribution.objects.get(name='Debian',version_name='Wheezy')
+    dis = Distribution.objects.get(name='Debian', version_name='Wheezy')
 
     if request.method == 'POST':
         form = disPackForm(request.POST)
