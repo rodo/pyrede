@@ -35,6 +35,7 @@ class DisPackTests(TestCase):  # pylint: disable-msg=R0904
         Init
         """
         Package.objects.all().delete()
+        DisPack.objects.all().delete()
 
     def test_create(self):
         """
@@ -56,3 +57,53 @@ class DisPackTests(TestCase):  # pylint: disable-msg=R0904
                                          package_version='1.1.0')
 
         self.assertGreater(dispack.id, 0)
+
+    def test_sender_create(self):
+        """
+        Create a Package
+        """
+        dist = Distribution.objects.create(name='foodeb',
+                                           version_name='sid',
+                                           version_number='0')
+
+        pack = Package.objects.create(name='foobar',
+                                      latest_version='1.0.0',
+                                      link='http://www.foo.bar',
+                                      description='lorem ipsum')
+
+        dispack = DisPack.objects.create(name='python-foo',
+                                         version='1.1.2c',
+                                         distribution=dist,
+                                         package=pack,
+                                         package_version='1.1.0')
+
+        result = Package.objects.get(pk=pack.id).nbdispack
+
+        self.assertEqual(result, 1)
+
+    def test_sender_delete(self):
+        """
+        Create a Package
+        """
+        dist = Distribution.objects.create(name='foodeb',
+                                           version_name='sid',
+                                           version_number='0')
+
+        pack = Package.objects.create(name='foobar',
+                                      latest_version='1.0.0',
+                                      link='http://www.foo.bar',
+                                      description='lorem ipsum',
+                                      nbdispack=1)
+
+        dispack = DisPack.objects.create(name='python-foo',
+                                         version='1.1.2c',
+                                         distribution=dist,
+                                         package=pack,
+                                         package_version='1.1.0')
+
+        # delete the dipack
+        dispack.delete()
+
+        result = Package.objects.get(pk=pack.id).nbdispack
+
+        self.assertEqual(result, 0)
