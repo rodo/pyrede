@@ -20,6 +20,7 @@ drp Models for Pyrede
 """
 from django.db import models
 from django.db.models.signals import post_save
+from django.db.models.signals import post_delete
 from django.dispatch import receiver
 
 
@@ -96,3 +97,12 @@ def create_dispack(sender, instance, created, **kwargs):
         pack = Package.objects.get(pk=instance.package.id)
         pack.nbdispack=count
         pack.save()
+
+
+@receiver(post_delete, sender=DisPack)
+def update_dispack(sender, instance, **kwargs):
+    """Update number of dispack available"""
+    count = DisPack.objects.filter(package=instance.package.id).count()
+    pack = Package.objects.get(pk=instance.package.id)
+    pack.nbdispack=count
+    pack.save()
