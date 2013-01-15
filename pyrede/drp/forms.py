@@ -47,7 +47,7 @@ class disPackForm(forms.Form):  # pylint: disable=R0924
 
     link = forms.CharField(max_length=350,
                            required=True,
-                           widget=TextInput(attrs={'class' : 'input-xlarge'}))
+                           widget=TextInput(attrs={'class' : 'input-xxlarge'}))
     
     def clean(self):
         cleaned_data = self.cleaned_data
