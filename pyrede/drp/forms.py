@@ -17,12 +17,37 @@
 #
 from django import forms
 from django.forms.widgets import Textarea
+from django.forms.widgets import TextInput
 
 
 class ReqForm(forms.Form):  # pylint: disable=R0924
 
     content = forms.CharField(required=True,
                               widget=Textarea())
+    
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        return cleaned_data
+
+
+class disPackForm(forms.Form):  # pylint: disable=R0924
+
+
+    name = forms.CharField(max_length=50,
+                           required=True,
+                           widget=TextInput(attrs={'class' : 'input-large'}))
+    
+    version = forms.CharField(max_length=50,
+                              required=True,
+                              widget=TextInput(attrs={'class' : 'input-small'}))
+
+    package_version = forms.CharField(max_length=50,
+                                      required=True,
+                                      widget=TextInput(attrs={'class' : 'input-small'}))
+
+    link = forms.CharField(max_length=350,
+                           required=True,
+                           widget=TextInput(attrs={'class' : 'input-xlarge'}))
     
     def clean(self):
         cleaned_data = self.cleaned_data

@@ -1,0 +1,89 @@
+{% load i18n %}
+{% include "header.html" %}
+{% include "navbar.html" %}
+<div id="container" class="container">
+  <div class="row">
+    <div class="span12">
+
+
+      <form class="well form-horizontal" action="/pypi/{{package.name}}/add/" method="post">
+	{% csrf_token %}
+	<fieldset>
+	  <h3>The pypi {{package.name}}</h3>
+	  <div><a href="{{package.link}}">{{package.link}}</a></div>
+	  <hr>
+	  <div>
+	    <h4>The package in {{distribution.name}} {{distribution.version_name}} provide it</h4>
+	  </div>
+	  {% if helpform == 'notfound' %}
+	  <div class="alert alert-error">
+	    {% trans "This email address was not found" %}
+	  </div>
+	  {% endif %}
+
+	  <div class="control-group">
+	    <label class="control-label" for="firstname">{% trans "Name" %}</label>
+	    <div class="controls">
+	      {{form.name}}{{form.name.errors}}
+	    </div>
+	  </div>
+
+	  <div class="control-group">
+	    <label class="control-label" for="firstname">{% trans "Version" %}</label>
+	    <div class="controls">
+	      {{form.version}}{{form.version.errors}}
+	    </div>
+	  </div>
+
+	  <div class="control-group">
+	    <label class="control-label" for="package_version">{% trans "Provide version" %}</label>
+	    <div class="controls">
+	      {{form.package_version}}{{form.package_version.errors}}
+	    </div>
+	  </div>
+
+
+	  <div class="control-group">
+	    <label class="control-label" for="package_version">{% trans "URL" %}</label>
+	    <div class="controls">
+	      {{form.link}}{{form.link.errors}}
+	    </div>
+	  </div>
+
+	  <div class="control-group">
+	    <input type="submit" class="btn" value="{% trans 'Send' %}" />
+	  </div>
+	</fieldset>
+      </form>
+
+      <h3>Already known packages</h3>
+      <table class="table table-striped">
+	<thead>
+	  <tr>
+	    <th>{% trans "Name" %}</th>
+	    <th>{% trans "Distribution" %}</th>
+	    <th>{% trans "Version" %}</th>
+	    <th>Provide</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  {% for package in dispacks %}
+	  <tr>
+	    <td>{{package.name}}</td>
+	    <td>{{package.distribution.name}} {{package.distribution.version_name}}</td>
+	    <td>
+	      <span class="badge badge-info">{{package.version}}</span> 
+	    </td>
+	    <td>
+	      <span class="badge badge-success">{{package.package_version}}</span> 
+	    </td>
+	  </tr>
+	  {% endfor %}
+	</tbody>
+      </table>
+
+
+    </div><!--/row-->
+  </div><!--/row-->
+</div><!--/.container-->
+{% include "footer.html" %}

@@ -26,7 +26,9 @@ from django.views.generic import ListView
 from django.views.generic import DetailView
 from pyrede.drp.models import Package
 from pyrede.drp.models import DisPack
+from pyrede.drp.models import Distribution
 from pyrede.drp.forms import ReqForm
+from pyrede.drp.forms import disPackForm
 from pyrede.drp.tasks import look4_pypi_missing
 from pyrede.utils.reqparser import requ_parser
 
@@ -134,3 +136,32 @@ def analyze(request):
 
     else:
         return redirect('/')
+
+def adddispack(request, slug):
+    """
+    Add a distribution package for a pypi package
+    """
+    pypi = Package.objects.get(name=slug)
+    dispacks = DisPack.objects.filter(package=pypi)
+    dis = Distribution.objects.get(name='Debian',version_name='Wheezy')
+
+    if request.method == 'POST':
+        form = disPackForm(request.POST)
+        if form.is_valid():
+
+            DisPack.objects.create(name=form.cleaned_data['name'],
+                                   version=form.cleaned_data['version'],
+                                   package_version=form.cleaned_data['package_version'],
+                                   link=form.cleaned_data['link'],
+                                   distribution=dis,
+                                   package=pypi)
+    else:
+        form = disPackForm()
+
+    return render(request,
+                  'add_dispack.html',
+                  {'form': form,
+                   'package': pypi,
+                   'distribution': dis,
+                   'dispacks': dispacks
+                   })

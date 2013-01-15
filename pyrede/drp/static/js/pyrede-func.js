@@ -26,7 +26,8 @@ function fetch(url, elem) {
 		  $('#provide_'+elem).html('unknown in pyrede db');
 	      }
 	      if (data.found == 0) {
-		  $('#provide_'+elem).html('nothing found');
+		  text = 'nothing found, <a href="/pypi/'+elem+'/add/">add one</a>';
+		  $('#provide_'+elem).html(text);
 	      }
 	      if (data.found == 1) {
 		  pr = data.packages[0].provide + ' ' + data.packages[0].distribution.name + ' ' + data.packages[0].distribution.version;

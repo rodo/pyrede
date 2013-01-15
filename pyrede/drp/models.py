@@ -87,7 +87,7 @@ class DisPack(models.Model):
 
     package = models.ForeignKey(Package)
     package_version = models.CharField(max_length=30)
-
+    link = models.URLField(max_length=350)
 
 @receiver(post_save, sender=DisPack)
 def create_dispack(sender, instance, created, **kwargs):
