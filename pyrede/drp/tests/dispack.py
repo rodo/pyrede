@@ -83,7 +83,7 @@ class DisPackTests(TestCase):  # pylint: disable-msg=R0904
 
     def test_sender_delete(self):
         """
-        Create a Package
+        a dispack is deleted
         """
         dist = Distribution.objects.create(name='foodeb',
                                            version_name='sid',
@@ -107,3 +107,30 @@ class DisPackTests(TestCase):  # pylint: disable-msg=R0904
         result = Package.objects.get(pk=pack.id).nbdispack
 
         self.assertEqual(result, 0)
+
+    def test_sender_update(self):
+        """
+        a dispack is updated
+        """
+        dist = Distribution.objects.create(name='foodeb',
+                                           version_name='sid',
+                                           version_number='0')
+
+        pack = Package.objects.create(name='foobar',
+                                      latest_version='1.0.0',
+                                      link='http://www.foo.bar',
+                                      description='lorem ipsum',
+                                      nbdispack=1)
+
+        dispack = DisPack.objects.create(name='python-foo',
+                                         version='1.1.2c',
+                                         distribution=dist,
+                                         package=pack,
+                                         package_version='1.1.0')
+
+        dispack.name = 'foo-foo'
+        dispack.save()
+
+        result = Package.objects.get(pk=pack.id).nbdispack
+
+        self.assertEqual(result, 1)
