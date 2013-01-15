@@ -31,7 +31,7 @@ function fetch(url, elem) {
 	      if (data.found == 1) {
 		  pr = data.packages[0].provide + ' ' + data.packages[0].distribution.name + ' ' + data.packages[0].distribution.version;
 		  $('#provide_'+elem).html('<b>'+pr+'</b>');
-		  $('#result').append('<span>'+data.packages[0].name+'</span>');
+		  $('#result').append('<span style="margin-left: 3px">'+data.packages[0].name+'</span>');
 	      }
 	  });
 }

@@ -27,6 +27,7 @@ from django.views.generic import DetailView
 from pyrede.drp.models import Package
 from pyrede.drp.models import DisPack
 from pyrede.drp.forms import ReqForm
+from pyrede.drp.utils import look4_pypi_missing
 from pyrede.utils.reqparser import requ_parser
 
 
@@ -97,13 +98,12 @@ def lookup(pypi):
                                        }
                       })
 
-    datas = {'result': 1, 
+    datas = {'result': 1,
              'pipy': { 'id': pypi.id,
                        'nbpack': pypi.nbdispack},
              'found': len(dispacks),
              'packages': jpack}
-    
-    
+
 
     return datas
 
@@ -115,14 +115,20 @@ def analyze(request):
     if request.method == 'POST':
         form = ReqForm(request.POST)
         if form.is_valid():
-            data = requ_parser(form.cleaned_data['content'])
+            datas = requ_parser(form.cleaned_data['content'])
+
+            for pack in datas:
+                try:
+                    cco = Package.objects.get(name=pack[0])
+                except Package.DoesNotExist:
+                    look4_pypi_missing.delay(pack[0])
 
             return render(request,
                           'analyze.html',
                           {'form': form,
                            'dispacks': queryset,
-                           'founds': data,
-                           'jfound': data
+                           'founds': datas,
+                           'jfound': datas
                            })
 
 

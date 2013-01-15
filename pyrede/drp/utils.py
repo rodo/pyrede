@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2013 Rodolphe Quiédeville <rodolphe@quiedeville.org>
@@ -17,27 +16,15 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 """
-import last package
+Utils for pyrede/drp
+
 """
-import logging
-from django.core.management.base import BaseCommand
+from celery.task import task
 from pyrede.provider.management.commands.utils import import_package
 
-logger = logging.getLogger(__name__)
-
-
-class Command(BaseCommand):
-    args = '<ircnick>'
-    help = 'Import recursively all ogg file in a directory'
-
-    def handle(self, *args, **options):
-        """
-        Handle the command
-        """
-        if len(args) == 0:
-            return 'Missing url'
-
-        logger.debug('parse %s' % args[0])
-
-        nbp = import_package(args[0])
-
+@task()
+def look4_pypi_missing(package):
+    """
+    Lookup for a package an insert in DB
+    """
+    return import_package(package)
