@@ -22,6 +22,7 @@ Utils for pyrede/drp
 from celery.task import task
 from pyrede.provider.management.commands.utils import import_package
 
+
 @task
 def look4_pypi_missing(package):
     """
