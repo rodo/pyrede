@@ -48,3 +48,17 @@ class UrlsTests(TestCase):  # pylint: disable-msg=R0904
         response = client.get('/pypis/')
 
         self.assertContains(response, pack.name, status_code=200)
+
+    def test_json(self):
+        """
+        json lookup
+        """
+        pack = Package.objects.create(name='aeHohee1',
+                                      latest_version='1.0.0',
+                                      link='http://www.foo.bar',
+                                      description='lorem ipsum')
+
+        client = Client()
+        response = client.get('/json/pypi/%s/' % pack.name)
+
+        self.assertTrue(type(eval(response.content)) is dict)
