@@ -41,9 +41,9 @@ class Command(BaseCommand):
         dispack = DisPack.objects.all().count()
         packversion = PackageVersion.objects.all().count()
 
-        print "%s.value %s" % ('package', pack)
-        print "%s.value %s" % ('packageversion', packversion)
-        print "%s.value %s" % ('dispack', dispack)
+        self.stdout.write("%s.value %s\n" % ('package', pack))
+        self.stdout.write("%s.value %s\n" % ('packageversion', packversion))
+        self.stdout.write("%s.value %s\n" % ('dispack', dispack))
 
         cache.set("stats_nb_pack", pack)
         cache.set("stats_nb_packversion", packversion)

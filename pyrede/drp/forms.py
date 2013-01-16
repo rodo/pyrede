@@ -34,6 +34,7 @@ class disPackForm(forms.Form):  # pylint: disable=R0924
     """
     Add a dispack objects in database
     """
+    referer = forms.CharField(max_length=150)
 
     name = forms.CharField(max_length=50,
                            required=True,

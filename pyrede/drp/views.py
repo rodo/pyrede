@@ -169,7 +169,7 @@ def adddispack(request, slug):
     if request.method == 'POST':
         form = disPackForm(request.POST)
         if form.is_valid():
-
+            referer = form.cleaned_data['referer']
             link = "http://packages.debian.org/wheezy/{}".format(form.cleaned_data['name'])
 
             try:
@@ -183,11 +183,13 @@ def adddispack(request, slug):
                 return redirect('/')
     else:
         form = disPackForm()
+        referer = request.META['HTTP_REFERER']
 
     return render(request,
                   'add_dispack.html',
                   {'form': form,
                    'package': pypi,
                    'distribution': dis,
-                   'dispacks': dispacks
+                   'dispacks': dispacks,
+                   'referer': referer
                    })

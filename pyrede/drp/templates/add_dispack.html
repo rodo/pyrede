@@ -10,7 +10,7 @@
       <form class="well form-horizontal" action="/pypi/{{package.name}}/add/" method="post">
 	{% csrf_token %}
 	<fieldset>
-
+	  <input type="hidden" name="referer" value="{{referer}}">
 	  <div>réf : <a href="{{package.link}}">{{package.link}}</a></div>
 	  <hr>
 	  <div>
@@ -49,6 +49,7 @@
 	    </div>
 	  </div>
 	</fieldset>
+	Return to <a href="{{referer}}">{{referer}}</a>
       </form>
 
       <h3>Already known packages</h3>
