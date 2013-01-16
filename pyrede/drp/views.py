@@ -193,3 +193,11 @@ def adddispack(request, slug):
                    'dispacks': dispacks,
                    'referer': referer
                    })
+
+
+def about(request):
+    """
+    About page
+    """
+    return render(request,
+                  'about.html')
