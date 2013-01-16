@@ -59,7 +59,7 @@ def userreq(request):
     """
     Main page containing the form    
     """
-    queryset = Package.objects.all().order_by("name")[:7]
+    queryset = Package.objects.all().order_by('-pk')[:7]
     form = ReqForm()
     return render(request,
                   'form.html',
@@ -114,7 +114,7 @@ def analyze(request, pk=0):
     """
     The user post a file
     """
-    queryset = Package.objects.all().order_by("name").order_by('-pk')[:7]
+    queryset = Package.objects.all().order_by('-pk')[:7]
     if pk == 0:
         if request.method == 'POST':
             form = ReqForm(request.POST)
