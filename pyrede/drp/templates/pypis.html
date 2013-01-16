@@ -19,7 +19,11 @@
 	<a href="{{package.link}}" target="_blank">pypi</a>
       </td>
       <td>
+	{% if package.nbdispack > 0 %}
 	<span class="badge badge-success">{{package.nbdispack}}</span> 
+	{% else %}
+	<span class="badge">{{package.nbdispack}}</span> 
+	{% endif %}
 	<a href="/pypi/{{package.name}}/add/">add one</a>
       </td>
     </tr>
