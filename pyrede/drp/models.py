@@ -90,6 +90,15 @@ class DisPack(models.Model):
     link = models.URLField(max_length=350)
 
 
+class Lookup(models.Model):
+    """
+    A lookup made by a user
+    """
+    content = models.CharField(max_length=1000)
+    date_search = models.DateTimeField(editable=False,
+                                       auto_now_add=True)
+
+
 @receiver(post_save, sender=DisPack)
 def create_dispack(sender, instance, created, **kwargs):
     """Update number of dispack available"""

@@ -33,6 +33,7 @@ function fetch(url, elem) {
 		  pr = data.packages[0].provide + ' ' + data.packages[0].distribution.name + ' ' + data.packages[0].distribution.version;
 		  $('#provide_'+elem).html('<b>'+pr+'</b>');
 		  $('#result').append('<span style="margin-left: 3px">'+data.packages[0].name+'</span>');
+		  $('#result').css('visibility', 'visible');
 	      }
 	  });
 }

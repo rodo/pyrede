@@ -1,0 +1,27 @@
+{% load i18n %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="span7">{% trans "Name" %}</th>
+      <th class="span2">{% trans "Version" %}</th>
+      <th class="span1">Link</th>
+      <th class="span2">Pack.</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for package in packages %}
+    <tr>
+      <td><a href="/pypi/{{package.name}}/">{{package.name}}</a></td>
+      <td>
+	<span class="badge badge-info">{{package.latest_version}}</span> 
+      </td>
+      <td>
+	<a href="{{package.link}}" target="_blank">pypi</a>
+      </td>
+      <td>
+	<span class="badge badge-success">{{package.nbdispack}}</span> 
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

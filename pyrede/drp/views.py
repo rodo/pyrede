@@ -24,9 +24,10 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.views.generic import ListView
 from django.views.generic import DetailView
-from pyrede.drp.models import Package
 from pyrede.drp.models import DisPack
 from pyrede.drp.models import Distribution
+from pyrede.drp.models import Lookup
+from pyrede.drp.models import Package
 from pyrede.drp.forms import ReqForm
 from pyrede.drp.forms import disPackForm
 from pyrede.drp.tasks import look4_pypi_missing
@@ -55,14 +56,14 @@ class PackageDetail(DetailView):
 
 def userreq(request):
     """
-    The user post a file
+    Main page containing the form    
     """
-    queryset = Package.objects.all().order_by("name")[:10]
+    queryset = Package.objects.all().order_by("name")[:7]
     form = ReqForm()
     return render(request,
                   'form.html',
                   {'form': form,
-                   'dispacks': queryset
+                   'packages': queryset
                    })
 
 
@@ -107,32 +108,51 @@ def lookup(pypi):
     return datas
 
 
-def analyze(request):
+def analyze(request, pk=0):
     """
     The user post a file
     """
-    queryset = Package.objects.all().order_by("name")[:10]
-    if request.method == 'POST':
-        form = ReqForm(request.POST)
-        if form.is_valid():
-            datas = requ_parser(form.cleaned_data['content'])
+    queryset = Package.objects.all().order_by("name").order_by('-pk')[:7]
+    if pk == 0:
+        if request.method == 'POST':
+            form = ReqForm(request.POST)
+            if form.is_valid():
+                datas = requ_parser(form.cleaned_data['content'])
+                lkup = Lookup.objects.create(content=form.cleaned_data['content'])
+                for pack in datas:
+                    try:
+                        Package.objects.get(name=pack[0])
+                    except Package.DoesNotExist:
+                        look4_pypi_missing.delay(pack[0])
 
-            for pack in datas:
-                try:
-                    Package.objects.get(name=pack[0])
-                except Package.DoesNotExist:
-                    look4_pypi_missing.delay(pack[0])
-
-            return render(request,
-                          'analyze.html',
-                          {'form': form,
-                           'dispacks': queryset,
-                           'founds': datas,
-                           'jfound': datas
-                           })
-
+                return render(request,
+                              'analyze.html',
+                              {'form': form,
+                               'packages': queryset,
+                               'founds': datas,
+                               'jfound': datas,
+                               'lookup': lkup
+                               })
+            else:
+                return redirect('/')
+        else:
+            return redirect('/')
     else:
-        return redirect('/')
+        lkup = Lookup.objects.get(pk=pk)
+        datas = requ_parser(lkup.content)
+        for pack in datas:
+            try:
+                Package.objects.get(name=pack[0])
+            except Package.DoesNotExist:
+                look4_pypi_missing.delay(pack[0])
+                
+        return render(request,
+                      'analyze.html',
+                      {'dispacks': queryset,
+                       'founds': datas,
+                       'jfound': datas,
+                       'lookup': lkup
+                       })
 
 
 def adddispack(request, slug):

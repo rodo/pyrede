@@ -13,6 +13,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',                       
                        url(r'^$', 'pyrede.drp.views.userreq'),
+                       url(r'^analyze/(?P<pk>[0-9]*)/$', 'pyrede.drp.views.analyze'),
                        url(r'^analyze/$', 'pyrede.drp.views.analyze'),
                        url(r'^pypis/$', PackageList.as_view()),
                        url(r'^json/pypi/(?P<slug>.*)/$', 'pyrede.drp.views.jsonpypi'),
