@@ -17,10 +17,11 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 """
-Output stats for munin on stdout
+Output stats for munin on stdout and set values in cache
 """
 import logging
 from django.core.management.base import BaseCommand
+from django.core.cache import cache
 from pyrede.drp.models import Package
 from pyrede.drp.models import PackageVersion
 from pyrede.drp.models import DisPack
@@ -33,10 +34,17 @@ class Command(BaseCommand):
     help = 'Import recursively all ogg file in a directory'
 
     def handle(self, *args, **options):
-
+        """
+        Handle the munin command
+        """
         pack = Package.objects.all().count()
         dispack = DisPack.objects.all().count()
         packversion = PackageVersion.objects.all().count()
+
         print "%s.value %s" % ('package', pack)
         print "%s.value %s" % ('packageversion', packversion)
         print "%s.value %s" % ('dispack', dispack)
+
+        cache.set("stats_nb_pack", pack)
+        cache.set("stats_nb_packversion", packversion)
+        cache.set("stats_nb_dispack", dispack)

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-  pylint: disable-msg=R0801
 #
 # Copyright (c) 2013 Rodolphe Quiédeville <rodolphe@quiedeville.org>
 #
@@ -15,17 +15,18 @@
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-"""
-Utils for pyrede/drp
-
-"""
-from celery.task import task
-from pyrede.provider.utils import import_package
+from django.core.cache import cache
 
 
-@task
-def look4_pypi_missing(package):
+def stats():
     """
-    Lookup for a package an insert in DB
+    Return stats of database
+
+    Cached value are set by munin management command
     """
-    return import_package(package)
+    pack = cache.get("stats_nb_pack")
+    packversion = cache.get("stats_nb_packversion")
+    dispack = cache.get("stats_nb_dispack")
+
+    return {'stats_nb_pack': pack,
+            'dispack': dispack}

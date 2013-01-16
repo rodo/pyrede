@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
-
   <div class="row">    
     <div class="span6">
       <p>
@@ -9,8 +8,14 @@
       interpreting your requirements.txt file.      
       </p>
       <p>
-	Actually it works only for Debian Wheezy
+	Actually it only works for Debian Wheezy.
       </p>
+      <hr/>
+      Some stats about pyrede :
+      <ul>
+	<li># pypi packages analyzed : {{stats.stats_nb_pack}}</li>
+	<li># distribution packages : {{stats.dispack}}</li>
+      </ul>
     </div>
     <div class="span6">
       <form class="well form-horizontal" action="/analyze/" method="post">

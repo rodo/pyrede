@@ -24,6 +24,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.views.generic import ListView
 from django.views.generic import DetailView
+from pyrede.utils.reqparser import requ_parser
 from pyrede.drp.models import DisPack
 from pyrede.drp.models import Distribution
 from pyrede.drp.models import Lookup
@@ -31,7 +32,7 @@ from pyrede.drp.models import Package
 from pyrede.drp.forms import ReqForm
 from pyrede.drp.forms import disPackForm
 from pyrede.drp.tasks import look4_pypi_missing
-from pyrede.utils.reqparser import requ_parser
+from pyrede.drp.utils import stats
 
 
 class PackageList(ListView):
@@ -63,7 +64,8 @@ def userreq(request):
     return render(request,
                   'form.html',
                   {'form': form,
-                   'packages': queryset
+                   'packages': queryset,
+                   'stats': stats()
                    })
 
 
@@ -167,12 +169,17 @@ def adddispack(request, slug):
         form = disPackForm(request.POST)
         if form.is_valid():
 
-            DisPack.objects.create(name=form.cleaned_data['name'],
-                                   version=form.cleaned_data['version'],
-                                   package_version=form.cleaned_data['package_version'],
-                                   link=form.cleaned_data['link'],
-                                   distribution=dis,
-                                   package=pypi)
+            link = "http://packages.debian.org/wheezy/{}".format(form.cleaned_data['name'])
+
+            try:
+                DisPack.objects.create(name=form.cleaned_data['name'],
+                                       version=form.cleaned_data['version'],
+                                       package_version=form.cleaned_data['package_version'],
+                                       link=link,
+                                       distribution=dis,
+                                       package=pypi)
+            except:
+                return redirect('/')                
     else:
         form = disPackForm()
 

@@ -73,6 +73,9 @@ class Distribution(models.Model):
     def __str__(self):
         return '%s %s' % (self.name, self.version_name)
 
+    class Meta:
+        unique_together = ('name', 'version_name')
+
 
 class DisPack(models.Model):
     """
@@ -88,6 +91,9 @@ class DisPack(models.Model):
     package = models.ForeignKey(Package)
     package_version = models.CharField(max_length=30)
     link = models.URLField(max_length=350)
+
+    class Meta:
+        unique_together = ('name', 'version', 'distribution')
 
 
 class Lookup(models.Model):

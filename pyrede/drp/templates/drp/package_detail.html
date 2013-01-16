@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
+<div class="well">
 <table class="table table-striped">
   <thead>
     <tr>
@@ -21,5 +22,32 @@
     </tr>
   </tbody>
 </table>
+</div>
+
+<h3>Available packages</h3>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>{% trans "Name" %}</th>
+      <th>{% trans "Version" %}</th>
+      <th>Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for package in dispacks %}
+    <tr>
+      <td><a href="/pypi/{{package.name}}/">{{package.name}}</a></td>
+      <td>
+	<span class="badge badge-info">{{package.version}}</span> 
+      </td>
+      <td>
+	{{package.distribution.name}} {{package.distribution.version_name}}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
 {% endblock %}
 

@@ -5,12 +5,13 @@
   <div class="row">
     <div class="span12">
 
+      <h3>Add a distribution package for : {{package.name}} {{package.latest_version}}</h3>
 
       <form class="well form-horizontal" action="/pypi/{{package.name}}/add/" method="post">
 	{% csrf_token %}
 	<fieldset>
-	  <h3>The pypi {{package.name}}</h3>
-	  <div><a href="{{package.link}}">{{package.link}}</a></div>
+
+	  <div>réf : <a href="{{package.link}}">{{package.link}}</a></div>
 	  <hr>
 	  <div>
 	    <h4>The package in {{distribution.name}} {{distribution.version_name}} provide it</h4>
@@ -42,16 +43,10 @@
 	    </div>
 	  </div>
 
-
 	  <div class="control-group">
-	    <label class="control-label" for="package_version">{% trans "URL" %}</label>
 	    <div class="controls">
-	      {{form.link}}{{form.link.errors}}
+	      <input type="submit" class="btn btn-primary" value="{% trans 'Send' %}" />
 	    </div>
-	  </div>
-
-	  <div class="control-group">
-	    <input type="submit" class="btn" value="{% trans 'Send' %}" />
 	  </div>
 	</fieldset>
       </form>
