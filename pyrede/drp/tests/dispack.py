@@ -71,11 +71,11 @@ class DisPackTests(TestCase):  # pylint: disable-msg=R0904
                                       link='http://www.foo.bar',
                                       description='lorem ipsum')
 
-        dispack = DisPack.objects.create(name='python-foo',
-                                         version='1.1.2c',
-                                         distribution=dist,
-                                         package=pack,
-                                         package_version='1.1.0')
+        DisPack.objects.create(name='python-foo',
+                               version='1.1.2c',
+                               distribution=dist,
+                               package=pack,
+                               package_version='1.1.0')
 
         result = Package.objects.get(pk=pack.id).nbdispack
 

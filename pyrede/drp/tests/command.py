@@ -20,7 +20,6 @@ Unit tests for drp management commands
 
 """
 from StringIO import StringIO
-from django.contrib.auth.models import User
 from django.core.management import call_command
 from django.test import TestCase
 from pyrede.drp.models import Package
@@ -41,10 +40,10 @@ class CommandTests(TestCase):  # pylint: disable-msg=R0904
         """
         cleansongs manage command
         """
-        pack = Package.objects.create(name='aeHohee1',
-                                      latest_version='1.0.0',
-                                      link='http://www.foo.bar',
-                                      description='lorem ipsum')
+        Package.objects.create(name='aeHohee1',
+                               latest_version='1.0.0',
+                               link='http://www.foo.bar',
+                               description='lorem ipsum')
 
         attend = '\n'.join(['package.value 1',
                             'packageversion.value 0',

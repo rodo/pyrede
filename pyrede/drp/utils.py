@@ -29,4 +29,5 @@ def stats():
     dispack = cache.get("stats_nb_dispack")
 
     return {'stats_nb_pack': pack,
+            'stats_nb_packbersion': packversion,
             'dispack': dispack}
