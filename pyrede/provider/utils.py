@@ -22,6 +22,7 @@ import last package
 import requests
 import json
 import logging
+from django.core.cache import cache
 from datetime import datetime
 from pyrede.drp.models import Package
 from pyrede.drp.models import PackageVersion
@@ -33,23 +34,28 @@ def import_package(package):
     """
     Import a package from pypi
     """
-    logger.debug('import_package : %s' % package)
-    url = "http://pypi.python.org/pypi"
-
-    params= {':action': 'json', 'name': package}
-    headers = {'content-type': 'application/json'}
-
-    item = {}
-
-    req = requests.get(url, params=params, headers=headers)
-    if (req.ok):
-        datas = json.loads(req.content)
-        version = datas['info']['version']
-        item['description'] = datas['info']['description']
-        item['link'] = datas['info']['package_url']
-        create_update_pack(item, package, version)
+    key = 'pypi_import_flag_{}'.format(package)
+    if cache.get(key) != None:
+        logger.warning('package : [%s] was import than less 2 hours' % package)
     else:
-        logger.warning("response not on %s" % url)
+        cache.set(key, 7200)
+        logger.debug('import_package : %s' % package)
+        url = "http://pypi.python.org/pypi"
+
+        params= {':action': 'json', 'name': package}
+        headers = {'content-type': 'application/json'}
+
+        item = {}
+
+        req = requests.get(url, params=params, headers=headers)
+        if (req.ok):
+            datas = json.loads(req.content)
+            version = datas['info']['version']
+            item['description'] = datas['info']['description']
+            item['link'] = datas['info']['package_url']
+            create_update_pack(item, package, version)
+        else:
+            logger.warning("response not on %s" % url)
 
 
 def split_title(title):
