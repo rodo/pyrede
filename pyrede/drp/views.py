@@ -57,7 +57,7 @@ class PackageDetail(DetailView):
 
 def userreq(request):
     """
-    Main page containing the form    
+    Main page containing the form
     """
     queryset = Package.objects.all().order_by('-pk')[:7]
     form = ReqForm()
@@ -147,7 +147,7 @@ def analyze(request, pk=0):
                 Package.objects.get(name=pack[0])
             except Package.DoesNotExist:
                 look4_pypi_missing.delay(pack[0])
-                
+
         return render(request,
                       'analyze.html',
                       {'dispacks': queryset,
@@ -179,7 +179,7 @@ def adddispack(request, slug):
                                        distribution=dis,
                                        package=pypi)
             except:
-                return redirect('/')                
+                return redirect('/')
     else:
         form = disPackForm()
 
