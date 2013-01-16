@@ -20,7 +20,7 @@ urlpatterns = patterns('',
                        url(r'^pypi/(?P<slug>.*)/add/$', 'pyrede.drp.views.adddispack'),
                        url(r'^pypi/(?P<slug>.*)/$', PackageDetail.as_view()),
                        url(r'^distributions/$', ListView.as_view(model=Distribution)),
-                       url(r'^packages/$', ListView.as_view(model=DisPack)),
+                       url(r'^packages/$', ListView.as_view(model=DisPack,paginate_by=17)),
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^about/$', 'pyrede.drp.views.about'),
 )
