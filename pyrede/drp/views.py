@@ -127,14 +127,15 @@ def analyze(request, pk=0):
                     except Package.DoesNotExist:
                         look4_pypi_missing.delay(pack[0])
 
-                return render(request,
-                              'analyze.html',
-                              {'form': form,
-                               'packages': queryset,
-                               'founds': datas,
-                               'jfound': datas,
-                               'lookup': lkup
-                               })
+                return redirect('/analyze/%s/' % lkup.id)
+                # return render(request,
+                #               'analyze.html',
+                #               {'form': form,
+                #                'packages': queryset,
+                #                'founds': datas,
+                #                'jfound': datas,
+                #                'lookup': lkup
+                #                })
             else:
                 return redirect('/')
         else:
