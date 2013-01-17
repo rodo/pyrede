@@ -37,6 +37,15 @@ class UrlsTests(TestCase):  # pylint: disable-msg=R0904
         """
         Package.objects.all().delete()
 
+    def test_main(self):
+        """
+        The list of pypis packages
+        """
+        client = Client()
+        response = client.get('/')
+
+        self.assertContains(response, 'form', status_code=200)
+
     def test_pypilist(self):
         """
         The list of pypis packages
