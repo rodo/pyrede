@@ -13,14 +13,18 @@
 	  <input type="hidden" name="referer" value="{{referer}}">
 	  <div>réf : <a href="{{package.link}}">{{package.link}}</a></div>
 	  <hr>
-	  <div>
-	    <h4>The package in {{distribution.name}} {{distribution.version_name}} provide it</h4>
-	  </div>
-	  {% if helpform == 'notfound' %}
+	  {% if errors %}
 	  <div class="alert alert-error">
-	    {% trans "This email address was not found" %}
+	    {{ errors }}
 	  </div>
 	  {% endif %}
+
+	  <div class="control-group">
+	    <label class="control-label" for="inputEmail">{% trans "Distribution" %}</label>
+	    <div class="controls">
+	      {{form.distribution}} {{form.distribution.errors}}
+	    </div>
+	  </div>
 
 	  <div class="control-group">
 	    <label class="control-label" for="firstname">{% trans "Name" %}</label>

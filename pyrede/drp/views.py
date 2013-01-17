@@ -31,11 +31,11 @@ from pyrede.drp.models import Distribution
 from pyrede.drp.models import Lookup
 from pyrede.drp.models import Package
 from pyrede.drp.forms import ReqForm
-from pyrede.drp.forms import disPackForm
+from pyrede.drp.forms import DisPackForm
 from pyrede.drp.tasks import look4_pypi_missing
 from pyrede.drp.utils import stats
 
-logger = logging.getLogger(__name__) 
+logger = logging.getLogger(__name__)
 
 
 class PackageList(ListView):
@@ -174,32 +174,43 @@ def adddispack(request, slug):
     """
     pypi = Package.objects.get(name=slug)
     dispacks = DisPack.objects.filter(package=pypi)
-    dis = Distribution.objects.get(name='Debian', version_name='Wheezy')
+    distributions = Distribution.objects.all().order_by('-pk')
+    dists = [(r.id, "%s %s" % (r.name, r.version_name)) for r in distributions]
 
     if request.method == 'POST':
-        form = disPackForm(request.POST)
+
+        form = DisPackForm(dists, request.POST)
         if form.is_valid():
+            for odist in distributions:
+                if odist.id == int(form.cleaned_data['distribution']):
+                    dist=odist
+
             referer = form.cleaned_data['referer']
             link = "http://packages.debian.org/wheezy/{}".format(form.cleaned_data['name'])
-
             try:
                 DisPack.objects.create(name=form.cleaned_data['name'],
                                        version=form.cleaned_data['version'],
                                        package_version=form.cleaned_data['package_version'],
                                        link=link,
-                                       distribution=dis,
+                                       distribution=dist,
                                        package=pypi)
             except:
-                return redirect('/')
+                return render(request,
+                              'add_dispack.html',
+                              {'form': form,
+                               'package': pypi,
+                               'dispacks': dispacks,
+                               'referer': referer,
+                               'errors': 'Error'
+                               })
     else:
-        form = disPackForm()
+        form = DisPackForm(dists)
         referer = request.META['HTTP_REFERER']
 
     return render(request,
                   'add_dispack.html',
                   {'form': form,
                    'package': pypi,
-                   'distribution': dis,
                    'dispacks': dispacks,
                    'referer': referer
                    })

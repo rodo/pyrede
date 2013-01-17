@@ -36,7 +36,7 @@ class ReqForm(forms.Form):  # pylint: disable=R0924
         self.fields['distribution'] = forms.ChoiceField(choices=distributions)
 
 
-class disPackForm(forms.Form):  # pylint: disable=R0924
+class DisPackForm(forms.Form):  # pylint: disable=R0924
     """
     Add a dispack objects in database
     """
@@ -54,6 +54,12 @@ class disPackForm(forms.Form):  # pylint: disable=R0924
                                       required=True,
                                       widget=TextInput(attrs={'class': 'input-small'}))
 
+    distribution = forms.ChoiceField(required=True)
+
     def clean(self):
         cleaned_data = self.cleaned_data
         return cleaned_data
+
+    def __init__(self, distributions, *args, **kwargs):
+        super(DisPackForm, self).__init__(*args, **kwargs)
+        self.fields['distribution'] = forms.ChoiceField(choices=distributions)
