@@ -66,7 +66,7 @@ class PackageVersion(models.Model):
     def save(self, *args, **kwargs):
         key = 'json_pypi_{}'.format(self.package.name)
         cache.delete(key)
-        super(Package, self).save(*args, **kwargs)
+        super(PackageVersion, self).save(*args, **kwargs)
 
 
 class Distribution(models.Model):
@@ -109,7 +109,7 @@ class DisPack(models.Model):
     def save(self, *args, **kwargs):
         key = 'json_pypi_{}'.format(self.package.name)
         cache.delete(key)
-        super(Package, self).save(*args, **kwargs)
+        super(DisPack, self).save(*args, **kwargs)
 
 
 class Lookup(models.Model):
