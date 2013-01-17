@@ -55,6 +55,6 @@ def parse_line(line):
             return [str(parts[0]), '=<', str(parts[1])]
         else:
             if line != '':
-                return [str(line)]
+                return [str(line.split(' ')[0])]
             else:
                 return None
