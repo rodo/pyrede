@@ -44,7 +44,7 @@ function fetch(url, dist_id, elem) {
 		  $('#result').append('<span style="margin-left: 3px">'+goodpack.name+'</span>');
 		  $('#result').css('visibility', 'visible');
 	      } else {
-		  text = 'nothing found, <a href="/pypi/'+elem+'/add/">add one</a>';
+		  text = 'nothing found, <a class="btn btn-mini btn-primary" href="/pypi/'+elem+'/add/">add one</a>';
 		  $('#provide_'+elem).html(text);
 	      }
 	  });
