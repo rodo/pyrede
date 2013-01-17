@@ -17,14 +17,7 @@
     </div>
 
   </div>
-  <hr>
-  <div class="row">
-    <div class="span10">
-      {{package.description}}
-    </div>
-  </div>
 </div>
-
 <h3>Available packages</h3>
 
 <table class="table table-striped">
@@ -49,6 +42,12 @@
     {% endfor %}
   </tbody>
 </table>
+
+<div class="row">
+  <div class="span12">
+    <pre>{{package.description}}</pre>
+  </div>
+</div>
 
 {% endblock %}
 
