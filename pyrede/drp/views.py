@@ -20,6 +20,7 @@ The django views
 """
 import json
 import logging
+from django.core.cache import cache
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
@@ -82,11 +83,18 @@ def jsonpypi(request, slug):
     """
     A json view of pypi
     """
-    try:
-        pypi = Package.objects.get(name=slug)
-        datas = lookup(pypi)
-    except:
-        datas = {'result': 0}
+    key = 'json_pypi_{}'.format(slug)
+    cval = cache.get(key)
+    if cval == None:
+        try:
+            pypi = Package.objects.get(name=slug)
+            datas = lookup(pypi)
+        except:
+            datas = {'result': 0}
+        # cache for one hour
+        cache.set(key, str(datas), 3600)
+    else:
+        datas = eval(cval)
 
     response = HttpResponse(mimetype='application/json; charset=utf-8')
     response.write(json.dumps(datas))

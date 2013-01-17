@@ -43,6 +43,11 @@ class Package(models.Model):
     def __str__(self):
         return '%s %s' % (self.name, self.latest_version)
 
+    def save(self, *args, **kwargs):
+        key = 'json_pypi_{}'.format(self.name)
+        cache.delete(key)
+        super(Package, self).save(*args, **kwargs)
+
 
 class PackageVersion(models.Model):
     """
@@ -56,6 +61,11 @@ class PackageVersion(models.Model):
     description = models.CharField(max_length=1000)
 
     pubdate = models.DateTimeField()
+
+    def save(self, *args, **kwargs):
+        key = 'json_pypi_{}'.format(self.package.name)
+        cache.delete(key)
+        super(Package, self).save(*args, **kwargs)
 
 
 class Distribution(models.Model):
@@ -94,6 +104,11 @@ class DisPack(models.Model):
 
     class Meta:
         unique_together = ('name', 'version', 'distribution')
+
+    def save(self, *args, **kwargs):
+        key = 'json_pypi_{}'.format(self.package.name)
+        cache.delete(key)
+        super(Package, self).save(*args, **kwargs)
 
 
 class Lookup(models.Model):
