@@ -6,7 +6,7 @@
     <div class="span12">
 
       <h3>Add a distribution package for : {{package.name}} {{package.latest_version}}</h3>
-
+      {% if form %}
       <form class="well form-horizontal" action="/pypi/{{package.name}}/add/" method="post">
 	{% csrf_token %}
 	<fieldset>
@@ -55,6 +55,16 @@
 	</fieldset>
 	Return to <a href="{{referer}}">{{referer}}</a>
       </form>
+      {% else %}
+      <div class="well">
+	<div>
+	  <h4>Thanks for your contribution !</h4>
+	</div>
+	<div>
+	  Return to <a href="{{referer}}">{{referer}}</a>
+	</div>
+      </div>
+      {% endif %}
 
       <h3>Already known packages</h3>
       <table class="table table-striped">

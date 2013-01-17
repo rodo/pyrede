@@ -189,12 +189,20 @@ def adddispack(request, slug):
             link = "http://packages.debian.org/{}/{}".format(dist.version_name.lower(),
                                                              form.cleaned_data['name'])
             try:
-                DisPack.objects.create(name=form.cleaned_data['name'],
+                dispack = DisPack.objects.create(name=form.cleaned_data['name'],
                                        version=form.cleaned_data['version'],
                                        package_version=form.cleaned_data['package_version'],
                                        link=link,
                                        distribution=dist,
                                        package=pypi)
+                return render(request,
+                              'add_dispack.html',
+                              {'form': None,
+                               'package': pypi,
+                               'dispacks': dispacks,
+                               'referer': referer,
+                               })
+
             except:
                 return render(request,
                               'add_dispack.html',
