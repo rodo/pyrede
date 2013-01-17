@@ -20,7 +20,9 @@ Unit tests for all urls
 
 """
 from django.test import TestCase
+from django.core.cache import cache
 from pyrede.utils.reqparser import requ_parser
+from pyrede.drp.utils import stats
 
 
 class UtilsTests(TestCase):  # pylint: disable-msg=R0904
@@ -61,4 +63,20 @@ class UtilsTests(TestCase):  # pylint: disable-msg=R0904
         result = requ_parser("foo\nDjango>=1.3.4")
         attend = [['foo'],
                   ['Django', '>=', '1.3.4']]
+        self.assertEqual(result, attend)
+
+    def test_stats(self):
+        """
+        stats return a dict
+        """
+        cache.set("stats_nb_pack", 1)
+        cache.set("stats_nb_packversion", 2)
+        cache.set("stats_nb_dispack", 3)
+
+        result = stats()
+
+        attend = {'stats_nb_pack': 1,
+                  'stats_nb_packbersion': 2,
+                  'dispack': 3}
+
         self.assertEqual(result, attend)
