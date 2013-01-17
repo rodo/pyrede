@@ -186,7 +186,7 @@ def adddispack(request, slug):
     dispacks = DisPack.objects.filter(package=pypi)
     distributions = Distribution.objects.all().order_by('-pk')
     dists = [(r.id, "%s %s" % (r.name, r.version_name)) for r in distributions]
-
+    errors = None
     if request.method == 'POST':
 
         form = DisPackForm(dists, request.POST)
@@ -198,30 +198,28 @@ def adddispack(request, slug):
             referer = form.cleaned_data['referer']
             link = "http://packages.debian.org/{}/{}".format(dist.version_name.lower(),
                                                              form.cleaned_data['name'])
-            try:
-                dispack = DisPack.objects.create(name=form.cleaned_data['name'],
+
+            DisPack.objects.create(name=form.cleaned_data['name'],
                                        version=form.cleaned_data['version'],
                                        package_version=form.cleaned_data['package_version'],
                                        link=link,
                                        distribution=dist,
                                        package=pypi)
-                return render(request,
-                              'add_dispack.html',
-                              {'form': None,
-                               'package': pypi,
-                               'dispacks': dispacks,
-                               'referer': referer,
-                               })
 
+            try:
+
+                form = None
             except:
-                return render(request,
-                              'add_dispack.html',
-                              {'form': form,
-                               'package': pypi,
-                               'dispacks': dispacks,
-                               'referer': referer,
-                               'errors': 'Error'
-                               })
+                errors = 'Error'
+
+        return render(request,
+                      'add_dispack.html',
+                      {'form': form,
+                       'package': pypi,
+                       'dispacks': dispacks,
+                       'referer': referer,
+                       'errors': 'Error'
+                       })
     else:
         form = DisPackForm(dists)
         referer = request.META['HTTP_REFERER']
