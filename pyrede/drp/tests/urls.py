@@ -21,6 +21,8 @@ Unit tests for all urls
 """
 from django.test import TestCase
 from django.test import Client
+from pyrede.drp.models import Distribution
+from pyrede.drp.models import Lookup
 from pyrede.drp.models import Package
 
 
@@ -62,3 +64,43 @@ class UrlsTests(TestCase):  # pylint: disable-msg=R0904
         response = client.get('/json/pypi/%s/' % pack.name)
 
         self.assertTrue(type(eval(response.content)) is dict)
+
+    def test_about(self):
+        """
+        Teh about page
+        """
+        client = Client()
+        response = client.get('/about/')
+
+        self.assertContains(response, 'body', status_code=200)
+
+    def test_analyze(self):
+        """
+        GET on an existing analyze
+        """
+        dist = Distribution.objects.create(name='Foo',
+                                           version_name='Bar',
+                                           version_number='1.2')
+
+        lookup = Lookup.objects.create(distribution=dist,
+                                       content='aeHohee1\n')
+
+        pack = Package.objects.create(name='aeHohee1',
+                                      latest_version='1.0.0',
+                                      link='http://www.foo.bar',
+                                      description='lorem ipsum')
+
+        client = Client()
+        response = client.get('/analyze/%s/' % lookup.id)
+
+        self.assertContains(response, 'aeHohee1', status_code=200)
+
+    def test_analyze_emptyget(self):
+        """
+        GET on an existing analyze with no lookup id
+        """
+
+        client = Client()
+        response = client.get('/analyze/')
+
+        self.assertEqual(response.status_code, 302)
