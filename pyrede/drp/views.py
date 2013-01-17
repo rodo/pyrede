@@ -63,6 +63,7 @@ def userreq(request):
     Main page containing the form
     """
     queryset = Package.objects.all().order_by('-pk')[:7]
+    lkups = Lookup.objects.all().order_by('-pk')[:4]
     distributions = Distribution.objects.all().order_by('-pk')
     #for dist in distributions:
     dists = [(r.id, "%s %s" % (r.name, r.version_name)) for r in distributions]
@@ -72,6 +73,7 @@ def userreq(request):
                   'form.html',
                   {'form': form,
                    'packages': queryset,
+                   'lookups': lkups,
                    'stats': stats()
                    })
 

@@ -1,0 +1,11 @@
+{% load i18n %}
+<table class="table table-bordered">
+  <tbody>
+    {% for lookup in lookups %}
+    <tr>
+      <td>{{lookup.distribution}}</td>
+      <td><a href="/analyze/{{lookup.id}}/">/analyze/{{lookup.id}}</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
