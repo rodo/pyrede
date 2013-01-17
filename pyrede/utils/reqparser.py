@@ -16,7 +16,7 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-def requ_parser(requirements, limit=20):
+def requ_parser(requirements, limit=30):
     """
     Parse the content of a requirements.txt
 
