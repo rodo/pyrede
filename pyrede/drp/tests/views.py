@@ -19,7 +19,6 @@
 Unit tests for views in drp app
 """
 from django.test import TestCase
-from django.test import Client
 from django.http import HttpRequest
 from pyrede.drp.models import Distribution
 from pyrede.drp.models import DisPack
@@ -31,7 +30,6 @@ from pyrede.drp import views
 class ViewsTests(TestCase):  # pylint: disable-msg=R0904
     """
     Test views independantly to urls
-
     """
     def setUp(self):
         """
@@ -46,15 +44,15 @@ class ViewsTests(TestCase):  # pylint: disable-msg=R0904
         Do a lookup with existing datas
         """
         dist_a = Distribution.objects.create(name='Foo',
-                                           version_name='Bar',
-                                           version_number='1.2')
+                                             version_name='Bar',
+                                             version_number='1.2')
 
         dist_b = Distribution.objects.create(name='Foo',
                                              version_name='Lorem',
                                              version_number='1.1')
 
-        lkup = Lookup.objects.create(distribution=dist_a,
-                                     content='aeHohee1\n')
+        Lookup.objects.create(distribution=dist_a,
+                              content='aeHohee1\n')
 
         pack = Package.objects.create(name='aeHohee1',
                                       latest_version='1.0.0',
