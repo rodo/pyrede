@@ -32,6 +32,13 @@
 	    {{form.content.errors}}
 	  </div>
 	  <div class="control-group">
+	    <label class="control-label" for="inputEmail">{% trans "Distribution" %}</label>
+	    <div class="controls">
+	      {{form.distribution}} {{form.distribution.errors}}
+	    </div>
+	  </div>
+
+	  <div class="control-group">
 	    <input type="submit" class="btn btn-primary" value="{% trans 'Lookup' %}" />
 	  </div>	    
 	</fieldset>

@@ -19,6 +19,7 @@
 The django views
 """
 import json
+import logging
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
@@ -33,6 +34,8 @@ from pyrede.drp.forms import ReqForm
 from pyrede.drp.forms import disPackForm
 from pyrede.drp.tasks import look4_pypi_missing
 from pyrede.drp.utils import stats
+
+logger = logging.getLogger(__name__) 
 
 
 class PackageList(ListView):
@@ -60,7 +63,11 @@ def userreq(request):
     Main page containing the form
     """
     queryset = Package.objects.all().order_by('-pk')[:7]
-    form = ReqForm()
+    distributions = Distribution.objects.all().order_by('-pk')
+    #for dist in distributions:
+    dists = [(r.id, "%s %s" % (r.name, r.version_name)) for r in distributions]
+    form = ReqForm(dists)
+
     return render(request,
                   'form.html',
                   {'form': form,
@@ -96,7 +103,8 @@ def lookup(pypi):
         jpack.append({'name': dpack.name,
                       'version': dpack.version,
                       'provide': dpack.package_version,
-                      'distribution': {'name': dpack.distribution.name,
+                      'distribution': {'id': dpack.distribution.id,
+                                       'name': dpack.distribution.name,
                                        'version': dpack.distribution.version_name
                                        }
                       })
@@ -117,10 +125,16 @@ def analyze(request, pk=0):
     queryset = Package.objects.all().order_by('-pk')[:7]
     if pk == 0:
         if request.method == 'POST':
-            form = ReqForm(request.POST)
+            distributions = Distribution.objects.all().order_by('-pk')
+            dists = [(r.id, "%s %s" % (r.name, r.version_name)) for r in distributions]
+            form = ReqForm(dists, request.POST)
             if form.is_valid():
                 datas = requ_parser(form.cleaned_data['content'])
-                lkup = Lookup.objects.create(content=form.cleaned_data['content'])
+                for odist in distributions:
+                    if odist.id == int(form.cleaned_data['distribution']):
+                        dist=odist
+                lkup = Lookup.objects.create(content=form.cleaned_data['content'],
+                                             distribution=dist)
                 for pack in datas:
                     try:
                         Package.objects.get(name=pack[0])
@@ -128,15 +142,11 @@ def analyze(request, pk=0):
                         look4_pypi_missing.delay(pack[0])
 
                 return redirect('/analyze/%s/' % lkup.id)
-                # return render(request,
-                #               'analyze.html',
-                #               {'form': form,
-                #                'packages': queryset,
-                #                'founds': datas,
-                #                'jfound': datas,
-                #                'lookup': lkup
-                #                })
             else:
+                logger.error("form is not valid")
+                if form.errors:
+                    for field in form:
+                        print field.name, field.errors
                 return redirect('/')
         else:
             return redirect('/')

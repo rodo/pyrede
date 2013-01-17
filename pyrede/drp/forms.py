@@ -25,9 +25,15 @@ class ReqForm(forms.Form):  # pylint: disable=R0924
     content = forms.CharField(required=True,
                               widget=Textarea())
 
+    distribution = forms.ChoiceField(required=True)
+
     def clean(self):
         cleaned_data = self.cleaned_data
         return cleaned_data
+
+    def __init__(self, distributions, *args, **kwargs):
+        super(ReqForm, self).__init__(*args, **kwargs)
+        self.fields['distribution'] = forms.ChoiceField(choices=distributions)
 
 
 class disPackForm(forms.Form):  # pylint: disable=R0924

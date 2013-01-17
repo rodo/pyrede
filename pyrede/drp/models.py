@@ -101,7 +101,9 @@ class Lookup(models.Model):
     A lookup made by a user
     """
     content = models.CharField(max_length=1000)
-    date_search = models.DateTimeField(editable=False,
+    distribution = models.ForeignKey(Distribution)
+    score = models.IntegerField(default=0)
+    date_lookup = models.DateTimeField(editable=False,
                                        auto_now_add=True)
 
 

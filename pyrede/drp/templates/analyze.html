@@ -2,14 +2,14 @@
 {% load i18n %}
 {% block content %}
 
-<h3>Your results</h3>
+<h3>Your results for {{lookup.distribution}}</h3>
 
 <table class="table table-striped">
   <thead>
     <tr>
       <th class="span4">{% trans "Name" %}</th>
       <th class="span2">{% trans "Version" %}</th>
-      <th class="span4">Link</th>
+      <th class="span4">{% trans "provided by" %}</th>
     </tr>
   </thead>
   <tbody>
@@ -38,7 +38,7 @@
     <tr>
       <th class="span6">{% trans "Name" %}</th>
       <th class="span2">{% trans "Version" %}</th>
-      <th class="span4">Link</th>
+      <th class="span4">{% trans "Ref" %}</th>
     </tr>
   </thead>
   <tbody>
@@ -57,6 +57,6 @@
 </table>
             
 <script type="text/javascript">
-  detect({{founds|safe}});
+  detect({{founds|safe}}, {{lookup.distribution.id}});
 </script>
 {% endblock %}
