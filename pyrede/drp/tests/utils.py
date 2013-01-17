@@ -70,7 +70,7 @@ class UtilsTests(TestCase):  # pylint: disable-msg=R0904
         """
         result = requ_parser("foo>=1.0\nDjango>=1.3\ndateutil\argparse\n", 2)
         attend = [['foo', '>=', '1.0'],
-                  ['Django', '>=', '1.3.4']]
+                  ['Django', '>=', '1.3']]
         self.assertEqual(result, attend)
 
     def test_whitespace(self):
