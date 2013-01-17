@@ -33,7 +33,7 @@ class UtilsTests(TestCase):  # pylint: disable-msg=R0904
 
     def test_equal(self):
         """
-        Create a Package
+        Parse with requirements ==
         """
         result = requ_parser("foo==1\n")
         attend = [['foo', '==', '1']]
@@ -41,17 +41,35 @@ class UtilsTests(TestCase):  # pylint: disable-msg=R0904
 
     def test_sup(self):
         """
-        Create a Package
+        Parse with requirements >=
         """
         result = requ_parser("foo>=1.0\n")
         attend = [['foo', '>=', '1.0']]
         self.assertEqual(result, attend)
+
+    def test_inf(self):
+        """
+        Parse with requirements =<
+        """
+        result = requ_parser("foo=<1.0\n")
+        attend = [['foo', '=<', '1.0']]
+        self.assertEqual(result, attend)
+
 
     def test_2lines(self):
         """
         Test with 2 lines
         """
         result = requ_parser("foo>=1.0\nDjango>=1.3.4")
+        attend = [['foo', '>=', '1.0'],
+                  ['Django', '>=', '1.3.4']]
+        self.assertEqual(result, attend)
+
+    def test_overlimit(self):
+        """
+        Test with 2 lines
+        """
+        result = requ_parser("foo>=1.0\nDjango>=1.3.4\ndateutil\mimeparse\n", 2)
         attend = [['foo', '>=', '1.0'],
                   ['Django', '>=', '1.3.4']]
         self.assertEqual(result, attend)

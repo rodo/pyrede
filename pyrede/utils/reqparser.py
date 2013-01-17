@@ -16,7 +16,7 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-def requ_parser(requirements):
+def requ_parser(requirements, limit=20):
     """
     Parse the content of a requirements.txt
 
@@ -34,7 +34,7 @@ def requ_parser(requirements):
         if data is not None:
             datas.append(data)
 
-    return datas
+    return datas[:limit]
 
 def parse_line(line):
 
@@ -50,6 +50,9 @@ def parse_line(line):
         elif '>=' in line:
             parts = line.split('>=')
             return [str(parts[0]), '>=', str(parts[1])]
+        elif '=<' in line:
+            parts = line.split('=<')
+            return [str(parts[0]), '=<', str(parts[1])]
         else:
             if line != '':
                 return [str(line)]
