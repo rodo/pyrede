@@ -28,7 +28,7 @@ function fetch(url, dist_id, elem) {
 
 	      found = 0;
 
-	      if (data.found == 1) {
+	      if (data.found > 0) {
 		  
 		  for (var pack in data.packages) {
 		      if (data.packages[pack].distribution.id == dist_id) {
