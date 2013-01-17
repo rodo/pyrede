@@ -74,6 +74,15 @@ class UtilsTests(TestCase):  # pylint: disable-msg=R0904
                   ['Django', '>=', '1.3.4']]
         self.assertEqual(result, attend)
 
+    def test_whitespace(self):
+        """
+        Whitespaces on line
+        """
+        result = requ_parser("foo bar\nDjango>=1.3.4\n")
+        attend = [['foo'],
+                  ['Django', '>=', '1.3.4']]
+        self.assertEqual(result, attend)
+
     def test_nover(self):
         """
         Test with no version number
