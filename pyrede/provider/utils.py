@@ -41,7 +41,7 @@ def import_package(package, force=False):
         logger.warning('package : [%s] was import less than 2 hours' % package)
     else:
         cache.set(key, 7200)
-        logger.debug('import_package : %s' % package)
+        logger.debug('try to import : %s' % package)
         url = "http://pypi.python.org/pypi"
 
         params= {':action': 'json', 'name': package}
@@ -51,13 +51,14 @@ def import_package(package, force=False):
 
         req = requests.get(url, params=params, headers=headers)
         if (req.ok):
+            logger.debug("found : %s" % url)
             datas = json.loads(req.content)
             version = datas['info']['version']
             item['description'] = datas['info']['description']
             item['link'] = datas['info']['package_url']
             create_update_pack(item, package, version)
         else:
-            logger.warning("response not on %s" % url)
+            logger.warning("not found : %s" % url)
 
 
 def split_title(title):
@@ -93,7 +94,7 @@ def create_update_pack(item, name, version):
 
 
 def create_pack(item, name, version):
-    logger.debug('add %s %s' % (name, version))
+    logger.debug('create %s %s' % (name, version))
 
     pack = Package.objects.create(name=name,
                                   latest_version=version,
