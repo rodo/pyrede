@@ -30,11 +30,13 @@ from pyrede.drp.models import PackageVersion
 logger = logging.getLogger(__name__)
 
 
-def import_package(package):
+def import_package(package, force=False):
     """
     Import a package from pypi
     """
     key = 'pypi_import_flag_{}'.format(package)
+    if force:
+        cache.delete(key)
     if cache.get(key) != None:
         logger.warning('package : [%s] was import less than 2 hours' % package)
     else:

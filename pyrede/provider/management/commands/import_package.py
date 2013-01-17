@@ -39,5 +39,4 @@ class Command(BaseCommand):
 
         logger.debug('parse %s' % args[0])
 
-        nbp = import_package(args[0])
-
+        nbp = import_package(args[0], True)
