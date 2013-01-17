@@ -36,17 +36,18 @@ function fetch(url, dist_id, elem) {
 			  goodpack = data.packages[pack];
 		      }
 		  }
-	      
-
-		  if (found == 1) {
+	      }
+	      if (found == 1) {
 		  pr = goodpack.name + ' ' + goodpack.provide;
-		      $('#provide_'+elem).html('<b>'+pr+'</b>');
-		      $('#result').append('<span style="margin-left: 3px">'+goodpack.name+'</span>');
-		      $('#result').css('visibility', 'visible');
-		  } else {
+		  $('#provide_'+elem).html('<b>'+pr+'</b>');
+		  $('#result').append('<span style="margin-left: 3px">'+goodpack.name+'</span>');
+		  $('#result').css('visibility', 'visible');
+	      } else {
+		  if (data.result == 1) {			  		      
 		      text = 'nothing found, <a class="btn btn-mini btn-primary" href="/pypi/'+elem+'/add/">add one</a>';
 		      $('#provide_'+elem).html(text);
 		  }
 	      }
+	      
 	  });
 }
