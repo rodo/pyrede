@@ -17,7 +17,6 @@
 #
 """
 Unit tests for views in drp app
-
 """
 from django.test import TestCase
 from django.test import Client
@@ -26,8 +25,8 @@ from pyrede.drp.models import Distribution
 from pyrede.drp.models import DisPack
 from pyrede.drp.models import Lookup
 from pyrede.drp.models import Package
-from pyrede.drp.views import lookup
 from pyrede.drp import views
+
 
 class ViewsTests(TestCase):  # pylint: disable-msg=R0904
     """
@@ -40,6 +39,7 @@ class ViewsTests(TestCase):  # pylint: disable-msg=R0904
         """
         Package.objects.all().delete()
         DisPack.objects.all().delete()
+        Distribution.objects.all().delete()
 
     def test_lookup(self):
         """
@@ -75,7 +75,7 @@ class ViewsTests(TestCase):  # pylint: disable-msg=R0904
                                package=pack,
                                package_version='1.0.0')
 
-        result = lookup(pack)
+        result = views.lookup(pack)
 
         self.assertTrue(type(result) is dict)
         self.assertEqual(result['result'], 1)
@@ -110,3 +110,38 @@ class ViewsTests(TestCase):  # pylint: disable-msg=R0904
         # one dispack was created
         self.assertEqual(DisPack.objects.all().count(), 1)
 
+    def test_analyze(self):
+        """
+        Call with all good datas
+        """
+        dist = Distribution.objects.create(name='Foo',
+                                           version_name='Lorem',
+                                           version_number='1.1')
+
+        # prepare datas
+        requ = HttpRequest()
+        requ.method = 'POST'
+        requ.META = {'HTTP_REFERER': 'FOO_SERVER_NAME'}
+        requ.POST = {'content': 'fooname',
+                     'distribution': str(dist.id)}
+
+        #  action
+        result = views.analyze(requ)
+        #  asserts
+        self.assertEqual(result.status_code, 302)  # pylint: disable-msg=E1103
+
+    def test_analyze_fail(self):
+        """
+        Call with all good datas
+        """
+        # prepare datas
+        requ = HttpRequest()
+        requ.method = 'POST'
+        requ.META = {'HTTP_REFERER': 'FOO_SERVER_NAME'}
+        requ.POST = {'content': 'fooname',
+                     'distribution': '1042'}
+
+        #  action
+        result = views.analyze(requ)
+        #  asserts
+        self.assertEqual(result.status_code, 302)  # pylint: disable-msg=E1103
