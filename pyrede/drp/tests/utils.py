@@ -55,7 +55,6 @@ class UtilsTests(TestCase):  # pylint: disable-msg=R0904
         attend = [['foo', '=<', '1.0']]
         self.assertEqual(result, attend)
 
-
     def test_2lines(self):
         """
         Test with 2 lines
@@ -69,7 +68,7 @@ class UtilsTests(TestCase):  # pylint: disable-msg=R0904
         """
         Test with 2 lines
         """
-        result = requ_parser("foo>=1.0\nDjango>=1.3.4\ndateutil\mimeparse\n", 2)
+        result = requ_parser("foo>=1.0\nDjango>=1.3\ndateutil\argparse\n", 2)
         attend = [['foo', '>=', '1.0'],
                   ['Django', '>=', '1.3.4']]
         self.assertEqual(result, attend)
