@@ -36,7 +36,7 @@ def import_package(package):
     """
     key = 'pypi_import_flag_{}'.format(package)
     if cache.get(key) != None:
-        logger.warning('package : [%s] was import than less 2 hours' % package)
+        logger.warning('package : [%s] was import less than 2 hours' % package)
     else:
         cache.set(key, 7200)
         logger.debug('import_package : %s' % package)
