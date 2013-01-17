@@ -186,8 +186,8 @@ def adddispack(request, slug):
                     dist=odist
 
             referer = form.cleaned_data['referer']
-            link = "http://packages.debian.org/{}/{}".format(form.cleaned_data['name'],
-                                                             dist.version_name)
+            link = "http://packages.debian.org/{}/{}".format(dist.version_name.lower(),
+                                                             form.cleaned_data['name'])
             try:
                 DisPack.objects.create(name=form.cleaned_data['name'],
                                        version=form.cleaned_data['version'],
