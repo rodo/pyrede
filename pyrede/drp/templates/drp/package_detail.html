@@ -2,26 +2,27 @@
 {% load i18n %}
 {% block content %}
 <div class="well">
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th class="span6">{% trans "Name" %}</th>
-      <th class="span2">{% trans "Version" %}</th>
-      <th class="span4">Link</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>{{package.name}}</td>
-      <td>
-	<span class="badge badge-info">{{package.latest_version}}</span> 
-      </td>
-      <td>
-	<a href="{{package.link}}" target="_blank">pypi</a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+  <div class="row">
+    
+    <div class="span6"><h3>{{package.name}}</h3></div>
+
+    <div class="span2">
+      <span class="badge badge-info">{{package.latest_version}}</span> 
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="span10">
+      ref : <a href="{{package.link}}" target="_blank">{{package.link}}</a>
+    </div>
+
+  </div>
+  <hr>
+  <div class="row">
+    <div class="span10">
+      {{package.description}}
+    </div>
+  </div>
 </div>
 
 <h3>Available packages</h3>

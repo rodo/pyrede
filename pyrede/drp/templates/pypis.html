@@ -4,7 +4,7 @@
     <tr>
       <th class="span7">{% trans "Name" %}</th>
       <th class="span2">{% trans "Version" %}</th>
-      <th class="span1">Link</th>
+      <th class="span1">Ref</th>
       <th class="span2">Pack.</th>
     </tr>
   </thead>
@@ -24,7 +24,7 @@
 	{% else %}
 	<span class="badge">{{package.nbdispack}}</span> 
 	{% endif %}
-	<a href="/pypi/{{package.name}}/add/">add one</a>
+	<a class="btn btn-mini btn-primary" href="/pypi/{{package.name}}/add/">add one</a>
       </td>
     </tr>
     {% endfor %}
