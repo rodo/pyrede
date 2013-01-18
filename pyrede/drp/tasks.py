@@ -16,8 +16,7 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 """
-Utils for pyrede/drp
-
+Tasks for pyrede/drp
 """
 from celery.task import task
 from pyrede.provider.utils import import_package

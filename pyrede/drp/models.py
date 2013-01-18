@@ -101,7 +101,10 @@ class DisPack(models.Model):
 
     package = models.ForeignKey(Package)
     package_version = models.CharField(max_length=30)
+
     link = models.URLField(max_length=350)
+
+    link_valid = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('name', 'version', 'distribution')
@@ -112,6 +115,15 @@ class DisPack(models.Model):
         super(DisPack, self).save(*args, **kwargs)
 
 
+class PackSubscr(models.Model):
+    """
+    A package subscription
+    """
+    package = models.ForeignKey(Package)
+    email = models.EmailField(max_length=1000)
+    date_creation = models.DateTimeField(editable=False, auto_now_add=True)
+
+
 class Lookup(models.Model):
     """
     A lookup made by a user
@@ -119,8 +131,7 @@ class Lookup(models.Model):
     content = models.CharField(max_length=1000)
     distribution = models.ForeignKey(Distribution)
     score = models.IntegerField(default=0)
-    date_lookup = models.DateTimeField(editable=False,
-                                       auto_now_add=True)
+    date_lookup = models.DateTimeField(editable=False, auto_now_add=True)
 
 
 @receiver(post_save, sender=DisPack)

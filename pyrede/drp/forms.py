@@ -20,6 +20,17 @@ from django.forms.widgets import Textarea
 from django.forms.widgets import TextInput
 
 
+class SubForm(forms.Form):  # pylint: disable=R0924
+
+    email = forms.CharField(max_length=50,
+                           required=True,
+                           widget=TextInput(attrs={'class': 'input-xxlarge'}))
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        return cleaned_data
+
+
 class ReqForm(forms.Form):  # pylint: disable=R0924
 
     content = forms.CharField(required=True,

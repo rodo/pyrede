@@ -9,15 +9,42 @@
     <div class="span2">
       <span class="badge badge-info">{{package.latest_version}}</span> 
     </div>
+
+  </div>
+
+  <div class="row">
+    <div class="span10"><p>
+      ref : <a href="{{package.link}}" target="_blank">{{package.link}}</a></p>
+    </div>    
   </div>
 
   <div class="row">
     <div class="span10">
-      ref : <a href="{{package.link}}" target="_blank">{{package.link}}</a>
-    </div>
-
+      <a class="btn btn-primary" target="#">{% trans "Subscribe" %}</a>
+      <a class="btn btn-primary" href="/pypi/{{package.name}}/add/">{% trans "Add package" %}</a>
+    </div>    
   </div>
 </div>
+
+<div id="pack_subs" class="row">
+    
+  <div class="span12">
+    <div class="well">
+      <h3>Subscribe</h3>
+      <p>
+      You will receive an email for each new version of
+      {{package.name}} and for each new distribution package associate to it.</p>
+      <form class="form-inline" action="/pypi/{{package.name}}/" method="post">
+	{% csrf_token %}
+	<label class="control-label" for="inputEmail">{% trans "Email" %}</label>
+	{{form.email}} {{form.email.errors}}
+	
+	<input type="submit" class="btn btn-primary" value="{% trans "Subscribe" %}" />
+      </form>
+    </div>
+  </div>
+</div>
+
 <h3>Available packages</h3>
 
 <table class="table table-striped">

@@ -20,6 +20,8 @@ The django views
 """
 import json
 import logging
+import requests
+from celery.task import task
 from django.core.cache import cache
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -33,6 +35,7 @@ from pyrede.drp.models import Lookup
 from pyrede.drp.models import Package
 from pyrede.drp.forms import ReqForm
 from pyrede.drp.forms import DisPackForm
+from pyrede.drp.forms import SubForm
 from pyrede.drp.tasks import look4_pypi_missing
 from pyrede.drp.utils import stats
 
@@ -56,6 +59,7 @@ class PackageDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(PackageDetail, self).get_context_data(**kwargs)
         context['dispacks'] = DisPack.objects.filter(package=self.object)
+        context['form'] = SubForm()
         return context
 
 
@@ -85,7 +89,7 @@ def jsonpypi(request, slug):
     """
     key = 'json_pypi_{}'.format(slug)
     cval = cache.get(key)
-    if cval == None:
+    if cval is None:
         try:
             pypi = Package.objects.get(name=slug)
             datas = lookup(pypi)
@@ -142,7 +146,7 @@ def analyze(request, pk=0):
                 datas = requ_parser(form.cleaned_data['content'])
                 for odist in distributions:
                     if odist.id == int(form.cleaned_data['distribution']):
-                        dist=odist
+                        dist = odist
                 lkup = Lookup.objects.create(content=form.cleaned_data['content'],
                                              distribution=dist)
                 for pack in datas:
@@ -182,44 +186,15 @@ def adddispack(request, slug):
     """
     Add a distribution package for a pypi package
     """
+    errors = None
     pypi = Package.objects.get(name=slug)
     dispacks = DisPack.objects.filter(package=pypi)
     distributions = Distribution.objects.all().order_by('-pk')
     dists = [(r.id, "%s %s" % (r.name, r.version_name)) for r in distributions]
-    errors = None
+
     if request.method == 'POST':
-
         form = DisPackForm(dists, request.POST)
-        if form.is_valid():
-            for odist in distributions:
-                if odist.id == int(form.cleaned_data['distribution']):
-                    dist=odist
-
-            referer = form.cleaned_data['referer']
-            link = "http://packages.debian.org/{}/{}".format(dist.version_name.lower(),
-                                                             form.cleaned_data['name'])
-
-            DisPack.objects.create(name=form.cleaned_data['name'],
-                                       version=form.cleaned_data['version'],
-                                       package_version=form.cleaned_data['package_version'],
-                                       link=link,
-                                       distribution=dist,
-                                       package=pypi)
-
-            try:
-
-                form = None
-            except:
-                errors = 'Error'
-
-        return render(request,
-                      'add_dispack.html',
-                      {'form': form,
-                       'package': pypi,
-                       'dispacks': dispacks,
-                       'referer': referer,
-                       'errors': 'Error'
-                       })
+        errors, referer = post_dispack(form, dists, request, distributions, pypi)
     else:
         form = DisPackForm(dists)
         referer = request.META['HTTP_REFERER']
@@ -229,8 +204,40 @@ def adddispack(request, slug):
                   {'form': form,
                    'package': pypi,
                    'dispacks': dispacks,
-                   'referer': referer
+                   'referer': referer,
+                   'errors': errors
                    })
+
+
+def post_dispack(form, dists, request, distributions, pypi):
+    """
+    """
+    errors = None
+    if form.is_valid():
+        referer = form.cleaned_data['referer']
+        for odist in distributions:
+            if odist.id == int(form.cleaned_data['distribution']):
+                dist = odist
+
+        link = "http://packages.debian.org/{}/{}".format(dist.version_name.lower(),
+                                                             form.cleaned_data['name'])
+
+        try:
+            DisPack.objects.create(name=form.cleaned_data['name'],
+                                   version=form.cleaned_data['version'],
+                                   package_version=form.cleaned_data['package_version'],
+                                   link=link,
+                                   distribution=dist,
+                                   package=pypi)
+        except:
+            errors = 'Error'
+
+
+        if errors is not None:
+            check_dispack_link.delay(dispack)
+
+
+    return errors, referer
 
 
 def about(request):
@@ -239,3 +246,13 @@ def about(request):
     """
     return render(request,
                   'about.html')
+
+
+@task
+def check_dispack_link(dispack):
+    """
+    Check if an url exists
+    """    
+    req = requests.get(dispack.link)
+    dispack.valid_link = req.ok
+    dispack.save()
