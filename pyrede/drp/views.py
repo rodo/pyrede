@@ -253,6 +253,7 @@ def check_dispack_link(dispack):
     """
     Check if an url exists
     """    
+    logger.debug("check {}".format(dispack.link)
     req = requests.get(dispack.link)
     dispack.valid_link = req.ok
     dispack.save()
