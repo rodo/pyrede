@@ -35,7 +35,8 @@ class PyPiHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write('''
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" 
+"http://my.netscape.com/publish/formats/rss-0.91.dtd">
 <rss version="0.91">
  <channel>
   <title>PyPI recent updates</title>
@@ -47,7 +48,7 @@ class PyPiHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     <title>django-webtest 1.5.5</title>
     <link>http://pypi.python.org/pypi/django-webtest/1.5.5</link>
     <description>Instant integration of Ian Bicking's WebTest
-(http://webtest.pythonpaste.org/) with django's testing framework.</description>
+(http://webtest.pythonpaste.org/).</description>
     <pubDate>14 Jan 2013 11:49:57 GMT</pubDate>
    </item>
 

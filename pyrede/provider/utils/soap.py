@@ -12,11 +12,13 @@ import sys
 
 default_url = 'http://packages.qa.debian.org/cgi-bin/soap-alpha.cgi'
 
+
 def zsi_query(soap_url, method, **kwargs):
     from ZSI.client import NamedParamBinding as NPBinding
 
     ws = NPBinding(url=soap_url)# tracefile=sys.stdout)
     return getattr(ws, method)(**kwargs)
+
 
 def soappy_query(soap_url, method, **kwargs):
     import SOAPpy

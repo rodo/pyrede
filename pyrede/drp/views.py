@@ -20,8 +20,6 @@ The django views
 """
 import json
 import logging
-import requests
-from celery.task import task
 from django.core.cache import cache
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -114,14 +112,14 @@ def lookup(pypi):
     dispacks = DisPack.objects.filter(package=pypi)
 
     for dpack in dispacks:
+        dist = {'id': dpack.distribution.id,
+                'name': dpack.distribution.name,
+                'version': dpack.distribution.version_name}
+
         jpack.append({'name': dpack.name,
                       'version': dpack.version,
                       'provide': dpack.package_version,
-                      'distribution': {'id': dpack.distribution.id,
-                                       'name': dpack.distribution.name,
-                                       'version': dpack.distribution.version_name
-                                       }
-                      })
+                      'distribution': dist})
 
     datas = {'result': 1,
              'pipy': {'id': pypi.id,
@@ -136,50 +134,66 @@ def analyze(request, pk=0):
     """
     The user post a file
     """
-    queryset = Package.objects.all().order_by('-pk')[:7]
     if pk == 0:
         if request.method == 'POST':
-            distributions = Distribution.objects.all().order_by('-pk')
-            dists = [(r.id, "%s %s" % (r.name, r.version_name)) for r in distributions]
-            form = ReqForm(dists, request.POST)
-            if form.is_valid():
-                datas = requ_parser(form.cleaned_data['content'])
-                for odist in distributions:
-                    if odist.id == int(form.cleaned_data['distribution']):
-                        dist = odist
-                lkup = Lookup.objects.create(content=form.cleaned_data['content'],
-                                             distribution=dist)
-                for pack in datas:
-                    try:
-                        Package.objects.get(name=pack[0])
-                    except Package.DoesNotExist:
-                        look4_pypi_missing.delay(pack[0])
-
-                return redirect('/analyze/%s/' % lkup.id)
-            else:
-                logger.error("form is not valid")
-                if form.errors:
-                    for field in form:
-                        print field.name, field.errors
-                return redirect('/')
+            return analyze_post(request)
         else:
             return redirect('/')
     else:
-        lkup = Lookup.objects.get(pk=pk)
-        datas = requ_parser(lkup.content)
+        return analyze_get(request, pk)
+
+
+def analyze_post(request):
+    """
+    User POST a content to analyze
+    """
+    distros = Distribution.objects.all().order_by('-pk')
+    dists = [(r.id, "%s %s" % (r.name, r.version_name)) for r in distros]
+    form = ReqForm(dists, request.POST)
+    if form.is_valid():
+
+        datas = requ_parser(form.cleaned_data['content'])
+        for odist in distros:
+            if odist.id == int(form.cleaned_data['distribution']):
+                dist = odist
+        lkup = Lookup.objects.create(content=form.cleaned_data['content'],
+                                     distribution=dist)
         for pack in datas:
             try:
                 Package.objects.get(name=pack[0])
             except Package.DoesNotExist:
                 look4_pypi_missing.delay(pack[0])
 
+        return redirect('/analyze/%s/' % lkup.id)
+    else:
+        logger.error("form is not valid")
+        if form.errors:
+            for field in form:
+                print field.name, field.errors
         return render(request,
-                      'analyze.html',
-                      {'dispacks': queryset,
-                       'founds': datas,
-                       'jfound': datas,
-                       'lookup': lkup
-                       })
+                      'form.html',
+                      {'form': form})
+
+
+def analyze_get(request, pk):
+    """
+    Read an existing analyze
+    """
+    qryset = Package.objects.all().order_by('-pk')[:7]
+    lkup = Lookup.objects.get(pk=pk)
+    datas = requ_parser(lkup.content)
+    for pack in datas:
+        try:
+            Package.objects.get(name=pack[0])
+        except Package.DoesNotExist:
+            look4_pypi_missing.delay(pack[0])
+
+    return render(request,
+                  'analyze.html',
+                  {'dispacks': qryset,
+                   'founds': datas,
+                   'lookup': lkup
+                   })
 
 
 def adddispack(request, slug):
@@ -189,12 +203,12 @@ def adddispack(request, slug):
     errors = None
     pypi = Package.objects.get(name=slug)
     dispacks = DisPack.objects.filter(package=pypi)
-    distributions = Distribution.objects.all().order_by('-pk')
-    dists = [(r.id, "%s %s" % (r.name, r.version_name)) for r in distributions]
+    distros = Distribution.objects.all().order_by('-pk')
+    dists = [(r.id, "%s %s" % (r.name, r.version_name)) for r in distros]
 
     if request.method == 'POST':
         form = DisPackForm(dists, request.POST)
-        errors, referer = post_dispack(form, dists, request, distributions, pypi)
+        errors, referer = post_dispack(form, dists, request, distros, pypi)
     else:
         form = DisPackForm(dists)
         referer = request.META['HTTP_REFERER']
@@ -209,51 +223,39 @@ def adddispack(request, slug):
                    })
 
 
-def post_dispack(form, dists, request, distributions, pypi):
+def post_dispack(form, dists, request, distros, pypi):
     """
     """
     errors = None
+
     if form.is_valid():
-        referer = form.cleaned_data['referer']
-        for odist in distributions:
-            if odist.id == int(form.cleaned_data['distribution']):
+        datas = form.cleaned_data
+        referer = datas['referer']
+        for odist in distros:
+            if odist.id == int(datas['distribution']):
                 dist = odist
 
-        link = "http://packages.debian.org/{}/{}".format(dist.version_name.lower(),
-                                                             form.cleaned_data['name'])
+        link = dist.query_link.format(datas['name'])
 
         try:
-            DisPack.objects.create(name=form.cleaned_data['name'],
-                                   version=form.cleaned_data['version'],
-                                   package_version=form.cleaned_data['package_version'],
+            DisPack.objects.create(name=datas['name'],
+                                   version=datas['version'],
+                                   package_version=datas['package_version'],
                                    link=link,
                                    distribution=dist,
                                    package=pypi)
         except:
             errors = 'Error'
 
-
         if errors is not None:
             check_dispack_link.delay(dispack)
-
-
-    return errors, referer
+        return errors, referer
+    else:
+        return errors, None
 
 
 def about(request):
     """
     About page
     """
-    return render(request,
-                  'about.html')
-
-
-@task
-def check_dispack_link(dispack):
-    """
-    Check if an url exists
-    """    
-    logger.debug("check {}".format(dispack.link)
-    req = requests.get(dispack.link)
-    dispack.valid_link = req.ok
-    dispack.save()
+    return render(request, 'about.html')

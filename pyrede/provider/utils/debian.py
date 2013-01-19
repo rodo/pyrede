@@ -27,8 +27,12 @@ server = SOAPpy.SOAPProxy(url, namespace)
 
 @task
 def lookup_last_version(package_name):
+    """
+    Lookup for the last version of a package, the lookup is made by
+    package name
 
-    # All bugs from one package (returns a list of bugnumbers)
+    Return : string
+    """
     vers = server.get_versions("package", package_name,
                                "dist", "stable",
                                "arch", "amd64")

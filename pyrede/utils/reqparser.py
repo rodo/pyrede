@@ -15,6 +15,10 @@
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+"""
+Functions to parse the requirements.txt content
+"""
+
 
 def requ_parser(requirements, limit=30):
     """
@@ -25,7 +29,6 @@ def requ_parser(requirements, limit=30):
     - element 1 : package name
     - element 2 : restriction sign '==' or '>='
     - element 3 : version number
-    
     """
     datas = []
 
@@ -36,25 +39,37 @@ def requ_parser(requirements, limit=30):
 
     return datas[:limit]
 
-def parse_line(line):
 
+def parse_line(line):
+    """
+    Parse a string
+
+    Return an array or None
+
+     - None on empty line
+     - None on unparsable line
+     - None on comment
+    """
     if line.startswith('#'):
         # remove comments
-        return None
+        result = None
     elif line.startswith('-'):
-        return None
+        # do not parse external requirement
+        result = None
     else:
         if '==' in line:
             parts = line.split('==')
-            return [str(parts[0]), '==', str(parts[1])]
+            result = [str(parts[0]), '==', str(parts[1])]
         elif '>=' in line:
             parts = line.split('>=')
-            return [str(parts[0]), '>=', str(parts[1])]
+            result = [str(parts[0]), '>=', str(parts[1])]
         elif '=<' in line:
             parts = line.split('=<')
-            return [str(parts[0]), '=<', str(parts[1])]
+            result = [str(parts[0]), '=<', str(parts[1])]
         else:
             if line != '':
-                return [str(line.split(' ')[0])]
+                result = [str(line.split(' ')[0])]
             else:
-                return None
+                result = None
+
+    return result
