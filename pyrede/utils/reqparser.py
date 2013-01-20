@@ -56,6 +56,15 @@ def parse_line(line):
     elif line.startswith('-'):
         # do not parse external requirement
         result = None
+    elif line.startswith('git+'):
+        # do not parse external requirement
+        result = None
+    elif line.startswith('hg+'):
+        # do not parse external requirement
+        result = None
+    elif line.startswith('bzr+'):
+        # do not parse external requirement
+        result = None
     else:
         if '==' in line:
             parts = line.split('==')
