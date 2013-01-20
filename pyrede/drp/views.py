@@ -24,6 +24,7 @@ from django.core.cache import cache
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView
 from django.views.generic import DetailView
 from pyrede.utils.reqparser import requ_parser
@@ -162,14 +163,14 @@ def analyze_post(request):
             try:
                 Package.objects.get(name=pack[0])
             except Package.DoesNotExist:
-                look4_pypi_missing.delay(pack[0])
+                try:
+                    look4_pypi_missing.delay(pack[0])
+                except:
+                    logger.error("Error in lauching task look4_pypi_missing.delay(pack[0])")
 
         return redirect('/analyze/%s/' % lkup.id)
     else:
         logger.error("form is not valid")
-        if form.errors:
-            for field in form:
-                print field.name, field.errors
         return render(request,
                       'form.html',
                       {'form': form})
@@ -180,13 +181,16 @@ def analyze_get(request, pk):
     Read an existing analyze
     """
     qryset = Package.objects.all().order_by('-pk')[:7]
-    lkup = Lookup.objects.get(pk=pk)
+    lkup = get_object_or_404(Lookup, pk=pk)
     datas = requ_parser(lkup.content)
     for pack in datas:
         try:
             Package.objects.get(name=pack[0])
         except Package.DoesNotExist:
-            look4_pypi_missing.delay(pack[0])
+            try:
+                look4_pypi_missing.delay(pack[0])
+            except:
+                logger.error("Error in lauching task look4_pypi_missing.delay(pack[0])")
 
     return render(request,
                   'analyze.html',

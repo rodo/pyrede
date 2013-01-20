@@ -19,7 +19,7 @@
 Tasks for pyrede/drp
 """
 from celery.task import task
-from pyrede.provider.utils import import_package
+from pyrede.provider.utils.main import import_package
 
 
 @task

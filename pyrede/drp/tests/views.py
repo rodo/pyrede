@@ -110,7 +110,9 @@ class ViewsTests(TestCase):  # pylint: disable-msg=R0904
 
     def test_analyze(self):
         """
-        Call with all good datas
+        Call with POST datas, all good datas
+
+        Assert : return a 302 to /analyze/id/ id of the created analyze
         """
         dist = Distribution.objects.create(name='Foo',
                                            version_name='Lorem',
@@ -130,7 +132,9 @@ class ViewsTests(TestCase):  # pylint: disable-msg=R0904
 
     def test_analyze_fail(self):
         """
-        Call with all good datas
+        Call with wrong datas
+
+        The distribution id 1042 does not exists
         """
         # prepare datas
         requ = HttpRequest()
@@ -142,4 +146,4 @@ class ViewsTests(TestCase):  # pylint: disable-msg=R0904
         #  action
         result = views.analyze(requ)
         #  asserts
-        self.assertEqual(result.status_code, 302)  # pylint: disable-msg=E1103
+        self.assertEqual(result.status_code, 200)  # pylint: disable-msg=E1103

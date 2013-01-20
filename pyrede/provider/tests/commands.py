@@ -25,7 +25,7 @@ from django.core.management import call_command
 from pyrede.drp.models import Package
 from pyrede.drp.models import PackageVersion
 from pyrede.provider.tests.httpserver import TestServer
-from pyrede.provider.utils import split_title
+from pyrede.provider.utils.main import split_title
 
 
 class CommandsTests(TestCase):  # pylint: disable-msg=R0904

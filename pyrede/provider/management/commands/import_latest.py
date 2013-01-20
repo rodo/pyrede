@@ -25,8 +25,8 @@ from datetime import datetime
 from django.core.management.base import BaseCommand
 from pyrede.drp.models import Package
 from pyrede.drp.models import PackageVersion
-from pyrede.provider.utils import create_update_pack
-from pyrede.provider.utils import split_title
+from pyrede.provider.utils.main import create_update_pack
+from pyrede.provider.utils.main import split_title
 
 logger = logging.getLogger(__name__)
 
