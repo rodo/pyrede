@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+
+<h2>{% trans "Search" %}</h2>
+
+<form method="get" action=".">
+  <fieldset>
+
+    <input type="text" name="q" value="{{form.q.value}}" id="id_q" />
+    
+    <span class="help-block">Chercher dans :</span> 
+  
+    <label class="checkbox">
+      <input checked="checked" type="checkbox" name="models" value="resa.show" id="id_models_1" /> {% trans "Shows" %}
+    </label>
+
+    <input type="submit" value="{% trans 'Search' %}">
+      
+    </fieldset>
+      
+  {% if query %}
+  <h3>{% trans "Results" %}</h3>
+  <ul>
+  {% for result in page.object_list %}
+  <!-- be sure that only shows are shown -->
+    {% if result.object.title %}
+  <li>    
+    <a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a> {{ result.object.description }}</li>
+  {% endif %}
+  {% empty %}
+  <li>{% trans "No results found." %}</li>
+  {% endfor %}
+  </ul>
+
+  {% if page.has_previous or page.has_next %}
+  <div>
+    {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
+    |
+    {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
+  </div>
+  {% endif %}
+  {% else %}
+  {# Show some example queries to run, maybe query syntax, something else? #}
+  {% endif %}
+</form>
+
+{% endblock %}
