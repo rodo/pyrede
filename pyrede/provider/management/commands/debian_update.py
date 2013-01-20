@@ -38,7 +38,7 @@ class Command(BaseCommand):
         """
         Handle the command
         """
-        stable = lookup_latest_version(args[0], "stable")        
+        stable = lookup_latest_version(args[0], "stable")
         testing = lookup_latest_version(args[0], "testing")
 
         if testing:
@@ -46,7 +46,6 @@ class Command(BaseCommand):
 
         if stable:
             update(args[0], 'Squeeze', stable)
-
 
     def update(package, dist, version):
         """
@@ -56,9 +55,8 @@ class Command(BaseCommand):
         data = Distribution.objects.filter(version_name=dist)
 
         if len(data) == 1:
-            dispack_testing = DisPack.objects.filter(name=package,
-                                                     distribution=data[0])
+            dispack = DisPack.objects.filter(name=package,
+                                             distribution=data[0])
 
-            dispack_testing.version = version
-            dispack_testing.save()
-
+            dispack.version = version
+            dispack.save()

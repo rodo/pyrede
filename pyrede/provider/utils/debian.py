@@ -25,8 +25,7 @@ namespace = 'Debbugs/SOAP'
 server = SOAPpy.SOAPProxy(url, namespace)
 
 
-@task
-def lookup_last_version(package_name):
+def lookup_latest_version(package_name, version='stable'):
     """
     Lookup for the last version of a package, the lookup is made by
     package name
@@ -34,7 +33,9 @@ def lookup_last_version(package_name):
     Return : string
     """
     vers = server.get_versions("package", package_name,
-                               "dist", "stable",
+                               "dist", version,
                                "arch", "amd64")
-
-    return vers[0]
+    if len(vers) == 1:
+        return vers[0]
+    else:
+        return None
