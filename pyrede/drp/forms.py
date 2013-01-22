@@ -24,7 +24,7 @@ class SubForm(forms.Form):  # pylint: disable=R0924
 
     email = forms.CharField(max_length=50,
                            required=True,
-                           widget=TextInput(attrs={'class': 'input-xxlarge'}))
+                           widget=TextInput(attrs={'class': 'input-xlarge'}))
 
 
 class ReqForm(forms.Form):  # pylint: disable=R0924

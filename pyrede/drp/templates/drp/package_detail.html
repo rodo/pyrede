@@ -20,28 +20,36 @@
 
   <div class="row">
     <div class="span10">
-      <a class="btn btn-primary" onclick="showsubscr()" target="#">{% trans "Subscribe" %}</a>
+      <a class="btn btn-primary" href="#modalSub" data-toggle="modal">{% trans "Subscribe" %}</a>
       <a class="btn btn-primary" href="/pypi/{{package.name}}/add/">{% trans "Add package" %}</a>
     </div>    
   </div>
 </div>
 
-<div id="pack_subs" class="row" style="visibility: hidden;">    
-  <div class="span12">
-    <div class="well">
-      <h3>Subscribe</h3>
-      <p>
-      You will receive an email for each new version of
-      {{package.name}} and for each new distribution package associate to it.</p>
-      <form class="form-inline" action="/pypi/{{package.name}}/sub/" method="post">
-	{% csrf_token %}
-	<label class="control-label" for="inputEmail">{% trans "Email" %}</label>
-	{{form.email}} {{form.email.errors}}
-	
-	<input type="submit" class="btn btn-primary" value="{% trans "Subscribe" %}" />
-      </form>
-    </div>
+<div id="modalSub" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <h3>Subscribe to {{package.name}}</h3>
   </div>
+  
+  <div class="modal-body">
+    <p>
+      You will receive an email for each new version of
+      {{package.name}} and for each new distribution package associate
+      to it.
+    </p>
+
+    <form class="form-inline" action="/pypi/{{package.name}}/sub/" method="post">
+      {% csrf_token %}
+      <label class="control-label" for="inputEmail">{% trans "Email" %}</label>
+      {{form.email}} {{form.email.errors}}      
+      <input type="submit" class="btn btn-primary" value="{% trans "Subscribe" %}" />
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>    
+  </div>
+
 </div>
 
 <h3>Available packages</h3>
