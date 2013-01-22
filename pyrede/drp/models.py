@@ -49,6 +49,9 @@ class Package(models.Model):
         cache.delete(key)
         super(Package, self).save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return "/pypi/{}/".format(self.name)
+
 
 class PackageVersion(models.Model):
     """

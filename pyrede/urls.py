@@ -24,5 +24,6 @@ urlpatterns = patterns('',
                        url(r'^distributions/$', ListView.as_view(model=Distribution)),
                        url(r'^packages/$', ListView.as_view(model=DisPack,paginate_by=17)),
                        url(r'^admin/', include(admin.site.urls)),
+                       url(r'^search/', include('haystack.urls')),
                        url(r'^about/$', 'pyrede.drp.views.about'),
 )

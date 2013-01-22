@@ -9,12 +9,6 @@
 
     <input type="text" name="q" value="{{form.q.value}}" id="id_q" />
     
-    <span class="help-block">Chercher dans :</span> 
-  
-    <label class="checkbox">
-      <input checked="checked" type="checkbox" name="models" value="resa.show" id="id_models_1" /> {% trans "Shows" %}
-    </label>
-
     <input type="submit" value="{% trans 'Search' %}">
       
     </fieldset>
@@ -23,11 +17,9 @@
   <h3>{% trans "Results" %}</h3>
   <ul>
   {% for result in page.object_list %}
-  <!-- be sure that only shows are shown -->
-    {% if result.object.title %}
   <li>    
-    <a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a> {{ result.object.description }}</li>
-  {% endif %}
+    <a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a> {{ result.object.description }}</li>
+
   {% empty %}
   <li>{% trans "No results found." %}</li>
   {% endfor %}
