@@ -134,7 +134,7 @@ def update_pack(item, pack, version):
     PackageVersion.objects.create(package=pack,
                                   version=version,
                                   link=item['link'],
-                                  description=item['description'],
+                                  description=item['description'][:2000],
                                   pubdate=datetime.today())
 
 
