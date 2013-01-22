@@ -124,6 +124,7 @@ class PackSubscr(models.Model):
     package = models.ForeignKey(Package)
     email = models.EmailField(max_length=1000)
     date_creation = models.DateTimeField(editable=False, auto_now_add=True)
+    uuid = models.CharField(max_length=36)
 
 
 class Lookup(models.Model):

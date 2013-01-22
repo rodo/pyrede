@@ -22,10 +22,16 @@ import last package
 import requests
 import json
 import logging
+from celery.task import task
+from django.conf import settings
+from django.template.loader import render_to_string
 from django.core.cache import cache
+from django.core.mail import send_mail
 from datetime import datetime
 from pyrede.drp.models import Package
 from pyrede.drp.models import PackageVersion
+from pyrede.drp.models import PackSubscr
+
 
 logger = logging.getLogger(__name__)
 
@@ -90,6 +96,8 @@ def create_update_pack(item, name, version):
             count += 1
             update_pack(item, packs[0], version)
 
+        mail_subscribers(name)
+
     return count
 
 
@@ -109,9 +117,16 @@ def create_pack(item, name, version):
 
 
 def update_pack(item, pack, version):
-    logger.debug('update %s from %s to %s' % (pack.name,
-                                              pack.latest_version,
-                                              version))
+    """
+    Update a package in database
+
+    item : Array of string
+    pack : Object Package
+    version : string
+    """
+    logger.debug('package %s : update from %s to %s' % (pack.name,
+                                                        pack.latest_version,
+                                                        version))
 
     pack.latest_version = version
     pack.save()
@@ -121,3 +136,41 @@ def update_pack(item, pack, version):
                                   link=item['link'],
                                   description=item['description'],
                                   pubdate=datetime.today())
+
+
+def mail_subscribers(pack_name):
+    """
+    Send email to subscribers
+
+    pack_name : string
+    """
+    packs = Package.objects.filter(name=pack_name)
+    if len(packs) > 0:
+        subscrs = PackSubscr.objects.filter(package=packs[0])
+        logger.debug('package %s : found %d subscriber' % (pack_name,
+                                                           len(subscrs)))
+        for sub in subscrs:
+            sendmail_subscriber.delay(pack_name, sub)
+
+
+@task
+def sendmail_subscriber(pack_name, subscr):
+    """
+    Send email to subscribers
+
+    pack_name : string
+    subscr : Object PackSubscr
+    """
+    logger.debug('package %s : sendmail to %s' % (pack_name,
+                                                  subscr.email))
+    parms = {'package': pack_name,
+             'email': subscr.email,
+             'uuid': subscr.uuid}
+    body = render_to_string('emails/subscribers/update_body.txt', parms)
+    subject = render_to_string('emails/subscribers/update_subject.txt', parms)
+
+    send_mail(subject,
+              body,
+              settings.EMAIL_FROM,
+              [subscr.email],
+              fail_silently=True)

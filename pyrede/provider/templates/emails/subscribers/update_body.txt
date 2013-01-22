@@ -1,0 +1,11 @@
+
+We are pleased to inform you that the package {{ package }} was
+updated in Pyrede database
+
+Infos : http://pyrede.quiedeville.org/{{package}}/
+
+Thanks for using pyrede
+
+--
+Send to : {{ email }}
+Unsubscribe : http://pyrede.quiedeville.org/{{package}}/unsub/{{uuid}}

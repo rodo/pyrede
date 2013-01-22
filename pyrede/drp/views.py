@@ -20,6 +20,7 @@ The django views
 """
 import json
 import logging
+from uuid import uuid4
 from django.core.cache import cache
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -212,8 +213,18 @@ def subscribe(request, slug):
         form = SubForm(request.POST)
         if form.is_valid():
             PackSubscr.objects.get_or_create(package=pypi,
-                                             email=form.cleaned_data['email'])
+                                             email=form.cleaned_data['email'],
+                                             uuid=str(uuid4()))
             return redirect('/pypi/{}/'.format(pypi.name))
+
+
+def unsubscribe(request, slug, uuid):
+    """
+    Unsubscribe
+    """
+    pypi = Package.objects.get(name=slug)
+    PackSubscr.objects.filter(package=pypi, uuid=uuid).delete()
+    return redirect('/pypi/{}/'.format(pypi.name))
 
 
 def adddispack(request, slug):
