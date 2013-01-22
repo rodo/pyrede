@@ -129,6 +129,8 @@ def update_pack(item, pack, version):
                                                         version))
 
     pack.latest_version = version
+    pack.link = item['link']
+    pack.description = item['description'][:2000]
     pack.save()
 
     PackageVersion.objects.create(package=pack,
