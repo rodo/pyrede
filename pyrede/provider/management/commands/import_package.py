@@ -21,7 +21,7 @@ import last package
 """
 import logging
 from django.core.management.base import BaseCommand
-from pyrede.provider.utils import import_package
+from pyrede.provider.utils.main import import_package
 
 logger = logging.getLogger(__name__)
 
