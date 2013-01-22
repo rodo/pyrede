@@ -26,10 +26,6 @@ class SubForm(forms.Form):  # pylint: disable=R0924
                            required=True,
                            widget=TextInput(attrs={'class': 'input-xxlarge'}))
 
-    def clean(self):
-        cleaned_data = self.cleaned_data
-        return cleaned_data
-
 
 class ReqForm(forms.Form):  # pylint: disable=R0924
 

@@ -4,6 +4,10 @@
  * 
  * 
  */
+function showsubscr() {
+    $('#pack_subs').css('visibility','visible').hide().fadeIn('slow');
+}
+
 
 function detect(vars, dist_id) {
 

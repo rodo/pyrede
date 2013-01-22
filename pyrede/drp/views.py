@@ -32,6 +32,7 @@ from pyrede.drp.models import DisPack
 from pyrede.drp.models import Distribution
 from pyrede.drp.models import Lookup
 from pyrede.drp.models import Package
+from pyrede.drp.models import PackSubscr
 from pyrede.drp.forms import ReqForm
 from pyrede.drp.forms import DisPackForm
 from pyrede.drp.forms import SubForm
@@ -198,6 +199,21 @@ def analyze_get(request, pk):
                    'founds': datas,
                    'lookup': lkup
                    })
+
+
+def subscribe(request, slug):
+    """
+    Add a distribution package for a pypi package
+    """
+    errors = None
+    pypi = Package.objects.get(name=slug)
+
+    if request.method == 'POST':
+        form = SubForm(request.POST)
+        if form.is_valid():
+            PackSubscr.objects.get_or_create(package=pypi,
+                                             email=form.cleaned_data['email'])
+            return redirect('/pypi/{}/'.format(pypi.name))
 
 
 def adddispack(request, slug):
