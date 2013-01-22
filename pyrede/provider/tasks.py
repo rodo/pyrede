@@ -1,5 +1,4 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-  pylint: disable-msg=R0801
 #
 # Copyright (c) 2013 Rodolphe Quiédeville <rodolphe@quiedeville.org>
 #
@@ -16,26 +15,22 @@
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-"""
-Test to send an email
-"""
 import logging
-import feedparser
 from celery.task import task
 from django.conf import settings
 from django.core.mail import send_mail
-from django.core.management.base import BaseCommand
-from pyrede.provider.tasks import sendmail_test
-
-logger = logging.getLogger(__name__)
 
 
-class Command(BaseCommand):
-    args = '<email>'
-    help = 'Send a test email to <email>'
+@task
+def sendmail_test(email):
+    """
+    email : string
+    """
+    logger = logging.getLogger(__name__)
+    logger.debug('test sendmail to %s' % (email))
 
-    def handle(self, *args, **options):
-        """
-        Handle the command
-        """
-        sendmail_test.delay(args[0])
+    send_mail("mail test",
+              "test body",
+              settings.EMAIL_FROM,
+              [email],
+              fail_silently=False)
