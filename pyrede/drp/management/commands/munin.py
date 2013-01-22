@@ -25,6 +25,7 @@ from django.core.cache import cache
 from pyrede.drp.models import Package
 from pyrede.drp.models import PackageVersion
 from pyrede.drp.models import DisPack
+from pyrede.drp.models import PackSubscr
 
 logger = logging.getLogger(__name__)
 
@@ -40,11 +41,14 @@ class Command(BaseCommand):
         pack = Package.objects.all().count()
         dispack = DisPack.objects.all().count()
         packversion = PackageVersion.objects.all().count()
+        packsub = PackSubscr.objects.all().count()
 
         self.stdout.write("%s.value %s\n" % ('package', pack))
         self.stdout.write("%s.value %s\n" % ('packageversion', packversion))
         self.stdout.write("%s.value %s\n" % ('dispack', dispack))
+        self.stdout.write("%s.value %s\n" % ('packsub', packsub))
 
         cache.set("stats_nb_pack", pack)
         cache.set("stats_nb_packversion", packversion)
         cache.set("stats_nb_dispack", dispack)
+        cache.set("stats_nb_packsub", packsub)
