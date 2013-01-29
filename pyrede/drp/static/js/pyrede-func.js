@@ -40,7 +40,7 @@ function fetch(url, dist_id, elem) {
 	      if (found == 1) {
 		  pr = goodpack.name + ' ' + goodpack.provide;
 		  $('#provide_'+elem).html('<b>'+pr+'</b>');
-		  $('#result').append('<span style="margin-left: 3px">'+goodpack.name+'</span>');
+		  $('#result').append(' '+goodpack.name);
 		  $('#result').css('visibility', 'visible');
 	      } else {
 		  if (data.result == 1) {			  		      
