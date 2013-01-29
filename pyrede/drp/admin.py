@@ -15,8 +15,16 @@
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+from pyrede.drp.models import Distribution
 from pyrede.drp.models import DisPack
 from django.contrib import admin
+
+
+class DistributionAdmin(admin.ModelAdmin):
+    """
+    Custom Admin for Distribution
+    """
+    list_display = ('name', 'version_name')
 
 
 class DisPackAdmin(admin.ModelAdmin):
@@ -26,4 +34,6 @@ class DisPackAdmin(admin.ModelAdmin):
     list_display = ('name', 'distribution')
     list_filter = ['distribution']
 
+
+admin.site.register(Distribution, DistributionAdmin)
 admin.site.register(DisPack, DisPackAdmin)
