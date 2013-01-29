@@ -79,6 +79,49 @@ class ViewsTests(TestCase):  # pylint: disable-msg=R0904
         self.assertEqual(result['result'], 1)
         self.assertEqual(result['found'], 2)
 
+    def test_lookup_alt(self):
+        """
+        More complicated lookup
+
+        The distri_b is an unofficial distri of distri_a
+        """
+        dist_a = Distribution.objects.create(name='Foo',
+                                             version_name='Bar',
+                                             version_number='1.2')
+
+        dist_b = Distribution.objects.create(name='Foo',
+                                             version_name='Lorem',
+                                             version_number='1.1',
+                                             official=dist_a)
+
+        Lookup.objects.create(distribution=dist_a,
+                              content='aeHohee1\n')
+
+        pack = Package.objects.create(name='aeHohee1',
+                                      latest_version='1.0.0',
+                                      link='http://www.foo.bar',
+                                      description='lorem ipsum')
+
+        DisPack.objects.create(name='aeHohee1',
+                               version='1.0.0',
+                               distribution=dist_a,
+                               link='http://www.foo.bar',
+                               package=pack,
+                               package_version='1.0.0')
+
+        DisPack.objects.create(name='aeHohee1',
+                               version='1.0.0',
+                               distribution=dist_b,
+                               link='http://www.foo.bar',
+                               package=pack,
+                               package_version='1.0.0')
+
+        result = views.lookup(pack)
+
+        self.assertTrue(type(result) is dict)
+        self.assertEqual(result['result'], 1)
+        self.assertEqual(result['found'], 2)
+
     def test_adddispack(self):
         """
         Call with all good datas

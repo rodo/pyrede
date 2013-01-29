@@ -70,7 +70,7 @@ def userreq(request):
     """
     queryset = Package.objects.all().order_by('-pk')[:7]
     lkups = Lookup.objects.all().order_by('-pk')[:4]
-    distributions = Distribution.objects.all().order_by('-pk')
+    distributions = Distribution.objects.filter(official=None).order_by('-pk')
     #for dist in distributions:
     dists = [(r.id, "%s %s" % (r.name, r.version_name)) for r in distributions]
     form = ReqForm(dists)
@@ -115,9 +115,18 @@ def lookup(pypi):
     dispacks = DisPack.objects.filter(package=pypi)
 
     for dpack in dispacks:
+
+        if dpack.distribution.official:
+            distri = dpack.distribution.official
+            official_id = distri.id
+        else:
+            official_id = 0
+
         dist = {'id': dpack.distribution.id,
                 'name': dpack.distribution.name,
-                'version': dpack.distribution.version_name}
+                'version': dpack.distribution.version_name,
+                'official': official_id,
+                }
 
         jpack.append({'name': dpack.name,
                       'version': dpack.version,
