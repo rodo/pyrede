@@ -86,6 +86,10 @@ class Distribution(models.Model):
 
     query_link = models.CharField(max_length=250)
 
+    repo = models.URLField(max_length=250,
+                           blank=True,
+                           null=True)
+
     official = models.ForeignKey('self',
                                  blank=True,
                                  null=True,

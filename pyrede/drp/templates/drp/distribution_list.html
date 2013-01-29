@@ -27,9 +27,10 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th class="span6">{% trans "Name" %}</th>
-      <th class="span2">{% trans "Version" %}</th>
-      <th class="span4">Version number</th>
+      <th class="span2">{% trans "Name" %}</th>
+      <th class="span4">{% trans "Version" %}</th>
+      <th class="span2">Version number</th>
+      <th class="span2">Repo</th>
     </tr>
   </thead>
   <tbody>
@@ -39,6 +40,11 @@
       <td>{{distribution.version_name}}</td>
       <td>
 	<span class="badge badge-info">{{distribution.version_number}}</span> 
+      </td>
+      <td>
+	{% if distribution.repo %}
+	<a target="_blank" href="{{distribution.repo}}">{{distribution.repo}}</a>
+	{% endif %}
       </td>
     </tr>
     {% endfor %}
