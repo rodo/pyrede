@@ -35,19 +35,33 @@ function fetch(url, dist_id, elem) {
 			  found = 1;
 			  goodpack = data.packages[pack];
 		      }
+
+		      if (data.packages[pack].distribution.official == dist_id) {
+			  unoffpack = data.packages[pack];
+			  unoff = unoffpack.name + ' ' + unoffpack.version;
+			  $('#unofficial_'+elem).html('<b>'+unoff+'</b>');
+		      }
 		  }
 	      }
+
 	      if (found == 1) {
 		  pr = goodpack.name + ' ' + goodpack.provide;
+
 		  $('#provide_'+elem).html('<b>'+pr+'</b>');
+
 		  $('#result').append(' '+goodpack.name);
 		  $('#result').css('visibility', 'visible');
 	      } else {
-		  if (data.result == 1) {			  		      
-		      text = 'nothing found, <a class="btn btn-mini btn-primary" href="/pypi/'+elem+'/add/">add one</a>';
+		  if (data.result == 1) {
+		      text = 'nothing found';
 		      $('#provide_'+elem).html(text);
 		  }
 	      }
+	      if (data.result == 1) {
+		  text = '<a class="btn btn-mini btn-primary" href="/pypi/'+elem+'/add/">add one</a>';
+		  $('#button_'+elem).html(text);
+	      }
+
 	      
 	  });
 }

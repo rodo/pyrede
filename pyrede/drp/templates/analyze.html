@@ -7,9 +7,10 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th class="span4">{% trans "Name" %}</th>
+      <th class="span3">{% trans "Name" %}</th>
       <th class="span2">{% trans "Version" %}</th>
-      <th class="span4">{% trans "provided by" %}</th>
+      <th class="span3">{% trans "Official package" %}</th>
+      <th class="span3">{% trans "Unofficial" %}</th>
     </tr>
   </thead>
   <tbody>
@@ -21,7 +22,9 @@
 	<span class="badge badge-info">{{pack.1}} {{pack.2}}</span> 
 	{% endif %}
       </td>
-      <td><span id="provide_{{pack.0}}">looking up...</a></td>
+      <td><span id="provide_{{pack.0}}">looking up...</td>
+      <td><span id="unofficial_{{pack.0}}">looking up...</td>
+      <td><span id="button_{{pack.0}}"></td>
     </tr>
     {% endfor %}
   </tbody>
