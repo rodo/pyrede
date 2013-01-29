@@ -86,6 +86,11 @@ class Distribution(models.Model):
 
     query_link = models.CharField(max_length=250)
 
+    official = models.ForeignKey('self',
+                                 blank=True,
+                                 null=True,
+                                 related_name="related_official")
+
     def __str__(self):
         return '%s %s' % (self.name, self.version_name)
 
