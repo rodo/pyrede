@@ -6,9 +6,12 @@
 
 <form method="get" action=".">
   <fieldset>
-
+    {% if form.q.value %}
     <input type="text" name="q" value="{{form.q.value}}" id="id_q" />
-    
+    {% else %}
+    <input type="text" name="q" value="" id="id_q" />
+    {% endif %}
+
     <input type="submit" value="{% trans 'Search' %}">
       
     </fieldset>
