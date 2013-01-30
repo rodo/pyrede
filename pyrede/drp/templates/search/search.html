@@ -21,8 +21,8 @@
   <ul>
   {% for result in page.object_list %}
   <li>    
-    <a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a> {{ result.object.description }}</li>
-
+    <a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a> 
+    {{ result.object.description|truncatewords:6 }}</li>
   {% empty %}
   <li>{% trans "No results found." %}</li>
   {% endfor %}

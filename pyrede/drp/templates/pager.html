@@ -1,6 +1,4 @@
-{% extends "base.html" %}
 {% load i18n %}
-{% block content %}
 <div class="pager">
   <ul>
     {% if page_obj.has_previous %}
@@ -23,32 +21,3 @@
     {% endif %}
   </ul>
 </div>
-
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th class="span3">{% trans "Name" %}</th>
-      <th class="span3">{% trans "Version" %}</th>
-      <th class="span2">Version number</th>
-      <th class="span2">Repo</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for package in object_list %}
-    <tr>
-      <td>{{package.name}}</td>
-      <td>{{package.version_name}}</td>
-      <td>
-	<span class="badge badge-info">{{package.version_number}}</span> 
-      </td>
-      <td>
-	{% if package.repo %}
-	<a target="_blank" href="{{package.repo}}">{{package.repo}}</a>
-	{% endif %}
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
-{% endblock %}
