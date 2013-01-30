@@ -23,7 +23,16 @@ function fetch(url, dist_id, elem) {
 	      if (data.result == 1) {
 		  $('#span_'+elem).addClass("badge badge-success");
 	      } else {
-		  $('#provide_'+elem).html('unknown in pyrede db');
+		  if (data.nb_alt == 0) {
+		      msg = 'unknown in pyrede db';
+		      $('#provide_'+elem).html(msg);
+		  } else if (data.nb_alt == 1) {
+		      msg = 'did you mean <b>' + data.alt[0]['name'] + '</b> ?';
+		      $('#provide_'+elem).html(msg);
+		  } else {
+		      $('#provide_'+elem).html('unknown in pyrede db');
+		  }
+		  $('#unofficial_'+elem).html('');
 	      }
 
 	      found = 0;

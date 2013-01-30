@@ -86,7 +86,7 @@ def userreq(request):
 
 def jsonpypi(request, slug):
     """
-    A json view of pypi
+    A json view of a pypi package
     """
     key = 'json_pypi_{}'.format(slug)
     cval = cache.get(key)
@@ -95,7 +95,12 @@ def jsonpypi(request, slug):
             pypi = Package.objects.get(name=slug)
             datas = lookup(pypi)
         except:
-            datas = {'result': 0}
+            alt =  Package.objects.filter(name__contains=slug.lower())
+            pyalt = [ {'id': x.id, 'name': x.name} for x in alt ]
+            datas = {'result': 0,
+                     'nb_alt': len(alt),
+                     'alt' : pyalt}
+            
         # cache for one hour
         cache.set(key, str(datas), 3600)
     else:
