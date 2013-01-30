@@ -13,15 +13,15 @@
     </tr>
   </thead>
   <tbody>
-    {% for distribution in object_list %}
+    {% for dispack in object_list %}
     <tr>
-      <td>{{distribution.distribution}}</td>
-      <td>{{distribution.name}}</td>
+      <td>{{dispack.dispack}}</td>
+      <td>{{dispack.name}}</td>
       <td>
-	<span class="badge badge-info">{{distribution.version}}</span> 
+	<span class="badge badge-info">{{dispack.version}}</span> 
       </td>
 
-      <td>{{distribution.package}}</td>
+      <td><a href="/pypi/{{dispack.package.name}}/">{{dispack.package}}</a></td>
     </tr>
     {% endfor %}
   </tbody>
