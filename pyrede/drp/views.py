@@ -162,14 +162,15 @@ def analyze_post(request):
     distros = Distribution.objects.all().order_by('-pk')
     dists = [(r.id, "%s %s" % (r.name, r.version_name)) for r in distros]
     form = ReqForm(dists, request.POST)
-    if form.is_valid():
 
+    if form.is_valid():
         datas = requ_parser(form.cleaned_data['content'])
         for odist in distros:
             if odist.id == int(form.cleaned_data['distribution']):
                 dist = odist
         lkup = Lookup.objects.create(content=form.cleaned_data['content'],
-                                     distribution=dist)
+                                     distribution=dist,
+                                     nb_line=len(datas))
         for pack in datas:
             try:
                 Package.objects.get(name=pack[0])
