@@ -34,16 +34,16 @@
     </tr>
   </thead>
   <tbody>
-    {% for package in object_list %}
+    {% for distribution in object_list %}
     <tr>
-      <td>{{package.name}}</td>
-      <td>{{package.version_name}}</td>
+      <td>{{distribution.name}}</td>
+      <td><a href="/distribution/{{distribution.id}}/">{{distribution.version_name}}</a></td>
       <td>
-	<span class="badge badge-info">{{package.version_number}}</span> 
+	<span class="badge badge-info">{{distribution.version_number}}</span> 
       </td>
       <td>
-	{% if package.repo %}
-	<a target="_blank" href="{{package.repo}}">{{package.repo}}</a>
+	{% if distribution.repo %}
+	<a target="_blank" href="{{distribution.repo}}">{{distribution.repo}}</a>
 	{% endif %}
       </td>
     </tr>

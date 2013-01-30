@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+
+<div class="well">
+  
+  Name : {{object.name}} {{object.version_name}}
+</div>
+
+<div class="well">
+  <div>Repository : {{object.repo}}</div>
+</div>
+
+{% endblock %}
