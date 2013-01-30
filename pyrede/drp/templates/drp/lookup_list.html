@@ -9,6 +9,7 @@
       <th class="span3">{% trans "Distribution" %}</th>
       <th class="span2">{% trans "Score" %}</th>
       <th class="span2">{% trans "Date" %}</th>
+      <th class="span2"></th>
     </tr>
   </thead>
   <tbody>
@@ -17,6 +18,7 @@
       <td>{{lookup.distribution}}</td>
       <td>{{lookup.score}}</td>
       <td>{{lookup.date_lookup}}</td>
+      <td><a href="/analyze/{{lookup.id}}">/analyze/{{lookup.id}}</a></td>
     </tr>
     {% endfor %}
   </tbody>
