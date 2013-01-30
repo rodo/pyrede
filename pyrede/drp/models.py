@@ -145,6 +145,7 @@ class Lookup(models.Model):
     """
     content = models.CharField(max_length=1000)
     distribution = models.ForeignKey(Distribution)
+    nb_line = models.IntegerField(default=0)
     score = models.IntegerField(default=0)
     date_lookup = models.DateTimeField(editable=False, auto_now_add=True)
 
