@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+{% include "pager.html" %}
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="span3">{% trans "Distribution" %}</th>
+      <th class="span2">{% trans "Score" %}</th>
+      <th class="span2">{% trans "Date" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for lookup in object_list %}
+    <tr>
+      <td>{{lookup.distribution}}</td>
+      <td>{{lookup.score}}</td>
+      <td>{{lookup.date_lookup}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
