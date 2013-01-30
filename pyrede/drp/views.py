@@ -95,12 +95,12 @@ def jsonpypi(request, slug):
             pypi = Package.objects.get(name=slug)
             datas = lookup(pypi)
         except:
-            alt =  Package.objects.filter(name__contains=slug.lower())
-            pyalt = [ {'id': x.id, 'name': x.name} for x in alt ]
+            alt = Package.objects.filter(name__contains=slug.lower())
+            pyalt = [{'id': x.id, 'name': x.name} for x in alt]
             datas = {'result': 0,
                      'nb_alt': len(alt),
-                     'alt' : pyalt}
-            
+                     'alt': pyalt}
+
         # cache for one hour
         cache.set(key, str(datas), 3600)
     else:
@@ -221,7 +221,6 @@ def subscribe(request, slug):
     """
     Add a distribution package for a pypi package
     """
-    errors = None
     pypi = Package.objects.get(name=slug)
 
     if request.method == 'POST':
@@ -235,7 +234,7 @@ def subscribe(request, slug):
 
 def unsubscribe(request, slug, uuid):
     """
-    Unsubscribe
+    Unsubscribe from a pypi package updates
     """
     pypi = Package.objects.get(name=slug)
     PackSubscr.objects.filter(package=pypi, uuid=uuid).delete()
