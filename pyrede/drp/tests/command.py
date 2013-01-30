@@ -48,7 +48,9 @@ class CommandTests(TestCase):  # pylint: disable-msg=R0904
         attend = '\n'.join(['package.value 1',
                             'packageversion.value 0',
                             'dispack.value 0',
-                            'packsub.value 0'])
+                            'packsub.value 0',
+                            'version_last_month.value 0',
+                            'version_last_day.value 0'])
         attend += '\n'
 
         content = StringIO()

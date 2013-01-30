@@ -26,6 +26,9 @@ from pyrede.drp.models import Package
 from pyrede.drp.models import PackageVersion
 from pyrede.drp.models import DisPack
 from pyrede.drp.models import PackSubscr
+from datetime import datetime
+from datetime import timedelta
+
 
 logger = logging.getLogger(__name__)
 
@@ -43,10 +46,18 @@ class Command(BaseCommand):
         packversion = PackageVersion.objects.all().count()
         packsub = PackSubscr.objects.all().count()
 
+        lastmonth = datetime.now() - timedelta(days=30)
+        freshmonth = PackageVersion.objects.filter(pubdate__gte=lastmonth).count()
+
+        delta = datetime.now() - timedelta(days=1)
+        freshday = PackageVersion.objects.filter(pubdate__gte=delta).count()
+
         self.stdout.write("%s.value %s\n" % ('package', pack))
         self.stdout.write("%s.value %s\n" % ('packageversion', packversion))
         self.stdout.write("%s.value %s\n" % ('dispack', dispack))
         self.stdout.write("%s.value %s\n" % ('packsub', packsub))
+        self.stdout.write("%s.value %s\n" % ('version_last_month', freshmonth))
+        self.stdout.write("%s.value %s\n" % ('version_last_day', freshday))
 
         cache.set("stats_nb_pack", pack)
         cache.set("stats_nb_packversion", packversion)
