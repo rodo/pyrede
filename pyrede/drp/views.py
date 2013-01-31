@@ -38,6 +38,7 @@ from pyrede.drp.forms import ReqForm
 from pyrede.drp.forms import DisPackForm
 from pyrede.drp.forms import SubForm
 from pyrede.drp.tasks import look4_pypi_missing
+from pyrede.drp.tasks import logg_pypi
 from pyrede.drp.utils import stats
 
 logger = logging.getLogger(__name__)
@@ -167,7 +168,7 @@ def analyze_post(request):
     distros = Distribution.objects.all().order_by('-pk')
     dists = [(r.id, "%s %s" % (r.name, r.version_name)) for r in distros]
     form = ReqForm(dists, request.POST)
-
+    pckexists = 0
     if form.is_valid():
         datas = requ_parser(form.cleaned_data['content'])
         for odist in distros:
@@ -178,12 +179,16 @@ def analyze_post(request):
                                      nb_line=len(datas))
         for pack in datas:
             try:
-                Package.objects.get(name=pack[0])
+                pobj = Package.objects.get(name=pack[0])
+                pckexists = 1
             except Package.DoesNotExist:
                 try:
                     look4_pypi_missing.delay(pack[0])
                 except:
                     logger.error("Error in lauching task look4_pypi_missing.delay(pack[0])")
+
+            if pckexists:
+                logg_pypi.delay(pobj, lkup)
 
         return redirect('/analyze/%s/' % lkup.id)
     else:

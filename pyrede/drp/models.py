@@ -150,6 +150,15 @@ class Lookup(models.Model):
     date_lookup = models.DateTimeField(editable=False, auto_now_add=True)
 
 
+class PypStats(models.Model):
+    """
+    Statistiques on PyPi Package
+    """
+    package = models.ForeignKey(Package)
+    lookup = models.ForeignKey(Lookup)
+    date_lookup = models.DateTimeField(editable=False, auto_now_add=True)
+
+
 @receiver(post_save, sender=DisPack)
 def create_dispack(sender, instance, created, **kwargs):
     """Update number of dispack available"""

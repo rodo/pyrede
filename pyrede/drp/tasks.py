@@ -20,6 +20,7 @@ Tasks for pyrede/drp
 """
 from celery.task import task
 from pyrede.provider.utils.main import import_package
+from pyrede.drp.models import PypStats
 
 
 @task
@@ -27,4 +28,17 @@ def look4_pypi_missing(package):
     """
     Lookup for a package an insert in DB
     """
+    return import_package(package)
+
+
+@task
+def logg_pypi(package, lookup):
+    """
+    Log a query on a package
+
+    Params:
+     - package (Package)
+    """
+    PypStats.objects.create(lookup=lookup,
+                            package=package)
     return import_package(package)
