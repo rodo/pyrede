@@ -49,6 +49,9 @@ function fetch(url, dist_id, elem) {
 			  unoffpack = data.packages[pack];
 			  unoff = unoffpack.name + ' ' + unoffpack.version;
 			  $('#unofficial_'+elem).html('<b>'+unoff+'</b>');
+
+			  $('#result_unoff').append(' '+unoffpack.name);
+			  $('#result_unoff').css('visibility', 'visible');
 		      }
 		  }
 	      }
@@ -59,6 +62,7 @@ function fetch(url, dist_id, elem) {
 		  $('#provide_'+elem).html('<b>'+pr+'</b>');
 
 		  $('#result').append(' '+goodpack.name);
+		  $('#result_unoff').append(' '+goodpack.name);
 		  $('#result').css('visibility', 'visible');
 	      } else {
 		  if (data.result == 1) {
