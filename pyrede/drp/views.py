@@ -33,6 +33,7 @@ from pyrede.drp.models import DisPack
 from pyrede.drp.models import Distribution
 from pyrede.drp.models import Lookup
 from pyrede.drp.models import Package
+from pyrede.drp.models import PackageVersion
 from pyrede.drp.models import PackSubscr
 from pyrede.drp.forms import ReqForm
 from pyrede.drp.forms import DisPackForm
@@ -61,6 +62,7 @@ class PackageDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(PackageDetail, self).get_context_data(**kwargs)
         context['dispacks'] = DisPack.objects.filter(package=self.object)
+        context['last_update'] = PackageVersion.objects.filter(package=self.object).order_by('-pubdate')[0]
         context['form'] = SubForm()
         return context
 
