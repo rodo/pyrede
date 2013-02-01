@@ -74,15 +74,17 @@ class UrlsTests(TestCase):  # pylint: disable-msg=R0904
 
         self.assertTrue(type(eval(response.content)) is dict)
 
-    def test_json_doesnoteists(self):
+    def test_json_doesnotexists(self):
         """
         json lookup on non existent package
         """
         client = Client()
         response = client.get('/json/pypi/this_package_doesnotexists/')
 
+        attend = '{"nb_alt": 0, "result": 0, "alt": []}'
+
         self.assertTrue(type(eval(response.content)) is dict)
-        self.assertEqual(response.content, '{"result": 0}')
+        self.assertEqual(response.content, attend)
 
     def test_about(self):
         """
