@@ -23,6 +23,9 @@ from StringIO import StringIO
 from django.core.management import call_command
 from django.test import TestCase
 from pyrede.drp.models import Package
+from pyrede.drp.models import PypStats
+from pyrede.drp.models import Lookup
+from pyrede.drp.models import Distribution
 
 
 class CommandTests(TestCase):  # pylint: disable-msg=R0904
@@ -38,7 +41,7 @@ class CommandTests(TestCase):  # pylint: disable-msg=R0904
 
     def test_munin(self):
         """
-        cleansongs manage command
+        munin command
         """
         Package.objects.create(name='aeHohee1',
                                latest_version='1.0.0',
@@ -55,6 +58,37 @@ class CommandTests(TestCase):  # pylint: disable-msg=R0904
 
         content = StringIO()
         call_command('munin', stdout=content)
+        content.seek(0)
+
+        self.assertEqual(content.read(), attend)
+
+    def test_stats_consolidate(self):
+        """
+        consolidate stats
+        """
+        pack = Package.objects.create(name='locustio',
+                                      latest_version='1.0.0',
+                                      link='http://www.foo.bar',
+                                      description='lorem ipsum')
+
+        dist = Distribution.objects.create(name='Debian',
+                                           version_number='6.0',
+                                           query_link='http//foo.bar')
+
+        lkup = Lookup.objects.create(content='locustio',
+                                     distribution=dist)
+
+        PypStats.objects.create(lookup=lkup,
+                                package=pack)
+        PypStats.objects.create(lookup=lkup,
+                                package=pack)
+
+        attend = '\n'.join(['locustio 2',
+                            ])
+        attend += '\n'
+
+        content = StringIO()
+        call_command('stats_consolidate', stdout=content)
         content.seek(0)
 
         self.assertEqual(content.read(), attend)
