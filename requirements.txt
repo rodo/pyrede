@@ -8,8 +8,6 @@ requests
 celery==2.5.5
 django-celery==2.5.5
 django_compressor
-#PIL : PIL failed on Debian to find jpeg libs
-# use python-imaging package or fix PIL
 #
 #  following package are for running tests
 #
@@ -17,6 +15,7 @@ nosexcover
 django-nose
 pep8
 flake8
+Whoosh
 #
 #  If you use jenkins you can add
 #
