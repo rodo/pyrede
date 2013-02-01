@@ -40,6 +40,4 @@ class Command(BaseCommand):
 
         for foo in foos:
             self.stdout.write("{} {}\n".format(foo.name, foo.num_pack))
-
-        cache.set("stats_nb_pyplookup", pack)
-
+            cache.set("stats_nb_{}".format(foo.name), foo.num_pack)
