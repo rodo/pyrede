@@ -106,22 +106,25 @@ def create_pack(item, name, version, datas):
     """
     logger.debug('create %s %s' % (name, version))
 
-    try:
-        downloads = datas['urls'][0]['downloads']
-    except:
-        downloads = 0
-
     pack = Package.objects.create(name=name,
                                   latest_version=version,
                                   link=item['link'],
                                   description=item['description'][:2000],
-                                  pypi_downloads=downloads)
+                                  pypi_downloads=count_downloads(datas))
 
     PackageVersion.objects.create(package=pack,
                                   version=version,
                                   link=item['link'],
                                   description=item['description'][:2000],
                                   pubdate=datetime.today())
+
+
+def count_downloads(datas):
+    downloads = 0
+    if 'urls' in datas:
+        for url in datas['urls']:
+            downloads += url['downloads']
+    return downloads
 
 
 def update_pack(item, pack, version, datas):
@@ -136,15 +139,10 @@ def update_pack(item, pack, version, datas):
                                                         pack.latest_version,
                                                         version))
 
-    try:
-        downloads = datas['urls'][0]['downloads']
-    except:
-        downloads = 0
-
     pack.latest_version = version
     pack.link = item['link']
     pack.description = item['description'][:2000]
-    pack.pypi_downloads = downloads
+    pack.pypi_downloads = count_downloads(datas)
     pack.save()
 
     PackageVersion.objects.create(package=pack,
