@@ -108,7 +108,7 @@ def create_pack(item, name, version, datas):
 
     try:
         downloads = datas['urls'][0]['downloads']
-    except KeyError:
+    except:
         downloads = 0
 
     pack = Package.objects.create(name=name,
@@ -138,7 +138,7 @@ def update_pack(item, pack, version, datas):
 
     try:
         downloads = datas['urls'][0]['downloads']
-    except KeyError:
+    except:
         downloads = 0
 
     pack.latest_version = version
