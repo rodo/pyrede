@@ -1,1 +1,1 @@
-Pyrede update of : {{ package }}
+Pyrede update of : {{ package }} from {{old_version}} to {{new_version}}

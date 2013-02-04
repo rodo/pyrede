@@ -2,6 +2,8 @@
 We are pleased to inform you that the package {{ package }} was
 updated in Pyrede database.
 
+New version number : {{new_version}}
+
 Link : http://pyrede.quiedeville.org/pypi/{{package}}/
 
 Thanks for using pyrede

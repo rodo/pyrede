@@ -80,7 +80,7 @@ def split_title(title):
 
 def create_update_pack(item, name, version):
     """
-    Create or update package
+    Create or update pypi package
     """
     exs = Package.objects.filter(name=name,
                                  latest_version=version)
@@ -95,8 +95,7 @@ def create_update_pack(item, name, version):
         else:
             count += 1
             update_pack(item, packs[0], version)
-
-        mail_subscribers(name)
+            mail_subscribers(name, packs[0].latest_version, version)
 
     return count
 
@@ -140,7 +139,7 @@ def update_pack(item, pack, version):
                                   pubdate=datetime.today())
 
 
-def mail_subscribers(pack_name):
+def mail_subscribers(pack_name, oldver, newver):
     """
     Send email to subscribers
 
@@ -152,11 +151,11 @@ def mail_subscribers(pack_name):
         logger.debug('package %s : found %d subscriber' % (pack_name,
                                                            len(subscrs)))
         for sub in subscrs:
-            sendmail_subscriber.delay(pack_name, sub)
+            sendmail_subscriber.delay(pack_name, sub, oldver, newver)
 
 
 @task
-def sendmail_subscriber(pack_name, subscr):
+def sendmail_subscriber(pack_name, subscr, oldver, newver):
     """
     Send email to subscribers
 
@@ -166,7 +165,10 @@ def sendmail_subscriber(pack_name, subscr):
     logger.debug('package {} : sendmail to {}'.format(pack_name, subscr.email))
     parms = {'package': pack_name,
              'email': subscr.email,
-             'uuid': subscr.uuid}
+             'uuid': subscr.uuid,
+             'old_version': oldver,
+             'new_verison': newver}
+
     body = render_to_string('emails/subscribers/update_body.txt', parms)
     subject = render_to_string('emails/subscribers/update_subject.txt', parms)
 
