@@ -95,7 +95,7 @@ def jsonpypi(request, slug):
     cval = cache.get(key)
     if cval is None:
         try:
-            pypi = Package.objects.get(name=slug)
+            pypi = Package.objects.get(name__iexact=slug)
             datas = lookup(pypi)
         except:
             alt = Package.objects.filter(name__contains=slug.lower())
