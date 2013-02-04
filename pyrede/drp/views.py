@@ -265,7 +265,10 @@ def adddispack(request, slug):
         errors, referer = post_dispack(form, dists, request, distros, pypi)
     else:
         form = DisPackForm(dists)
-        referer = request.META['HTTP_REFERER']
+        try:
+            referer = request.META['HTTP_REFERER']
+        except KeyError:
+            referer = ''
 
     return render(request,
                   'add_dispack.html',
