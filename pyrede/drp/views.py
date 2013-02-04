@@ -62,6 +62,7 @@ class PackageDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(PackageDetail, self).get_context_data(**kwargs)
         context['dispacks'] = DisPack.objects.filter(package=self.object)
+        context['nb_subscribers'] = PackSubscr.objects.filter(package=self.object).count()
         context['last_update'] = PackageVersion.objects.filter(package=self.object).order_by('-pubdate')[0]
         context['form'] = SubForm()
         return context
