@@ -75,6 +75,9 @@ def parse_line(line):
         elif '=<' in line:
             parts = line.split('=<')
             result = [str(parts[0]), '=<', str(parts[1])]
+        elif '<=' in line:
+            parts = line.split('=<')
+            result = [str(parts[0]), '=<', str(parts[1])]
         else:
             if line != '':
                 result = [str(line.split(' ')[0])]
