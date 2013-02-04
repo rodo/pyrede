@@ -60,6 +60,7 @@ function fetch(url, dist_id, elem) {
 		  pr = goodpack.provide;
 
 		  $('#provide_'+elem).html('<b>'+pr+'</b>');
+		  $('#unofficial_'+elem).html();
 
 		  $('#result').append(' '+goodpack.name);
 		  $('#result_unoff').append(' '+goodpack.name);
