@@ -50,7 +50,7 @@ def import_package(package, force=False):
         logger.debug('try to import : %s' % package)
         url = "http://pypi.python.org/pypi"
 
-        params= {':action': 'json', 'name': package}
+        params = {':action': 'json', 'name': package}
         headers = {'content-type': 'application/json'}
 
         item = {}
@@ -94,13 +94,17 @@ def create_update_pack(item, name, version):
             create_pack(item, name, version)
         else:
             count += 1
-            update_pack(item, packs[0], version)
+            update_pack
+(item, packs[0], version)
             mail_subscribers(name, packs[0].latest_version, version)
 
     return count
 
 
 def create_pack(item, name, version):
+    """
+    Create a package with his firt version
+    """
     logger.debug('create %s %s' % (name, version))
 
     pack = Package.objects.create(name=name,
@@ -167,7 +171,7 @@ def sendmail_subscriber(pack_name, subscr, oldver, newver):
              'email': subscr.email,
              'uuid': subscr.uuid,
              'old_version': oldver,
-             'new_verison': newver}
+             'new_version': newver}
 
     body = render_to_string('emails/subscribers/update_body.txt', parms)
     subject = render_to_string('emails/subscribers/update_subject.txt', parms)
