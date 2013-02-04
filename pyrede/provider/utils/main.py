@@ -94,8 +94,7 @@ def create_update_pack(item, name, version):
             create_pack(item, name, version)
         else:
             count += 1
-            update_pack
-(item, packs[0], version)
+            update_pack(item, packs[0], version)
             mail_subscribers(name, packs[0].latest_version, version)
 
     return count
