@@ -86,7 +86,6 @@ def create_update_pack(item, name, version, datas):
                                  latest_version=version)
     count = 0
     if len(exs) == 0:
-
         packs = Package.objects.filter(name=name)
 
         if len(packs) == 0:
@@ -96,7 +95,8 @@ def create_update_pack(item, name, version, datas):
             count += 1
             update_pack(item, packs[0], version, datas)
             mail_subscribers(name, packs[0].latest_version, version)
-
+    else:
+        update_pack_metadata(exs[0], datas)
     return count
 
 
@@ -150,6 +150,19 @@ def update_pack(item, pack, version, datas):
                                   link=item['link'],
                                   description=item['description'][:2000],
                                   pubdate=datetime.today())
+
+
+def update_pack_metadata(pack, datas):
+    """
+    Update datas package in database
+
+    pack : Object Package
+    version : string
+    """
+    logger.debug('package {} : update datas'.format(pack.name))
+
+    pack.pypi_downloads = count_downloads(datas)
+    pack.save()
 
 
 def mail_subscribers(pack_name, oldver, newver):
