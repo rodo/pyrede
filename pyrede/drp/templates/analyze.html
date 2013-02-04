@@ -30,40 +30,77 @@
   </tbody>
 </table>
 
-<div class="well" id="result" style="visibility: hidden">
-  apt-get install 
+  <div class="row">
+    <div class="span10">
+      <a class="btn btn-primary" href="#modalSub" data-toggle="modal">{% trans "Official packages" %}</a>
+      <a class="btn btn-success" href="#modalAllPack" data-toggle="modal">{% trans "All packages" %}</a>
+    </div>    
+  </div>
+
+<div id="modalSub" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header"><h3>Official packages</h3></div>
+  
+  <div class="modal-body">
+    Just run the following command to install all <b>official</b>
+    packages. These packages come from <a href="http://www.debian.org">Debian Project</a> only.
+    <div class="well" id="result">
+      apt-get install 
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>    
+  </div>
 </div>
 
-<div class="well" id="result_unoff" style="visibility: hidden">
-  apt-get install 
+<div id="modalAllPack" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header"><h3>Official + unofficial packages</h3></div>
+  
+  <div class="modal-body">
+    <p>
+    Run the following command to install all packages, <b>official</b>
+    packages from from <a target="_blank" href="http://www.debian.org">Debian
+    Project</a>, and <b>unofficial</b> packages from <a target="_blank" href="http://www.pydeb.eu">pydeb</a> project.<p>
+    <div class="well" id="result_unoff">
+      apt-get install 
+    </div>
+    <p>
+      Howto to use <a target="_blank" href="http://www.pydeb.eu">pydeb repository.</a><p>
+    </p>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>    
+  </div>
 </div>
 
+<hr/>
 
-<h3>Last <a href="/pypis/">python packages</a> analyzed</h3>
+  <h3>Last <a href="/pypis/">python packages</a> analyzed</h3>
       
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th class="span6">{% trans "Name" %}</th>
-      <th class="span2">{% trans "Version" %}</th>
-      <th class="span4">{% trans "Ref" %}</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for package in dispacks %}
-    <tr>
-      <td><a href="/pypi/{{package.name}}">{{package.name}}</a></td>
-      <td>
-	<span class="badge badge-info">{{package.latest_version}}</span> 
-      </td>
-      <td>
-	<a href="{{package.link}}" target="_blank">pypi</a>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-            
+  <table class="table table-striped">
+    <thead>
+      <tr>
+	<th class="span6">{% trans "Name" %}</th>
+	<th class="span2">{% trans "Version" %}</th>
+	<th class="span4">{% trans "Ref" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for package in dispacks %}
+      <tr>
+	<td><a href="/pypi/{{package.name}}">{{package.name}}</a></td>
+	<td>
+	  <span class="badge badge-info">{{package.latest_version}}</span> 
+	</td>
+	<td>
+	  <a href="{{package.link}}" target="_blank">pypi</a>
+	</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
 <script type="text/javascript">
   detect({{founds|safe}}, {{lookup.distribution.id}});
 </script>

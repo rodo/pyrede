@@ -51,7 +51,7 @@ function fetch(url, dist_id, elem) {
 			  $('#unofficial_'+elem).html('<b>'+unoff+'</b>');
 
 			  $('#result_unoff').append(' '+unoffpack.name);
-			  $('#result_unoff').css('visibility', 'visible');
+			  //$('#result_unoff').css('visibility', 'visible');
 		      }
 		  }
 	      }
@@ -64,7 +64,7 @@ function fetch(url, dist_id, elem) {
 
 		  $('#result').append(' '+goodpack.name);
 		  $('#result_unoff').append(' '+goodpack.name);
-		  $('#result').css('visibility', 'visible');
+		  //$('#result').css('visibility', 'visible');
 	      } else {
 		  if (data.result == 1) {
 		      text = 'nothing found';
