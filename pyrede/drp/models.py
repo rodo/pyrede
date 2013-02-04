@@ -23,6 +23,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+from pyrede.drp.mailtasks import mail_all_subscribers
 
 
 class Package(models.Model):
@@ -166,6 +167,9 @@ def create_dispack(sender, instance, created, **kwargs):
     pack = Package.objects.get(pk=instance.package.id)
     pack.nbdispack = count
     pack.save()
+    if created == 1:
+        subscrs = PackSubscr.objects.filter(package=pack)
+        mail_all_subscribers.delay(subscrs, instance)
 
 
 @receiver(post_delete, sender=DisPack)

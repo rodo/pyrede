@@ -1,0 +1,18 @@
+
+We are pleased to inform you that a new distribution package is
+available for {{ package }}.
+
+Distribution : {{dispack.distribution}}
+Package name : {{dispack.name}}
+Package version : {{dispack.version}}
+
+Provides : {{package.name}} {{dispack.package_version}}
+
+
+Link : http://pyrede.quiedeville.org/pypi/{{package.name}}/
+
+Thanks for using pyrede
+
+--
+Send to : {{ email }}
+Unsubscribe : http://pyrede.quiedeville.org/pypi/{{package.name}}/unsub/{{uuid}}

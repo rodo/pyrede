@@ -1,0 +1,1 @@
+A new package for {{ package }} is available
