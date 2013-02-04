@@ -31,6 +31,7 @@ from datetime import datetime
 from pyrede.drp.models import Package
 from pyrede.drp.models import PackageVersion
 from pyrede.drp.models import PackSubscr
+from rosarks.models import AtomicValue
 
 
 logger = logging.getLogger(__name__)
@@ -161,8 +162,11 @@ def update_pack_metadata(pack, datas):
     """
     logger.debug('package {} : update datas'.format(pack.name))
 
-    pack.pypi_downloads = count_downloads(datas)
+    downval = count_downloads(datas)
+    pack.pypi_downloads = downval
     pack.save()
+    AtomicValue.objects.create(ref='package_{}_downloads'.format(pack.id),
+                               value=downval)
 
 
 def mail_subscribers(pack_name, oldver, newver):
