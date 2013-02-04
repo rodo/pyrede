@@ -19,9 +19,13 @@
     <div class="span10">
       <ul>
 	<li>ref : <a href="{{package.link}}" target="_blank">{{package.link}}</a></li>	
+	{% if package.pypi_downloads > 0 %}
+	<li># downloads on pypi : {{package.pypi_downloads}}</li>
+	{% endif %}
 	{% if nb_subscribers > 0 %}
 	<li>Subscribers : {{nb_subscribers}}</li>
 	{% endif %}
+
       </ul>
     </div>    
   </div>
