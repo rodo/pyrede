@@ -62,7 +62,7 @@ def import_package(package, force=False):
             version = datas['info']['version']
             item['description'] = datas['info']['description']
             item['link'] = datas['info']['package_url']
-            create_update_pack(item, package, version)
+            create_update_pack(item, package, version, datas)
         else:
             logger.warning("not found : %s" % url)
 
@@ -78,7 +78,7 @@ def split_title(title):
     return data
 
 
-def create_update_pack(item, name, version):
+def create_update_pack(item, name, version, datas):
     """
     Create or update pypi package
     """
@@ -91,25 +91,31 @@ def create_update_pack(item, name, version):
 
         if len(packs) == 0:
             count += 1
-            create_pack(item, name, version)
+            create_pack(item, name, version, datas)
         else:
             count += 1
-            update_pack(item, packs[0], version)
+            update_pack(item, packs[0], version, datas)
             mail_subscribers(name, packs[0].latest_version, version)
 
     return count
 
 
-def create_pack(item, name, version):
+def create_pack(item, name, version, datas):
     """
     Create a package with his firt version
     """
     logger.debug('create %s %s' % (name, version))
 
+    try:
+        downloads = datas['urls'][0]['downloads']
+    except KeyError:
+        downloads = 0
+
     pack = Package.objects.create(name=name,
                                   latest_version=version,
                                   link=item['link'],
-                                  description=item['description'][:2000])
+                                  description=item['description'][:2000],
+                                  pypi_downloads=downloads)
 
     PackageVersion.objects.create(package=pack,
                                   version=version,
@@ -118,7 +124,7 @@ def create_pack(item, name, version):
                                   pubdate=datetime.today())
 
 
-def update_pack(item, pack, version):
+def update_pack(item, pack, version, datas):
     """
     Update a package in database
 
@@ -130,9 +136,15 @@ def update_pack(item, pack, version):
                                                         pack.latest_version,
                                                         version))
 
+    try:
+        downloads = datas['urls'][0]['downloads']
+    except KeyError:
+        downloads = 0
+
     pack.latest_version = version
     pack.link = item['link']
     pack.description = item['description'][:2000]
+    pack.pypi_downloads = downloads
     pack.save()
 
     PackageVersion.objects.create(package=pack,

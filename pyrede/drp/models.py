@@ -42,6 +42,8 @@ class Package(models.Model):
 
     nbdispack = models.IntegerField(default=0)
 
+    pypi_downloads = models.IntegerField(default=0)
+
     def __str__(self):
         return '%s %s' % (self.name, self.latest_version)
 
