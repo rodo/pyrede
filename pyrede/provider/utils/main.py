@@ -163,16 +163,16 @@ def sendmail_subscriber(pack_name, subscr):
     pack_name : string
     subscr : Object PackSubscr
     """
-    logger.debug('package %s : sendmail to %s' % (pack_name,
-                                                  subscr.email))
+    logger.debug('package {} : sendmail to {}'.format(pack_name, subscr.email))
     parms = {'package': pack_name,
              'email': subscr.email,
              'uuid': subscr.uuid}
     body = render_to_string('emails/subscribers/update_body.txt', parms)
     subject = render_to_string('emails/subscribers/update_subject.txt', parms)
 
-    send_mail(subject,
-              body,
-              settings.EMAIL_FROM,
-              [subscr.email],
-              fail_silently=True)
+    result = send_mail(subject,
+                       body,
+                       settings.EMAIL_FROM,
+                       [subscr.email],
+                       fail_silently=True)
+    logger.debug('package {} : sendmail return {}'.format(pack_name, result))
