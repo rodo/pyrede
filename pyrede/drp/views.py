@@ -143,6 +143,7 @@ def lookup(pypi):
                       'distribution': dist})
 
     datas = {'result': 1,
+             'name': pypi.name,
              'pipy': {'id': pypi.id,
                       'nbpack': pypi.nbdispack},
              'found': len(dispacks),

@@ -49,9 +49,7 @@ function fetch(url, dist_id, elem) {
 			  unoffpack = data.packages[pack];
 			  unoff = unoffpack.version;
 			  $('#unofficial_'+elem).html('<b>'+unoff+'</b>');
-
 			  $('#result_unoff').append(' '+unoffpack.name);
-			  //$('#result_unoff').css('visibility', 'visible');
 		      }
 		  }
 	      }
@@ -64,16 +62,17 @@ function fetch(url, dist_id, elem) {
 
 		  $('#result').append(' '+goodpack.name);
 		  $('#result_unoff').append(' '+goodpack.name);
-		  //$('#result').css('visibility', 'visible');
 	      } else {
 		  if (data.result == 1) {
 		      text = 'nothing found';
 		      $('#provide_'+elem).html(text);
 		  }
 	      }
+
 	      if (data.result == 1) {
-		  text = '<a class="btn btn-mini btn-primary" href="/pypi/'+elem+'/add/">add one</a>';
+		  text = '<a class="btn btn-mini btn-primary" href="/pypi/'+data.name+'/add/">add one</a>';
 		  $('#button_'+elem).html(text);
+		  $('#span_'+elem).html(data.name);
 	      }
 
 	      
