@@ -170,7 +170,7 @@ def sendmail_subscriber(pack_name, subscr):
     body = render_to_string('emails/subscribers/update_body.txt', parms)
     subject = render_to_string('emails/subscribers/update_subject.txt', parms)
 
-    result = send_mail(subject,
+    result = send_mail(subject.rstrip(),
                        body,
                        settings.EMAIL_FROM,
                        [subscr.email],
