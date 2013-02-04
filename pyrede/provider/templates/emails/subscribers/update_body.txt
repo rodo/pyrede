@@ -1,11 +1,11 @@
 
 We are pleased to inform you that the package {{ package }} was
-updated in Pyrede database
+updated in Pyrede database.
 
-Infos : http://pyrede.quiedeville.org/{{package}}/
+Link : http://pyrede.quiedeville.org/pypi/{{package}}/
 
 Thanks for using pyrede
 
 --
 Send to : {{ email }}
-Unsubscribe : http://pyrede.quiedeville.org/{{package}}/unsub/{{uuid}}
+Unsubscribe : http://pyrede.quiedeville.org/pypi/{{package}}/unsub/{{uuid}}
