@@ -26,9 +26,42 @@
 	  {% endif %}
 	</ul>
       </div>
-      
-      {% include "pypis.html" %}
 
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="span6">{% trans "Name" %}</th>
+      <th class="span2">{% trans "Version" %}</th>
+      <th class="span1">Ref</th>
+      <th class="span1">Pack.</th>
+      <th class="span2">Dwn.</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for package in packages %}
+    <tr>
+      <td><a href="/pypi/{{package.name}}/">{{package.name}}</a></td>
+      <td>
+	<span class="badge badge-info">{{package.latest_version}}</span> 
+      </td>
+      <td>
+	<a href="{{package.link}}" target="_blank">pypi</a>
+      </td>
+      <td>
+	{% if package.nbdispack > 0 %}
+	<span class="badge badge-success">{{package.nbdispack}}</span> 
+	{% else %}
+	<span class="badge">{{package.nbdispack}}</span> 
+	{% endif %}
+      </td>
+      <td>
+	<span class="badge">{{package.pypi_downloads}}</span>	
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+      
     </div><!--/row-->
   </div><!--/row-->
 </div><!--/.container-->
