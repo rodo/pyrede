@@ -47,7 +47,7 @@ function fetch(url, dist_id, elem) {
 
 		      if (data.packages[pack].distribution.official == dist_id) {
 			  unoffpack = data.packages[pack];
-			  unoff = unoffpack.name + ' ' + unoffpack.version;
+			  unoff = unoffpack.version;
 			  $('#unofficial_'+elem).html('<b>'+unoff+'</b>');
 
 			  $('#result_unoff').append(' '+unoffpack.name);
@@ -57,7 +57,7 @@ function fetch(url, dist_id, elem) {
 	      }
 
 	      if (found == 1) {
-		  pr = goodpack.name + ' ' + goodpack.provide;
+		  pr = goodpack.provide;
 
 		  $('#provide_'+elem).html('<b>'+pr+'</b>');
 
