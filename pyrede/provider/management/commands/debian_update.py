@@ -51,11 +51,11 @@ class Command(BaseCommand):
         testing = lookup_latest_version(pack.name, "testing")
 
         if testing:
-            print "{} testing {}".format(pack.name, testing)
+            logger.debug("{} testing {}".format(pack.name, testing))
             self.update(pack, 'Wheezy', testing)
 
         if stable:
-            print "{} stable {}".format(pack.name, stable)
+            logger.debug("{} stable {}".format(pack.name, stable))
             self.update(pack, 'Squeeze', stable)
 
     def update(self, package, dist, version):
@@ -65,16 +65,18 @@ class Command(BaseCommand):
         TODO Finish name detection
         """
         data = Distribution.objects.filter(version_name=dist)
-
+        pname = package.package.name
         if len(data) == 1:
+            body = '\n'.join(["http:/pyrede.quiedeville.org/pypi/{}/".format(pname),
+                              "http://packages.debian.org/{}/{}".format(dist.lower(),
+                                                                        package.name)])
+
             if package.distribution.id == data[0].id:
                 if version != package.version:
                     subject = "{} update  {}".format(package.name, version)
-                    body = "http:/pyrede.quiedeville.org/pypi/{}/".format(package.name)
                     sendmail_admin.delay(subject, body)
                 else:
-                    print "{} is up to date  {}".format(package.name, version)
+                    logger.debug("{} is up to date  {}".format(package.name, version))
             else:
                 subject = "{} exists in {}".format(package.name, data[0])
-                body = "http:/pyrede.quiedeville.org/pypi/{}/".format(package.name)
                 sendmail_admin.delay(subject, body)
