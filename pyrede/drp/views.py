@@ -257,7 +257,7 @@ def adddispack(request, slug):
     errors = None
     pypi = Package.objects.get(name=slug)
     dispacks = DisPack.objects.filter(package=pypi)
-    distros = Distribution.objects.all().order_by('-pk')
+    distros = Distribution.objects.all().order_by('name', '-version_number')
     dists = [(r.id, "%s %s" % (r.name, r.version_name)) for r in distros]
 
     if request.method == 'POST':
