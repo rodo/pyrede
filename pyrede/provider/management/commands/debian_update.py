@@ -22,55 +22,59 @@ import last package
 import logging
 import feedparser
 from datetime import datetime
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from pyrede.provider.utils.debian import lookup_latest_version
 from pyrede.drp.models import DisPack
 from pyrede.drp.models import Package
 from pyrede.drp.models import Distribution
+from pyrede.provider.tasks import sendmail_admin
 
 logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    args = '<ircnick>'
-    help = 'Import recursively all ogg file in a directory'
+    help = 'Lookup for updates in debian, send mail new version'
 
     def handle(self, *args, **options):
         """
         Handle the command
         """
-        stable = lookup_latest_version(args[0], "stable")
-        testing = lookup_latest_version(args[0], "testing")
+        dispacks = DisPack.objects.all()
+
+        for pack in dispacks:
+            self.update_pack(pack)
+
+
+    def update_pack(self, pack):
+        stable = lookup_latest_version(pack.name, "stable")
+        testing = lookup_latest_version(pack.name, "testing")
 
         if testing:
-            self.update(args[0], 'Wheezy', testing)
+            print "{} testing {}".format(pack.name, testing)
+            self.update(pack, 'Wheezy', testing)
 
         if stable:
-            self.update(args[0], 'Squeeze', stable)
-            
+            print "{} stable {}".format(pack.name, stable)
+            self.update(pack, 'Squeeze', stable)
+
     def update(self, package, dist, version):
         """
         Update the package in database
 
         TODO Finish name detection
         """
-
         data = Distribution.objects.filter(version_name=dist)
 
         if len(data) == 1:
-            dispacks = DisPack.objects.filter(name=package,
-                                             distribution=data[0])
-
-            if len(dispacks) == 1:
-
-                dispacks[0].version = version
-                dispacks[0].save()
+            if package.distribution.id == data[0].id:
+                if version != package.version:
+                    subject = "{} update  {}".format(package.name, version)
+                    body = "http:/pyrede.quiedeville.org/pypi/{}/".format(package.name)
+                    sendmail_admin.delay(subject, body)
+                else:
+                    print "{} is up to date  {}".format(package.name, version)
             else:
-                print package
-                pack = Package.objects.get(name=package)
-                DisPack.objects.create(name=pack.name,
-                                       package=pack,
-                                       distribution=data[0],
-                                       version=version,
-                                       package_version=version.split('-')[0],
-                                       link='')
+                subject = "{} exists in {}".format(package.name, data[0])
+                body = "http:/pyrede.quiedeville.org/pypi/{}/".format(package.name)
+                sendmail_admin.delay(subject, body)

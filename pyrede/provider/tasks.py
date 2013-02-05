@@ -19,6 +19,7 @@ import logging
 from celery.task import task
 from django.conf import settings
 from django.core.mail import send_mail
+from django.core.mail import mail_admins
 
 
 @task
@@ -34,3 +35,11 @@ def sendmail_test(email):
               settings.EMAIL_FROM,
               [email],
               fail_silently=False)
+
+
+@task
+def sendmail_admin(subject, body):
+    """
+    email : string
+    """
+    mail_admins(subject, body)
