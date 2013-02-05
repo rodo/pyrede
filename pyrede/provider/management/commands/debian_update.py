@@ -62,7 +62,9 @@ class Command(BaseCommand):
         """
         Update the package in database
 
-        TODO Finish name detection
+        package : Object Package
+        dist : string
+        version : sring
         """
         data = Distribution.objects.filter(version_name=dist)
         pname = package.package.name
@@ -78,5 +80,10 @@ class Command(BaseCommand):
                 else:
                     logger.debug("{} is up to date  {}".format(package.name, version))
             else:
-                subject = "{} exists in {}".format(package.name, data[0])
-                sendmail_admin.delay(subject, body)
+                other = Distribution.objects.filter(pk=data[0].id)
+                if len(other) == 1:
+                    cot = DisPack.objects.filter(distribution=other[0],
+                                                 name=package.name)
+                    if len(cot) == 0:
+                        subject = "{} exists in {}".format(package.name, data[0])
+                        sendmail_admin.delay(subject, body)
