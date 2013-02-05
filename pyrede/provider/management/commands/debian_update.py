@@ -25,6 +25,7 @@ from datetime import datetime
 from django.core.management.base import BaseCommand
 from pyrede.provider.utils.debian import lookup_latest_version
 from pyrede.drp.models import DisPack
+from pyrede.drp.models import Package
 from pyrede.drp.models import Distribution
 
 logger = logging.getLogger(__name__)
@@ -42,21 +43,34 @@ class Command(BaseCommand):
         testing = lookup_latest_version(args[0], "testing")
 
         if testing:
-            update(args[0], 'Wheezy', testing)
+            self.update(args[0], 'Wheezy', testing)
 
         if stable:
-            update(args[0], 'Squeeze', stable)
-
-    def update(package, dist, version):
+            self.update(args[0], 'Squeeze', stable)
+            
+    def update(self, package, dist, version):
         """
         Update the package in database
+
+        TODO Finish name detection
         """
 
         data = Distribution.objects.filter(version_name=dist)
 
         if len(data) == 1:
-            dispack = DisPack.objects.filter(name=package,
+            dispacks = DisPack.objects.filter(name=package,
                                              distribution=data[0])
 
-            dispack.version = version
-            dispack.save()
+            if len(dispacks) == 1:
+
+                dispacks[0].version = version
+                dispacks[0].save()
+            else:
+                print package
+                pack = Package.objects.get(name=package)
+                DisPack.objects.create(name=pack.name,
+                                       package=pack,
+                                       distribution=data[0],
+                                       version=version,
+                                       package_version=version.split('-')[0],
+                                       link='')

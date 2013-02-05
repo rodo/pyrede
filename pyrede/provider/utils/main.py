@@ -79,25 +79,28 @@ def split_title(title):
     return data
 
 
-def create_update_pack(item, name, version, datas):
+def create_update_pack(item, name, version, datas=None):
     """
     Create or update pypi package
     """
-    exs = Package.objects.filter(name=name,
-                                 latest_version=version)
     count = 0
-    if len(exs) == 0:
-        packs = Package.objects.filter(name=name)
+    if name and version:
+        exs = Package.objects.filter(name=name,
+                                     latest_version=version)
 
-        if len(packs) == 0:
-            count += 1
-            create_pack(item, name, version, datas)
+        if len(exs) == 0:
+            packs = Package.objects.filter(name=name)
+
+            if len(packs) == 0:
+                count += 1
+                create_pack(item, name, version, datas)
+            else:
+                count += 1
+                update_pack(item, packs[0], version, datas)
+                mail_subscribers(name, packs[0].latest_version, version)
         else:
-            count += 1
-            update_pack(item, packs[0], version, datas)
-            mail_subscribers(name, packs[0].latest_version, version)
-    else:
-        update_pack_metadata(exs[0], datas)
+            update_pack_metadata(exs[0], datas)
+
     return count
 
 
@@ -121,10 +124,14 @@ def create_pack(item, name, version, datas):
 
 
 def count_downloads(datas):
+    """
+    datas may be None
+    """
     downloads = 0
-    if 'urls' in datas:
-        for url in datas['urls']:
-            downloads += url['downloads']
+    if datas:
+        if 'urls' in datas:
+            for url in datas['urls']:
+                downloads += url['downloads']
     return downloads
 
 

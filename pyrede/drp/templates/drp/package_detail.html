@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load humanize %}
 {% block content %}
 <div class="well">
   <div class="row">
@@ -20,7 +21,7 @@
       <ul>
 	<li>ref : <a href="{{package.link}}" target="_blank">{{package.link}}</a></li>	
 	{% if package.pypi_downloads > 0 %}
-	<li># downloads on pypi : {{package.pypi_downloads}}</li>
+	<li># downloads on pypi : {{package.pypi_downloads|intcomma}}</li>
 	{% endif %}
 	{% if nb_subscribers > 0 %}
 	<li>Subscribers : {{nb_subscribers}}</li>

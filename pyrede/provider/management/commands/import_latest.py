@@ -51,10 +51,12 @@ class Command(BaseCommand):
         count = 0
         datas = feedparser.parse(url)
         for item in datas['items']:
+            name = None
+            version = None
             try:
-                name, version = split_title(item['title'])
-                count = create_update_pack(item, name, version)
+                name, version = split_title(item['title'])                
             except:
-                logger.error("cant split %s" % item['title'])
+                logger.error("ERROR cant split {}".format(item['title']))
 
+            count = create_update_pack(item, name, version)
         return count
