@@ -226,6 +226,23 @@ def analyze_get(request, pk):
                    })
 
 
+def analyzereq(request, pk, dist):
+    """
+    The user post a file
+    """
+    qryset = Package.objects.all().order_by('-pk')[:7]
+    lkup = get_object_or_404(Lookup, pk=pk)
+    datas = requ_parser(lkup.content)
+
+    if pk == 0:
+        if request.method == 'POST':
+            return analyze_post(request)
+        else:
+            return redirect('/')
+    else:
+        return analyze_get(request, pk)
+
+
 def subscribe(request, slug):
     """
     Add a distribution package for a pypi package

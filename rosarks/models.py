@@ -23,12 +23,31 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+from rosarks.tasks import delta_bymonth
 
 
 class AtomicValue(models.Model):
     """
-    A package from Pypi
+    The smallest part of data
+    """
+    create = models.DateTimeField(editable=False, auto_now_add=True)
+    ref = models.CharField(max_length=1000, db_index=True)
+    value = models.IntegerField(default=0)
+
+
+class ConsolidateValue(models.Model):
+    """
+    The datas consolidates
     """
     create = models.DateTimeField(editable=False, auto_now_add=True)
     ref = models.CharField(max_length=1000)
     value = models.IntegerField(default=0)
+
+
+@receiver(post_save, sender=AtomicValue)
+def consolidate(sender, instance, created, **kwargs):
+    """Update number of dispack available"""
+    if created == 1:
+        delta_bymonth.delay(instance)
+        Consolidate.objects.create(ref=instance.ref,
+                                   value=value)
