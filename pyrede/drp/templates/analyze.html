@@ -37,7 +37,7 @@
     </div>    
   </div>
 
-<div id="modalSub" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div id="modalSub" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header"><h3>Official packages</h3></div>
   
   <div class="modal-body">
@@ -75,31 +75,14 @@
 </div>
 
 <hr/>
-
-  <h3>Last <a href="/pypis/">python packages</a> analyzed</h3>
-      
-  <table class="table table-striped">
-    <thead>
-      <tr>
-	<th class="span6">{% trans "Name" %}</th>
-	<th class="span2">{% trans "Version" %}</th>
-	<th class="span4">{% trans "Ref" %}</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for package in dispacks %}
-      <tr>
-	<td><a href="/pypi/{{package.name}}">{{package.name}}</a></td>
-	<td>
-	  <span class="badge badge-info">{{package.latest_version}}</span> 
-	</td>
-	<td>
-	  <a href="{{package.link}}" target="_blank">pypi</a>
-	</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<h3>your new requirements based on distribution</h3>
+  <div>
+    <ul>
+      <li>
+	<a href="/analyze/{{lookup.id}}/{{lookup.distribution.id}}/requirements.txt">requirements.txt</a>
+      </li>
+    </ul>
+  </div>
 
 <script type="text/javascript">
   detect({{founds|safe}}, {{lookup.distribution.id}});

@@ -16,7 +16,7 @@ admin.autodiscover()
 urlpatterns = patterns('',                       
                        url(r'^$', 'pyrede.drp.views.userreq'),
                        url(r'^analyze/(?P<pk>\d+)/$', 'pyrede.drp.views.analyze'),
-                       url(r'^analyze/(?P<pk>\d+)/(?P<pk>\d+)/requirements.txt$', 'pyrede.drp.views.analyzereq'),
+                       url(r'^analyze/(?P<pk>\d+)/(?P<dist>\d+)/requirements.txt$', 'pyrede.drp.views.analyzereq'),
                        url(r'^analyze/$', 'pyrede.drp.views.analyze'),
                        url(r'^analyzes/$', ListView.as_view(model=Lookup,paginate_by=17)),
                        url(r'^pypis/$', PackageList.as_view()),

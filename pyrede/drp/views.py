@@ -206,7 +206,6 @@ def analyze_get(request, pk):
     """
     Read an existing analyze
     """
-    qryset = Package.objects.all().order_by('-pk')[:7]
     lkup = get_object_or_404(Lookup, pk=pk)
     datas = requ_parser(lkup.content)
     for pack in datas:
@@ -220,8 +219,7 @@ def analyze_get(request, pk):
 
     return render(request,
                   'analyze.html',
-                  {'dispacks': qryset,
-                   'founds': datas,
+                  {'founds': datas,
                    'lookup': lkup
                    })
 
@@ -232,15 +230,29 @@ def analyzereq(request, pk, dist):
     """
     qryset = Package.objects.all().order_by('-pk')[:7]
     lkup = get_object_or_404(Lookup, pk=pk)
+    distro = get_object_or_404(Distribution, pk=dist)
     datas = requ_parser(lkup.content)
-
-    if pk == 0:
-        if request.method == 'POST':
-            return analyze_post(request)
+    result = []
+    for pack in datas:
+        known = DisPack.objects.filter(package__name=pack[0],
+                                       distribution=distro)
+        print known.query
+        if len(known) == 1:
+            result.append([pack[0], known[0].version])
         else:
-            return redirect('/')
-    else:
-        return analyze_get(request, pk)
+            result.append([pack[0]])
+
+    print result
+
+    return render(request,
+                  'requirements.txt',
+                  {'pk': pk,
+                   'founds': result,
+                   'ori': datas,
+                   'distro': distro,
+                   'lkup': lkup.content,
+                   },
+                  content_type='text/plain')
 
 
 def subscribe(request, slug):
