@@ -29,8 +29,7 @@ def delta_bymonth(ref):
     """
     Consolidate the delta by month
     """
-    keyc = "{}_delta_month".format(ref)
-    ConsolidateValue.objects.filter(ref=keyc).delete()
+
 
     queryset = AtomicValue.objects.filter(ref=ref)
 
@@ -40,8 +39,13 @@ def delta_bymonth(ref):
     for obj in queryset:
         datas.append([obj.create, obj.value])
 
-    value = delt.delta_bymonth(datas)
-    cons = ConsolidateValue.objects.create(ref=keyc,
-                                           value=0)
+    result = delt.delta_bymonth(datas)
 
-    return value
+    key = result.keys()[0]
+
+    keyc = "{}_delta_month_{}".format(ref, key)
+    ConsolidateValue.objects.filter(ref=keyc).delete()
+    cons = ConsolidateValue.objects.create(ref=keyc,
+                                           value=result[key])
+
+    return key, result[key]
