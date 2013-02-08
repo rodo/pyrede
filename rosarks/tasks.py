@@ -43,7 +43,7 @@ def delta_bymonth(ref):
 
     key = result.keys()[0]
 
-    keyc = "{}_delta_month_{}".format(ref, key)
+    keyc = "{}_{}".format(ref, key)
     ConsolidateValue.objects.filter(ref=keyc).delete()
     cons = ConsolidateValue.objects.create(ref=keyc,
                                            value=result[key])
