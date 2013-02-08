@@ -236,13 +236,10 @@ def analyzereq(request, pk, dist):
     for pack in datas:
         known = DisPack.objects.filter(package__name=pack[0],
                                        distribution=distro)
-        print known.query
         if len(known) == 1:
             result.append([pack[0], known[0].package_version])
         else:
             result.append([pack[0]])
-
-    print result
 
     return render(request,
                   'requirements.txt',
