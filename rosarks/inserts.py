@@ -18,7 +18,7 @@
 """
 Tasks for rosarks
 """
-from rosarks import tasks as rostasks
+from rosarks import tasks as rosatasks
 from rosarks.models import AtomicValue
 
 
@@ -29,4 +29,4 @@ def insert_atomic(ref, value):
 
     AtomicValue.objects.create(ref=ref, value=value)
 
-    rostasks.delta_bymonth(ref)
+    rosatasks.delta_bymonth.delay(ref)
