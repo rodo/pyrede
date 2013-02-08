@@ -44,10 +44,3 @@ class ConsolidateValue(models.Model):
     value = models.IntegerField(default=0)
 
 
-@receiver(post_save, sender=AtomicValue)
-def consolidate(sender, instance, created, **kwargs):
-    """Update number of dispack available"""
-    if created == 1:
-        delta_bymonth.delay(instance)
-        Consolidate.objects.create(ref=instance.ref,
-                                   value=value)
