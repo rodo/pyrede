@@ -19,6 +19,7 @@
 Tasks for rosarks
 """
 from celery.task import task
+from django.core.cache import cache
 from rosarks.utils.deltas import Deltas
 from rosarks.models import AtomicValue
 from rosarks.models import ConsolidateValue
@@ -27,10 +28,8 @@ from rosarks.models import ConsolidateValue
 @task
 def delta_bymonth(ref):
     """
-    Consolidate the delta by month
+    Consolidate the delta by month and store them in cache
     """
-
-
     queryset = AtomicValue.objects.filter(ref=ref)
 
     delt = Deltas()
@@ -47,5 +46,7 @@ def delta_bymonth(ref):
     ConsolidateValue.objects.filter(ref=keyc).delete()
     cons = ConsolidateValue.objects.create(ref=keyc,
                                            value=result[key])
+
+    cache.set(key, result[key])
 
     return key, result[key]
