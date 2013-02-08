@@ -22,9 +22,11 @@ Output stats for munin on stdout and set values in cache
 import logging
 from django.core.management.base import BaseCommand
 from django.core.cache import cache
+from django.db.models import Count
 from pyrede.drp.models import Package
 from pyrede.drp.models import PackageVersion
 from pyrede.drp.models import DisPack
+from pyrede.drp.models import Distribution
 from pyrede.drp.models import PackSubscr
 from datetime import datetime
 from datetime import timedelta
@@ -63,3 +65,6 @@ class Command(BaseCommand):
         cache.set("stats_nb_packversion", packversion)
         cache.set("stats_nb_dispack", dispack)
         cache.set("stats_nb_packsub", packsub)
+
+        for dat in Distribution.objects.annotate(np=Count('dispack')):
+            cache.set("stats_nb_dispack_distro_{}".format(dat.id), dat.np)
