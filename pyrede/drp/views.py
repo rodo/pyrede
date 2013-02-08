@@ -226,7 +226,7 @@ def analyze_get(request, pk):
 
 def analyzereq(request, pk, dist):
     """
-    The user post a file
+    Output a requirements.txt file based on distribution verison number
     """
     qryset = Package.objects.all().order_by('-pk')[:7]
     lkup = get_object_or_404(Lookup, pk=pk)
@@ -238,7 +238,7 @@ def analyzereq(request, pk, dist):
                                        distribution=distro)
         print known.query
         if len(known) == 1:
-            result.append([pack[0], known[0].version])
+            result.append([pack[0], known[0].package_version])
         else:
             result.append([pack[0]])
 

@@ -1,13 +1,15 @@
-# Generated : {% now "jS F Y H:i" %}
-# You can test your developpement using this version for
+# Generated on {% now "jS F Y H:i" %}
+# You can test your app/package using this requirements.txt file base
+# on package version number from :
 #
 #  {{distro.name}} {{distro.version_name}}
 #
 # ref : http://pyrede.quiedeville.org/analyze/{{pk}}/
+#{% for pack in founds %}
+{% if pack.1 %}{{pack.0}}=={{pack.1}}{% else %}{{pack.0}}{% endif %}{% endfor %}
 #
-{% for pack in founds %}{{pack.0}}=={{pack.1}}{% endfor %}
-#
-# Original version commented
+# your original requirement file
 #{% autoescape off %}
-{% for pack in ori %}# {{pack.0}}{{pack.1}}{{pack.2}}{% endfor %}
+{% for pack in ori %}# {{pack.0}}{{pack.1}}{{pack.2}}
+{% endfor %}
 {% endautoescape %}

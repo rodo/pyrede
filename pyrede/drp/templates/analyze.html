@@ -75,14 +75,15 @@
 </div>
 
 <hr/>
-<h3>your new requirements based on distribution</h3>
-  <div>
-    <ul>
-      <li>
-	<a href="/analyze/{{lookup.id}}/{{lookup.distribution.id}}/requirements.txt">requirements.txt</a>
-      </li>
-    </ul>
-  </div>
+<h3>Test your app/package with requirements based on distribution</h3>
+<div>
+  <ul>
+    <li>
+      For {{lookup.distribution.name}} {{lookup.distribution.version_name}}
+      <a href="/analyze/{{lookup.id}}/{{lookup.distribution.id}}/requirements.txt">requirements.txt</a>
+    </li>
+  </ul>
+</div>
 
 <script type="text/javascript">
   detect({{founds|safe}}, {{lookup.distribution.id}});
