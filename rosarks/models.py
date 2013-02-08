@@ -18,12 +18,7 @@
 """
 rosarks models
 """
-from django.core.cache import cache
 from django.db import models
-from django.db.models.signals import post_save
-from django.db.models.signals import post_delete
-from django.dispatch import receiver
-from rosarks.tasks import delta_bymonth
 
 
 class AtomicValue(models.Model):
@@ -42,5 +37,3 @@ class ConsolidateValue(models.Model):
     create = models.DateTimeField(editable=False, auto_now_add=True)
     ref = models.CharField(max_length=1000)
     value = models.IntegerField(default=0)
-
-

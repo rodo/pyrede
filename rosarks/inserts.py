@@ -18,32 +18,15 @@
 """
 Tasks for rosarks
 """
-from celery.task import task
-from rosarks.utils.deltas import Deltas
+from rosarks import tasks as rostasks
 from rosarks.models import AtomicValue
-from rosarks.models import ConsolidateValue
 
 
-@task
-def delta_bymonth(ref):
+def insert_atomic(ref, value):
     """
     Consolidate the delta by month
     """
-    keyc = "{}_delta_month".format(ref)
-    print ref, keyc
-    ConsolidateValue.objects.filter(ref=keyc).delete()
 
-    queryset = AtomicValue.objects.filter(ref=ref)
+    AtomicValue.objects.create(ref=ref, value=value)
 
-    delt = Deltas()
-    datas = []
-
-    for obj in queryset:
-        datas.append([obj.create, obj.value])
-
-    value = delt.delta_bymonth(datas)
-    print value
-    cons = ConsolidateValue.objects.create(ref=keyc,
-                                           value=0)
-
-    return value
+    rostasks.delta_bymonth(ref)
