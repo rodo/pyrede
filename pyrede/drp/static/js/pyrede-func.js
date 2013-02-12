@@ -70,11 +70,10 @@ function fetch(url, dist_id, elem) {
 	      }
 
 	      if (data.result == 1) {
-		  text = '<a class="btn btn-mini btn-primary" href="/pypi/'+data.name+'/add/">add one</a>';
+		  text = '<a class="btn btn-mini btn-primary" href="/pypi/'+data.name+'/">view</a>';
 		  $('#button_'+elem).html(text);
 		  $('#span_'+elem).html(data.name);
 	      }
 
-	      
 	  });
 }
