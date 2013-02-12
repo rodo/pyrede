@@ -277,6 +277,7 @@ def unsubscribe(request, slug, uuid):
     return redirect('/pypi/{}/'.format(pypi.name))
 
 
+@login_required
 def adddispack(request, slug):
     """
     Add a distribution package for a pypi package
