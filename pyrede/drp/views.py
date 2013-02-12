@@ -47,7 +47,7 @@ logger = logging.getLogger(__name__)
 
 
 class PackageList(ListView):
-    queryset = Package.objects.all().order_by("-pypi_downloads")
+    queryset = Package.objects.all().order_by("-pypi_downloadstm")
     paginate_by = 17
     template_name = 'packages.html'
     context_object_name = 'packages'
