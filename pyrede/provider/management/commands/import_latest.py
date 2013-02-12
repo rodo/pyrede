@@ -26,6 +26,7 @@ from django.core.management.base import BaseCommand
 from pyrede.drp.models import Package
 from pyrede.drp.models import PackageVersion
 from pyrede.provider.utils.main import create_update_pack
+from pyrede.provider.utils.main import import_package
 from pyrede.provider.utils.main import split_title
 
 logger = logging.getLogger(__name__)
@@ -58,5 +59,6 @@ class Command(BaseCommand):
             except:
                 logger.error("ERROR cant split {}".format(item['title']))
 
-            count = create_update_pack(item, name, version)
+            #count = create_update_pack(item, name, version)
+            import_package(name)
         return count

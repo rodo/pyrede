@@ -39,6 +39,9 @@ class Package(models.Model):
     link = models.CharField(max_length=300)
 
     description = models.CharField(max_length=1000)
+    summary = models.CharField(max_length=250,
+                               blank=True,
+                               default='')
 
     nbdispack = models.IntegerField(default=0)
 
