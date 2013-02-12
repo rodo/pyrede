@@ -33,4 +33,5 @@ urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^search/', include('haystack.urls')),
                        url(r'^about/$', 'pyrede.drp.views.about'),
+                       url(r'^robots.txt$', 'pyrede.drp.views.robots'),
 )

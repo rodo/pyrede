@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /add/
+Disallow: /accounts/

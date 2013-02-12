@@ -355,3 +355,12 @@ def profile(request):
     return render(request,
                   template_name,
                   {})
+
+
+def robots(request):
+    """
+    The robots.txt
+    """
+    return render(request,
+                  'robots.txt',
+                  content_type='text/plain')
