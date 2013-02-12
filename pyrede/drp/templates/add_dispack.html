@@ -7,7 +7,7 @@
 
       <h3>Add a distribution package for : {{package.name}} {{package.latest_version}}</h3>
       {% if form %}
-      <form class="well form-horizontal" action="/pypi/{{package.name}}/add/" method="post">
+      <form class="well form-horizontal" action="." method="post">
 	{% csrf_token %}
 	<fieldset>
 	  <input type="hidden" name="referer" value="{{referer}}">

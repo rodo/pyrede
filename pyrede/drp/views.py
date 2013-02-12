@@ -28,6 +28,7 @@ from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView
 from django.views.generic import DetailView
+from django.contrib.auth.decorators import login_required
 from pyrede.utils.reqparser import requ_parser
 from pyrede.drp.models import DisPack
 from pyrede.drp.models import Distribution
@@ -342,3 +343,14 @@ def about(request):
     About page
     """
     return render(request, 'about.html')
+
+
+@login_required
+def profile(request):
+    """The profile wiew
+    """
+    template_name = 'profile.html'
+
+    return render(request,
+                  template_name,
+                  {})

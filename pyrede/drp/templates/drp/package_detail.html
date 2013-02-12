@@ -26,7 +26,6 @@
 	{% if nb_subscribers > 0 %}
 	<li>Subscribers : {{nb_subscribers}}</li>
 	{% endif %}
-
       </ul>
     </div>    
   </div>
@@ -34,7 +33,9 @@
   <div class="row">
     <div class="span10">
       <a class="btn btn-primary" href="#modalSub" data-toggle="modal">{% trans "Subscribe" %}</a>
+      {% if user.is_authenticated %}
       <a class="btn btn-primary" href="/pypi/{{package.name}}/add/">{% trans "Add package" %}</a>
+      {% endif %}
     </div>    
   </div>
 </div>

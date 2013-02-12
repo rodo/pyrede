@@ -14,6 +14,8 @@ admin.autodiscover()
 
 
 urlpatterns = patterns('',                       
+                       url(r'^accounts/', include('registration.backends.default.urls')),
+                       url(r'^accounts/profile/$', 'pyrede.drp.views.profile'),
                        url(r'^$', 'pyrede.drp.views.userreq'),
                        url(r'^analyze/(?P<pk>\d+)/$', 'pyrede.drp.views.analyze'),
                        url(r'^analyze/(?P<pk>\d+)/(?P<dist>\d+)/requirements.txt$', 'pyrede.drp.views.analyzereq'),
@@ -21,6 +23,7 @@ urlpatterns = patterns('',
                        url(r'^analyzes/$', ListView.as_view(model=Lookup,paginate_by=17)),
                        url(r'^pypis/$', PackageList.as_view()),
                        url(r'^json/pypi/(?P<slug>.*)/$', 'pyrede.drp.views.jsonpypi'),
+                       url(r'^add/pypi/(?P<slug>.*)/$', 'pyrede.drp.views.adddispack'),
                        url(r'^pypi/(?P<slug>.*)/add/$', 'pyrede.drp.views.adddispack'),
                        url(r'^pypi/(?P<slug>.*)/sub/$', 'pyrede.drp.views.subscribe'),
                        url(r'^pypi/(?P<slug>.*)/unsub/(?P<uuid>.*)/$', 'pyrede.drp.views.unsubscribe'),

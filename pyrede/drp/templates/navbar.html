@@ -20,12 +20,12 @@
         </ul>
 
         <p class="navbar-text pull-right">
-	    {% if user.is_authenticated %}
-	    Salut à toi <a href="/accounts/profile/">{{ user.username }}</a> /
-	    <a href="/accounts/logout/">Déconnexion</a>
-	    {% else %}
-	    <a href="/accounts/login/">log in</a>
-	    {% endif %}
+	  {% if user.is_authenticated %}
+	  <a href="/accounts/profile/">{{ user.username }}</a> /
+	  <a href="/accounts/logout/">logout</a>
+	  {% else %}
+	  <a href="/accounts/login/">log in</a>
+	  {% endif %}
 	</p>
       </div><!--/.nav-collapse -->
     </div><!--/.container -->

@@ -24,7 +24,9 @@
 	{% else %}
 	<span class="badge">{{package.nbdispack}}</span> 
 	{% endif %}
-	<a class="btn btn-mini btn-primary" href="/pypi/{{package.name}}/add/">add one</a>
+	{% if user.is_authenticated %}
+	<a class="btn btn-mini btn-primary" href="/add/pypi/{{package.name}}/">add</a>
+	{% endif %}
       </td>
     </tr>
     {% endfor %}
