@@ -8,7 +8,7 @@ requests
 celery==2.5.5
 django-celery==2.5.5
 django_compressor
-haystack==1.2.7
+django-haystack==1.2.7
 #
 #  following package are for running tests
 #
