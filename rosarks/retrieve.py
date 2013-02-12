@@ -43,4 +43,4 @@ def fetch_byid_dm(name, ref, value):
     if len(vals) == 0:
         return (key, 0)
     else:
-        return (key, vals)
+        return (key, vals[0].value)
