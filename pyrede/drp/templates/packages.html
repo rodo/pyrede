@@ -31,11 +31,12 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th class="span6">{% trans "Name" %}</th>
+      <th class="span4">{% trans "Name" %}</th>
       <th class="span2">{% trans "Version" %}</th>
       <th class="span1">Ref</th>
       <th class="span1">Pack.</th>
       <th class="span2">Dwn.</th>
+      <th class="span2">D This M.</th>
     </tr>
   </thead>
   <tbody>
@@ -57,6 +58,9 @@
       </td>
       <td>
 	<span class="badge badge-inverse">{{package.pypi_downloads|intcomma}}</span>	
+      </td>
+      <td>
+	{{package.pypi_downloadstm|intcomma}}
       </td>
     </tr>
     {% endfor %}
