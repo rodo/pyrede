@@ -23,6 +23,7 @@ import logging
 from django.core.management.base import BaseCommand
 from pyrede.provider.utils.main import import_package
 from pyrede.drp.models import Package
+from rosarks.retrieve import fetch_byid_dm
 
 logger = logging.getLogger(__name__)
 
@@ -41,3 +42,8 @@ class Command(BaseCommand):
             logger.debug('parse %s' % pack.name)
             nbp = import_package(pack.name, True)
         
+        packs = Package.objects.all()
+        for pack in packs:
+            val = fetch_byid_dm('package', pack.id, 'downloads')
+            pack.pypi_downloadstm = val[1]
+            pack.save()
