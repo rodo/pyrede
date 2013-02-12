@@ -31,13 +31,13 @@ CACHES = {
     }
 }
 #
-import os
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': '/tmp/pyrede_whoosh_index',
-        },
- }
+# Use Haystack 1.2.7
+#
+HAYSTACK_SITECONF = 'pyrede.drp.search_indexes'
+HAYSTACK_SEARCH_ENGINE = 'whoosh'
+HAYSTACK_WHOOSH_PATH = '/tmp/pyrede_whoosh_index'
+#
+#
 #
 import djcelery
 djcelery.setup_loader()

@@ -19,16 +19,19 @@
 Fulltext indexing with haystack
 """
 from django.conf import settings
-from haystack import indexes
+from haystack.indexes import *
+from haystack import site
 from pyrede.drp.models import Package
 
 
-class PackageIndex(indexes.RealTimeSearchIndex, indexes.Indexable):
+class PackageIndex(SearchIndex):
     """
     Fulltext indexing for PyPI packages
     """
-    text = indexes.CharField(document=True, use_template=True)
-    name = indexes.CharField(model_attr='name')
+    text = CharField(document=True, use_template=True)
+    name = CharField(model_attr='name')
 
     def get_model(self):
         return Package
+
+site.register(Package, PackageIndex)
