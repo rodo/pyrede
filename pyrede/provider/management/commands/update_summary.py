@@ -22,6 +22,7 @@ Update the most used packages
 import logging
 import requests
 import json
+from time import sleep
 from django.core.management.base import BaseCommand
 from pyrede.drp.models import Package
 
@@ -38,18 +39,19 @@ class Command(BaseCommand):
         """
         packs = Package.objects.all()
         for pack in packs:
-
-
             key = 'pypi_import_flag_{}'.format(pack.name)
 
             url = "http://pypi.python.org/pypi"
 
             params = {':action': 'json', 'name': pack.name}
-            headers = {'content-type': 'application/json'}
+            headers = {'content-type': 'application/json',
+                       'User-agent': 'Pyrede http://pyrede.quiedeville.org/about/'}
 
             item = {}
 
+            sleep(2) # be smart
             req = requests.get(url, params=params, headers=headers)
+
             if (req.ok):
                 print "found : %s" % pack.name
                 datas = json.loads(req.content)
