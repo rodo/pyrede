@@ -57,7 +57,8 @@ class Command(BaseCommand):
                 datas = json.loads(req.content)
 
                 try:
-                    pack.summary = datas['info']['summary']
+                    summ = datas['info']['summary']
+                    pack.summary = summ[:250]
                     pack.save()
                 except:
                     print "Error on save %s" % pack.name
