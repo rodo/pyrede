@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load markup_tags %}
 {% load humanize %}
 {% block content %}
 <div class="well">
   <div class="row">
     
-    <div class="span5">
+    <div class="span6">
       <h3>{{package.name}}</h3>
       {{package.summary}}
     </div>
@@ -24,7 +25,7 @@
       <ul>
 	<li>ref : <a href="{{package.link}}" target="_blank">{{package.link}}</a></li>	
 	{% if package.pypi_downloads > 0 %}
-	<li># downloads on pypi : {{package.pypi_downloads|intcomma}}</li>
+	<li># downloads on pypi : {{package.pypi_downloads|intcomma}} ({{package.pypi_downloadstm|intcomma}} this month)</li>
 	{% endif %}
 	{% if nb_subscribers > 0 %}
 	<li>Subscribers : {{nb_subscribers}}</li>
@@ -98,10 +99,10 @@
   </tbody>
 </table>
 
-<div class="row">
-  <div class="span12">
-    <pre>{{package.description}}</pre>
-  </div>
+<h3>Description</h3>
+
+<div class="well">
+  {{package.description|apply_markup:"restructuredtext"}}
 </div>
 
 {% endblock %}
