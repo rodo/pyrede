@@ -37,7 +37,7 @@ class Command(BaseCommand):
         """
         Handle the command
         """
-        packs = Package.objects.all()
+        packs = Package.objects.all().order_by('summary')
         for pack in packs:
             key = 'pypi_import_flag_{}'.format(pack.name)
 
