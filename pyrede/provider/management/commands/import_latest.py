@@ -58,7 +58,6 @@ class Command(BaseCommand):
                 name, version = split_title(item['title'])                
             except:
                 logger.error("ERROR cant split {}".format(item['title']))
-
-            #count = create_update_pack(item, name, version)
+            print "Import {}".format(name)
             import_package(name)
         return count
