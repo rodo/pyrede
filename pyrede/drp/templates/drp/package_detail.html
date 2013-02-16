@@ -102,7 +102,9 @@
 <h3>Description</h3>
 
 <div class="well">
+  {% autoescape off %}
   {{package.description|apply_markup:"restructuredtext"}}
+  {% endautoescape %}
 </div>
 
 {% endblock %}
