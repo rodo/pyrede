@@ -68,7 +68,7 @@ class PackageDetail(DetailView):
         context['nb_subscribers'] = PackSubscr.objects.filter(package=self.object).count()
         context['last_update'] = PackageVersion.objects.filter(package=self.object).order_by('-pubdate')[0]
         context['form'] = SubForm()
-        context['versions'] = PackageVersion.objects.filter(package=self.object).order_by('-pk')[10]
+        context['versions'] = PackageVersion.objects.filter(package=self.object).order_by('-pk')[:10]
         return context
 
 
