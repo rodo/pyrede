@@ -102,12 +102,12 @@ def create_update_pack(item, name, version, datas=None):
 
         if len(exs) == 0:
             packs = Package.objects.filter(name=name)
-            last_version = packs[0].latest_version
 
             if len(packs) == 0:
                 count += 1
                 create_pack(item, name, version, datas)
             else:
+                last_version = packs[0].latest_version
                 count += 1
                 update_pack(item, packs[0], version, datas)
                 mail_subscribers(name, last_version, version)
