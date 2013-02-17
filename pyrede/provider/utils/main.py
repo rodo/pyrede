@@ -36,6 +36,21 @@ from rosarks.inserts import insert_atomic
 
 logger = logging.getLogger(__name__)
 
+def get_req(package):
+    """
+    Request info by json
+
+    package : string, package name
+    """
+    url = "http://pypi.python.org/pypi"
+
+    params = {':action': 'json', 'name': package}
+    headers = {'content-type': 'application/json',
+               'User-agent': 'Pyrede bot, contact http://pyrede.quiedeville.org/about/'}
+
+    return requests.get(url, params=params, headers=headers)
+    
+
 
 def import_package(package, force=False):
     """
@@ -44,21 +59,17 @@ def import_package(package, force=False):
     key = 'pypi_import_flag_{}'.format(package)
     if force:
         cache.delete(key)
+
     if cache.get(key) != None:
         logger.warning('package : [%s] was import less than 2 hours' % package)
     else:
         cache.set(key, 7200)
         logger.debug('try to import : %s' % package)
-        url = "http://pypi.python.org/pypi"
-
-        params = {':action': 'json', 'name': package}
-        headers = {'content-type': 'application/json'}
-
         item = {}
 
-        req = requests.get(url, params=params, headers=headers)
+        req = get_req(package)
         if (req.ok):
-            logger.debug("found : %s" % url)
+            logger.debug("found : %s" % package)
             datas = json.loads(req.content)
             version = datas['info']['version']
             item['description'] = datas['info']['description']
@@ -83,6 +94,7 @@ def create_update_pack(item, name, version, datas=None):
     """
     Create or update pypi package
     """
+    logger.debug("create_update_pack {} {}".format(name, version))
     count = 0
     if name and version:
         exs = Package.objects.filter(name=name,
@@ -90,6 +102,7 @@ def create_update_pack(item, name, version, datas=None):
 
         if len(exs) == 0:
             packs = Package.objects.filter(name=name)
+            last_version = packs[0].latest_version
 
             if len(packs) == 0:
                 count += 1
@@ -97,7 +110,7 @@ def create_update_pack(item, name, version, datas=None):
             else:
                 count += 1
                 update_pack(item, packs[0], version, datas)
-                mail_subscribers(name, packs[0].latest_version, version)
+                mail_subscribers(name, last_version, version)
         else:
             update_pack_metadata(exs[0], datas)
 
@@ -115,6 +128,10 @@ def create_pack(item, name, version, datas):
     except:
         summary = ''
 
+    try:
+        upload_time = datas['urls'][0]['upload_time']
+    except:
+        upload_time = datetime.today()
 
     pack = Package.objects.create(name=name,
                                   latest_version=version,
@@ -127,7 +144,7 @@ def create_pack(item, name, version, datas):
                                   version=version,
                                   link=item['link'],
                                   description=item['description'][:2000],
-                                  pubdate=datetime.today())
+                                  pubdate=upload_time)
 
 
 def count_downloads(datas):
@@ -155,9 +172,16 @@ def update_pack(item, pack, version, datas):
     except:
         summary = ''
 
+    try:
+        upload_time = datas['urls'][0]['upload_time']
+    except:
+        upload_time = datetime.today()
+
     logger.debug('package %s : update from %s to %s' % (pack.name,
                                                         pack.latest_version,
                                                         version))
+
+
 
     pack.latest_version = version
     pack.link = item['link']
@@ -170,7 +194,7 @@ def update_pack(item, pack, version, datas):
                                   version=version,
                                   link=item['link'],
                                   description=item['description'][:2000],
-                                  pubdate=datetime.today())
+                                  pubdate=upload_time)
 
 
 def update_pack_metadata(pack, datas):
@@ -180,11 +204,11 @@ def update_pack_metadata(pack, datas):
     pack : Object Package
     version : string
     """
-    logger.debug('package {} : update datas'.format(pack.name))
-
     downval = count_downloads(datas)
     pack.pypi_downloads = downval
     pack.save()
+
+    logger.debug('package {} : update datas down : {}'.format(pack.name, downval))
     insert_atomic('package_{}_downloads'.format(pack.id), downval)
 
 
