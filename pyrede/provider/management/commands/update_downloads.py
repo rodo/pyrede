@@ -59,6 +59,6 @@ class Command(BaseCommand):
                     pack.pubdate = datas['urls'][0]['upload_time']
                     pack.save()
                 except:
-                    print "Error on save %s" % pack.name
+                    print "Error on save %s" % pack.package.name
             else:
                 print "not found : {} {}".format(pack.package.name, pack.version)
