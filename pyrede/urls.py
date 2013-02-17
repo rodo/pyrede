@@ -6,12 +6,17 @@ from pyrede.drp.views import PackageDetail
 from pyrede.drp.models import Distribution
 from pyrede.drp.models import DisPack
 from pyrede.drp.models import Lookup
-
+from tastypie.api import Api
+from pyrede.drp.api import PackageResource
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
 
+# Implement API version 1                                                                                
+v1_api = Api(api_name='v1')
+# Register Shows                                                                                         
+v1_api.register(PackageResource())
 
 urlpatterns = patterns('',                       
                        url(r'^accounts/', include('registration.backends.default.urls')),
@@ -21,6 +26,7 @@ urlpatterns = patterns('',
                        url(r'^analyze/(?P<pk>\d+)/(?P<dist>\d+)/requirements.txt$', 'pyrede.drp.views.analyzereq'),
                        url(r'^analyze/$', 'pyrede.drp.views.analyze'),
                        url(r'^analyzes/$', ListView.as_view(model=Lookup,paginate_by=17)),
+                       url(r'^pypis/latest/$', PackageList.as_view()),
                        url(r'^pypis/$', PackageList.as_view()),
                        url(r'^json/pypi/(?P<slug>.*)/$', 'pyrede.drp.views.jsonpypi'),
                        url(r'^add/pypi/(?P<slug>.*)/$', 'pyrede.drp.views.adddispack'),
@@ -34,4 +40,7 @@ urlpatterns = patterns('',
                        url(r'^search/', include('haystack.urls')),
                        url(r'^about/$', 'pyrede.drp.views.about'),
                        url(r'^robots.txt$', 'pyrede.drp.views.robots'),
+                       url(r'^api/', include(v1_api.urls)),
 )
+
+

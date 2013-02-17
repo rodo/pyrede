@@ -9,6 +9,7 @@ celery==2.5.5
 django-celery==2.5.5
 django_compressor
 django-haystack==1.2.7
+django-tastypie
 #
 #  following package are for running tests
 #
