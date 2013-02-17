@@ -138,7 +138,8 @@ def create_pack(item, name, version, datas):
                                   link=item['link'],
                                   summary=summary,
                                   description=item['description'][:2000],
-                                  pypi_downloads=count_downloads(datas))
+                                  pypi_downloads=count_downloads(datas),
+                                  last_update=upload_time)
 
     PackageVersion.objects.create(package=pack,
                                   version=version,
@@ -188,6 +189,7 @@ def update_pack(item, pack, version, datas):
     pack.summary = summary,
     pack.description = item['description'][:2000]
     pack.pypi_downloads = count_downloads(datas)
+    pack.last_update = upload_time
     pack.save()
 
     PackageVersion.objects.create(package=pack,
