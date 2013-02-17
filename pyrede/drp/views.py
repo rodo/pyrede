@@ -47,11 +47,13 @@ logger = logging.getLogger(__name__)
 
 
 class PackageList(ListView):
-    queryset = Package.objects.all().order_by("-pypi_downloadstm")
     paginate_by = 17
     template_name = 'packages.html'
     context_object_name = 'packages'
 
+    def get_queryset(self):
+        qryst = Package.objects.all().order_by("-pypi_downloadstm")
+        return qryst
 
 class PackageDetail(DetailView):
 
@@ -66,6 +68,7 @@ class PackageDetail(DetailView):
         context['nb_subscribers'] = PackSubscr.objects.filter(package=self.object).count()
         context['last_update'] = PackageVersion.objects.filter(package=self.object).order_by('-pubdate')[0]
         context['form'] = SubForm()
+        context['versions'] = PackageVersion.objects.filter(package=self.object).order_by('-pk')
         return context
 
 

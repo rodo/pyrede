@@ -100,5 +100,30 @@
 </table>
 
 
+<div class='row'>
+  <div class='span6 well'>
+    <h4>Last 10 versions</h4>
+
+    <table class="table table-striped">
+      <thead>
+	<tr>
+	  <th>{% trans "Version" %}</th>
+	  <th>{% trans "Date" %}</th>
+	</tr>
+      </thead>
+      <tbody>
+	{% for version in versions %}
+	<tr>
+	  <td>{{version.version}}</td>
+	  <td>{{version.pubdate}}</td>
+	</tr>
+	{% endfor %}
+      </tbody>
+    </table>
+    
+  </div>
+</div>
+
+
 {% endblock %}
 
