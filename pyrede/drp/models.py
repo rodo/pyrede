@@ -48,6 +48,8 @@ class Package(models.Model):
     pypi_downloads = models.IntegerField(default=0)
     pypi_downloadstm = models.IntegerField(default=0)
 
+    last_update = models.DateTimeField()
+
     def __str__(self):
         return '%s %s' % (self.name, self.latest_version)
 
