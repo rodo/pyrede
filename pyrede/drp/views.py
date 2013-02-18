@@ -36,6 +36,7 @@ from pyrede.drp.models import Lookup
 from pyrede.drp.models import Package
 from pyrede.drp.models import PackageVersion
 from pyrede.drp.models import PackSubscr
+from pyrede.drp.models import DebianITP
 from pyrede.drp.forms import ReqForm
 from pyrede.drp.forms import DisPackForm
 from pyrede.drp.forms import SubForm
@@ -69,6 +70,7 @@ class PackageDetail(DetailView):
         context['last_update'] = PackageVersion.objects.filter(package=self.object).order_by('-pubdate')[0]
         context['form'] = SubForm()
         context['versions'] = PackageVersion.objects.filter(package=self.object).order_by('-pk')[:10]
+        context['itps'] = DebianITP.objects.filter(package=self.object)
         return context
 
 

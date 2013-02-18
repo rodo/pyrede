@@ -81,6 +81,18 @@ class PackageVersion(models.Model):
         super(PackageVersion, self).save(*args, **kwargs)
 
 
+class DebianITP(models.Model):
+    """
+    The package
+    """
+    package = models.ForeignKey(Package)
+    number = models.IntegerField()
+
+    @property
+    def debian_url(self):
+        url = "http://bugs.debian.org/cgi-bin/bugreport.cgi?bug={}".format(self.number)
+        return url
+
 class Distribution(models.Model):
     """
     A distribution

@@ -119,9 +119,26 @@
 	</tr>
 	{% endfor %}
       </tbody>
-    </table>
-    
+    </table>    
   </div>
+
+  <div class='span5'>
+    {% if itps|length > 0 %}
+    <h4>Debian ITP</h4>
+
+    <table class="table table-striped">
+
+      <tbody>
+	{% for itp in itps %}
+	<tr>
+	  <td><a href="{{itp.debian_url}}" target="_blank">{{itp.number}}</a></td>
+	</tr>
+	{% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+  </div>
+
 </div>
 
 
