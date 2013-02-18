@@ -49,14 +49,14 @@ def get_req(package):
                'User-agent': 'Pyrede bot, contact http://pyrede.quiedeville.org/about/'}
 
     return requests.get(url, params=params, headers=headers)
-    
+
 
 
 def import_package(package, force=False):
     """
     Import a package from pypi
     """
-    key = 'pypi_import_flag_{}'.format(package)
+    key = 'pypi_import_flag_{}'.format(package.replace(' ', '-'))
     if force:
         cache.delete(key)
 

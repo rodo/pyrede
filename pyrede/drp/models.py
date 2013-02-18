@@ -54,7 +54,7 @@ class Package(models.Model):
         return '%s %s' % (self.name, self.latest_version)
 
     def save(self, *args, **kwargs):
-        key = 'json_pypi_{}'.format(self.name)
+        key = 'json_pypi_{}'.format(self.name.replace(' ', '-'))
         cache.delete(key)
         super(Package, self).save(*args, **kwargs)
 
@@ -76,7 +76,7 @@ class PackageVersion(models.Model):
     pubdate = models.DateTimeField()
 
     def save(self, *args, **kwargs):
-        key = 'json_pypi_{}'.format(self.package.name)
+        key = 'json_pypi_{}'.format(self.package.name.replace(' ', '-'))
         cache.delete(key)
         super(PackageVersion, self).save(*args, **kwargs)
 
