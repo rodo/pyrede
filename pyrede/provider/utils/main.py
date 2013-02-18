@@ -190,7 +190,10 @@ def update_pack(item, pack, version, datas):
     pack.description = item['description'][:2000]
     pack.pypi_downloads = count_downloads(datas)
     pack.last_update = upload_time
-    pack.save()
+    try:
+        pack.save()
+    except:
+        print "Error on save {}".format(pack.name)
 
     PackageVersion.objects.create(package=pack,
                                   version=version,
