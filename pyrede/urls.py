@@ -3,8 +3,10 @@ from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from pyrede.drp.views import PackageList
 from pyrede.drp.views import PackageDetail
+from pyrede.drp.views import DistributionDetail
 from pyrede.drp.models import Distribution
 from pyrede.drp.models import DisPack
+from pyrede.drp.models import DebianITP
 from pyrede.drp.models import Lookup
 from tastypie.api import Api
 from pyrede.drp.api import PackageResource
@@ -34,12 +36,13 @@ urlpatterns = patterns('',
                        url(r'^pypi/(?P<slug>.*)/unsub/(?P<uuid>.*)/$', 'pyrede.drp.views.unsubscribe'),
                        url(r'^pypi/(?P<slug>.*)/$', PackageDetail.as_view()),
                        url(r'^distributions/$', ListView.as_view(model=Distribution)),
-                       url(r'^distribution/(?P<pk>\d+)/$', DetailView.as_view(model=Distribution)),
+                       url(r'^distribution/(?P<pk>\d+)/$', DistributionDetail.as_view()),
                        url(r'^packages/$', ListView.as_view(model=DisPack,paginate_by=17)),
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^search/', include('haystack.urls')),
                        url(r'^about/$', 'pyrede.drp.views.about'),
                        url(r'^robots.txt$', 'pyrede.drp.views.robots'),
+                       url(r'^itps/$', ListView.as_view(model=DebianITP)),
                        url(r'^api/', include(v1_api.urls)),
 )
 

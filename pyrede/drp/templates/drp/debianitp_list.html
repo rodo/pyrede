@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+{% include "pager.html" %}
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="span6">{% trans "Name" %}</th>
+      <th class="span2">{% trans "Link" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for itp in object_list %}
+    <tr>
+      <td>{{itp.package.name}}</td>
+      <td><a href="{{itp.debian_url}}" target="_blank">{{itp.number}}</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
