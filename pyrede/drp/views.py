@@ -56,6 +56,17 @@ class PackageList(ListView):
         qryst = Package.objects.all().order_by("-pypi_downloadstm")
         return qryst
 
+class DistributionDetail(DetailView):
+    model = Distribution
+
+    def get_context_data(self, **kwargs):
+        context = super(DistributionDetail, self).get_context_data(**kwargs)
+        self.dist = Distribution.objects.all()[0]
+        context['var'] = len(kwargs)
+        return context
+
+
+
 class PackageDetail(DetailView):
 
     model = Package
