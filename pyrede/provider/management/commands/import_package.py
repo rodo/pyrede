@@ -27,8 +27,7 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    args = '<ircnick>'
-    help = 'Import recursively all ogg file in a directory'
+    help = 'Import a package'
 
     def handle(self, *args, **options):
         """
