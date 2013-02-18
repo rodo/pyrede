@@ -33,31 +33,25 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    args = '<ircnick>'
-    help = 'Import recursively all ogg file in a directory'
+    help = 'Read the RSS about the 40 last package, and import all of them'
 
     def handle(self, *args, **options):
-        nbp = 40
         url = 'http://pypi.python.org/pypi?%3Aaction=rss'
         if len(args):
             url = args[0]
 
         logger.debug('parse %s' % url)
-
-        while nbp == 40:
-            nbp = self.parse(url)
-            logger.debug('found %s package' % nbp)
+        nbp = self.parse(url)
+        logger.debug('found %s package' % nbp)
 
     def parse(self, url):
-        count = 0
         datas = feedparser.parse(url)
         for item in datas['items']:
             name = None
             version = None
             try:
-                name, version = split_title(item['title'])                
+                name, version = split_title(item['title'])
             except:
                 logger.error("ERROR cant split {}".format(item['title']))
-            print "Import {}".format(name)
             import_package(name)
-        return count
+        return len(datas)
