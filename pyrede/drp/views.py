@@ -66,6 +66,14 @@ class DistributionDetail(DetailView):
         return context
 
 
+class DistributionPackages(ListView):
+    model = DisPack
+
+    def get_queryset(self):
+        dist = get_object_or_404(Distribution, pk=self.kwargs['pk'])
+        qryst = DisPack.objects.filter(distribution=dist)
+        return qryst
+
 
 class PackageDetail(DetailView):
 
