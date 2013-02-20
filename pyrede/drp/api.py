@@ -21,6 +21,7 @@ API definition
 from tastypie.resources import ModelResource
 from pyrede.drp.models import Package
 
+
 class PackageResource(ModelResource):
     """
     A package as known as PyPI
