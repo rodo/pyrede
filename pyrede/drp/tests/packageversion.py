@@ -43,7 +43,8 @@ class PackageVersionTests(TestCase):  # pylint: disable-msg=R0904
         pack = Package.objects.create(name='python-dikbm-adapter',
                                       latest_version='2.0.0',
                                       link='http://www.foo.bar',
-                                      description='lorem ipsum')
+                                      description='lorem ipsum',
+                                      last_update=datetime(2012,12,12,7,50,2))
 
         version = PackageVersion.objects.create(package=pack,
                                                 version='2.0.0',
