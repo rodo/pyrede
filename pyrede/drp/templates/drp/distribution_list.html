@@ -48,7 +48,7 @@
 	<a target="_blank" href="{{distribution.repo}}">{{distribution.repo}}</a>
 	{% endif %}
       </td>
-      <td>{% distro_nb_package distribution.id %}</td>
+      <td><a href="/distribution/{{distribution.id}}/packages/">{% distro_nb_package distribution.id %}</a></td>
     </tr>
     {% endfor %}
   </tbody>
