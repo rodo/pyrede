@@ -19,14 +19,10 @@
 """
 Consolidate statistics and print on stdout
 """
-import logging
 from django.core.management.base import BaseCommand
 from django.db.models import Count
 from django.core.cache import cache
 from pyrede.drp.models import Package
-from pyrede.drp.models import PackageVersion
-from pyrede.drp.models import DisPack
-from pyrede.drp.models import PypStats
 
 
 class Command(BaseCommand):
@@ -38,6 +34,6 @@ class Command(BaseCommand):
         """
         foos = Package.objects.annotate(num_pack=Count('pypstats')).filter(num_pack__gt=0).order_by('-num_pack')
 
-        for foo in foos:
-            self.stdout.write("{} {}\n".format(foo.name, foo.num_pack))
-            cache.set("stats_nb_{}".format(foo.name), foo.num_pack)
+        for pack in foos:
+            self.stdout.write("{} {}\n".format(pack.name, pack.num_pack))
+            cache.set("stats_nb_{}".format(pack.name), pack.num_pack)
