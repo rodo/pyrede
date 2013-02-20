@@ -125,7 +125,6 @@ class ViewsTests(TestCase):  # pylint: disable-msg=R0904
         self.assertEqual(result['result'], 1)
         self.assertEqual(result['found'], 2)
 
-
     def test_analyze(self):
         """
         Call with POST datas, all good datas
