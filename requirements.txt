@@ -10,6 +10,7 @@ django-celery==2.5.5
 django_compressor
 django-haystack==1.2.7
 django-tastypie
+django-markup
 #
 #  following package are for running tests
 #
