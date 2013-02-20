@@ -53,7 +53,8 @@ class UrlsTests(TestCase):  # pylint: disable-msg=R0904
         pack = Package.objects.create(name='aeHohee1',
                                       latest_version='1.0.0',
                                       link='http://www.foo.bar',
-                                      description='lorem ipsum')
+                                      description='lorem ipsum',
+                                      last_update=datetime(2012,12,12,7,50,2))
 
         client = Client()
         response = client.get('/pypis/')
@@ -109,7 +110,8 @@ class UrlsTests(TestCase):  # pylint: disable-msg=R0904
         pack = Package.objects.create(name='aeHohee1',
                                       latest_version='1.0.0',
                                       link='http://www.foo.bar',
-                                      description='lorem ipsum')
+                                      description='lorem ipsum',
+                                      last_update=datetime(2012,12,12,7,50,2))
 
         client = Client()
         response = client.get('/analyze/%s/' % lookup.id)
