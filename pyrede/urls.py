@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
+from django.views.decorators.cache import cache_page
 from pyrede.drp.views import PackageList
 from pyrede.drp.views import PackageDetail
 from pyrede.drp.views import DistributionDetail
@@ -35,7 +36,7 @@ urlpatterns = patterns('',
                        url(r'^add/pypi/(?P<slug>.*)/$', 'pyrede.drp.views.adddispack'),
                        url(r'^pypi/(?P<slug>.*)/sub/$', 'pyrede.drp.views.subscribe'),
                        url(r'^pypi/(?P<slug>.*)/unsub/(?P<uuid>.*)/$', 'pyrede.drp.views.unsubscribe'),
-                       url(r'^pypi/(?P<slug>.*)/$', PackageDetail.as_view()),
+                       url(r'^pypi/(?P<slug>.*)/$', cache_page(300)(PackageDetail.as_view())),
                        url(r'^distributions/$', ListView.as_view(model=Distribution)),
                        url(r'^distribution/(?P<pk>\d+)/packages/$', DistributionPackages.as_view()),
                        url(r'^distribution/(?P<pk>\d+)/$', DistributionDetail.as_view()),

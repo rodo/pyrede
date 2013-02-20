@@ -127,8 +127,9 @@ class DisPack(models.Model):
     """
     A package from a distribution
     """
-    name = models.CharField(max_length=300,
-                            blank=True)
+    name = models.CharField(max_length=300, blank=True)
+
+    source_name = models.CharField(max_length=300, blank=True)
 
     version = models.CharField(max_length=30)
 
