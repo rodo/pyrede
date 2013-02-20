@@ -20,6 +20,7 @@
 Update the most used packages
 """
 import logging
+from time import sleep
 from django.core.management.base import BaseCommand
 from pyrede.provider.utils.main import import_package
 from pyrede.drp.models import Package
@@ -29,18 +30,18 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    args = '<ircnick>'
-    help = 'Import recursively all ogg file in a directory'
+    help = 'Update all package'
 
     def handle(self, *args, **options):
         """
         Handle the command
         """
-        packs = Package.objects.filter(pypi_downloads__gt=10000)
+        packs = Package.objects.filter()
         
         for pack in packs:
             logger.debug('parse %s' % pack.name)
             nbp = import_package(pack.name, True)
+            sleep(1) # be smart
         
         packs = Package.objects.all()
         for pack in packs:
