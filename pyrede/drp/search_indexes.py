@@ -18,9 +18,9 @@
 """
 Fulltext indexing with haystack
 """
-from django.conf import settings
-from haystack.indexes import *
 from haystack import site
+from haystack.indexes import SearchIndex
+from haystack.fields import CharField
 from pyrede.drp.models import Package
 
 
