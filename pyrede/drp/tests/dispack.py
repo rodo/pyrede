@@ -23,6 +23,7 @@ from django.test import TestCase
 from pyrede.drp.models import Package
 from pyrede.drp.models import DisPack
 from pyrede.drp.models import Distribution
+from datetime import datetime
 
 
 class DisPackTests(TestCase):  # pylint: disable-msg=R0904
@@ -48,7 +49,8 @@ class DisPackTests(TestCase):  # pylint: disable-msg=R0904
         pack = Package.objects.create(name='foobar',
                                       latest_version='1.0.0',
                                       link='http://www.foo.bar',
-                                      description='lorem ipsum')
+                                      description='lorem ipsum',
+                                      last_update=datetime(2012,12,12,7,50,2))
 
         dispack = DisPack.objects.create(name='python-foo',
                                          version='1.1.2c',
@@ -69,7 +71,8 @@ class DisPackTests(TestCase):  # pylint: disable-msg=R0904
         pack = Package.objects.create(name='foobar',
                                       latest_version='1.0.0',
                                       link='http://www.foo.bar',
-                                      description='lorem ipsum')
+                                      description='lorem ipsum',
+                                      last_update=datetime(2012,12,12,7,50,2))
 
         DisPack.objects.create(name='python-foo',
                                version='1.1.2c',
@@ -93,7 +96,8 @@ class DisPackTests(TestCase):  # pylint: disable-msg=R0904
                                       latest_version='1.0.0',
                                       link='http://www.foo.bar',
                                       description='lorem ipsum',
-                                      nbdispack=1)
+                                      nbdispack=1,
+                                      last_update=datetime(2012,12,12,7,50,2))
 
         dispack = DisPack.objects.create(name='python-foo',
                                          version='1.1.2c',
@@ -120,7 +124,8 @@ class DisPackTests(TestCase):  # pylint: disable-msg=R0904
                                       latest_version='1.0.0',
                                       link='http://www.foo.bar',
                                       description='lorem ipsum',
-                                      nbdispack=1)
+                                      nbdispack=1,
+                                      last_update=datetime(2012,12,12,7,50,2))
 
         dispack = DisPack.objects.create(name='python-foo',
                                          version='1.1.2c',
