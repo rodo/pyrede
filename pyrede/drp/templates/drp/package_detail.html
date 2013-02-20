@@ -139,6 +139,28 @@
       </tbody>
     </table>
     {% endif %}
+
+    {% if related|length > 0 %}
+    <h4>Related packages</h4>
+
+    <table class="table table-striped">
+
+      <tbody>
+	{% for pack in related %}
+	<tr>
+	  <td>
+	    {% if package.id != pack.one.id %}
+	    <a href="{{pack.one.get_absolute_url}}" target="_blank">{{pack.one.name}}</a>
+	    {% else %}
+	    <a href="{{pack.two.get_absolute_url}}" target="_blank">{{pack.two.name}}</a>
+	    {% endif %}
+	  </td>
+	</tr>
+	{% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
   </div>
 
 </div>

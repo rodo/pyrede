@@ -171,6 +171,14 @@ class Lookup(models.Model):
     date_lookup = models.DateTimeField(editable=False, auto_now_add=True)
 
 
+class RelatedPackage(models.Model):
+    """
+    Related packages
+    """
+    one = models.ForeignKey(Package, related_name='one')
+    two = models.ForeignKey(Package, related_name='two')
+
+
 class PypStats(models.Model):
     """
     Statistiques on PyPi Package

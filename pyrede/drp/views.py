@@ -22,6 +22,7 @@ import json
 import logging
 from uuid import uuid4
 from django.core.cache import cache
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
@@ -34,6 +35,7 @@ from pyrede.drp.models import DisPack
 from pyrede.drp.models import Distribution
 from pyrede.drp.models import Lookup
 from pyrede.drp.models import Package
+from pyrede.drp.models import RelatedPackage
 from pyrede.drp.models import PackageVersion
 from pyrede.drp.models import PackSubscr
 from pyrede.drp.models import DebianITP
@@ -90,6 +92,7 @@ class PackageDetail(DetailView):
         context['form'] = SubForm()
         context['versions'] = PackageVersion.objects.filter(package=self.object).order_by('-pk')[:10]
         context['itps'] = DebianITP.objects.filter(package=self.object)
+        context['related'] = RelatedPackage.objects.filter(Q(one=self.object) | Q(two=self.object))
         return context
 
 
