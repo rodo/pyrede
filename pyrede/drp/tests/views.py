@@ -59,7 +59,7 @@ class ViewsTests(TestCase):  # pylint: disable-msg=R0904
                                       latest_version='1.0.0',
                                       link='http://www.foo.bar',
                                       description='lorem ipsum',
-                                      last_update=datetime(2012,12,12,7,50,2))
+                                      last_update=datetime.now())
 
         DisPack.objects.create(name='aeHohee1',
                                version='1.0.0',
@@ -103,7 +103,7 @@ class ViewsTests(TestCase):  # pylint: disable-msg=R0904
                                       latest_version='1.0.0',
                                       link='http://www.foo.bar',
                                       description='lorem ipsum',
-                                      last_update=datetime(2012,12,12,7,50,2))
+                                      last_update=datetime.now())
 
         DisPack.objects.create(name='aeHohee1',
                                version='1.0.0',

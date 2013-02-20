@@ -48,7 +48,7 @@ class CommandTests(TestCase):  # pylint: disable-msg=R0904
                                latest_version='1.0.0',
                                link='http://www.foo.bar',
                                description='lorem ipsum',
-                               last_update=datetime(2012,12,12,7,50,2))
+                               last_update=datetime.now())
 
         attend = '\n'.join(['package.value 1',
                             'packageversion.value 0',
@@ -72,7 +72,7 @@ class CommandTests(TestCase):  # pylint: disable-msg=R0904
                                       latest_version='1.0.0',
                                       link='http://www.foo.bar',
                                       description='lorem ipsum',
-                                      last_update=datetime(2012,12,12,7,50,2))
+                                      last_update=datetime.now())
 
         dist = Distribution.objects.create(name='Debian',
                                            version_number='6.0',

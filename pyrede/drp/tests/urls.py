@@ -55,7 +55,7 @@ class UrlsTests(TestCase):  # pylint: disable-msg=R0904
                                       latest_version='1.0.0',
                                       link='http://www.foo.bar',
                                       description='lorem ipsum',
-                                      last_update=datetime(2012,12,12,7,50,2))
+                                      last_update=datetime.now())
 
         client = Client()
         response = client.get('/pypis/')
@@ -70,7 +70,7 @@ class UrlsTests(TestCase):  # pylint: disable-msg=R0904
                                       latest_version='1.0.0',
                                       link='http://www.foo.bar',
                                       description='lorem ipsum',
-                                      last_update=datetime(2012,12,12,7,50,2))
+                                      last_update=datetime.now())
 
         client = Client()
         response = client.get('/json/pypi/%s/' % pack.name)
@@ -113,7 +113,7 @@ class UrlsTests(TestCase):  # pylint: disable-msg=R0904
                                       latest_version='1.0.0',
                                       link='http://www.foo.bar',
                                       description='lorem ipsum',
-                                      last_update=datetime(2012,12,12,7,50,2))
+                                      last_update=datetime.now())
 
         client = Client()
         response = client.get('/analyze/%s/' % lookup.id)
