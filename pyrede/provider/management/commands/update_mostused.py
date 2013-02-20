@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2013 Rodolphe Quiédeville <rodolphe@quiedeville.org>
@@ -37,12 +36,12 @@ class Command(BaseCommand):
         Handle the command
         """
         packs = Package.objects.filter()
-        
+
         for pack in packs:
             logger.debug('parse %s' % pack.name)
-            nbp = import_package(pack.name, True)
+            import_package(pack.name, True)
             sleep(1) # be smart
-        
+
         packs = Package.objects.all()
         for pack in packs:
             val = fetch_byid_dm('package', pack.id, 'downloads')
