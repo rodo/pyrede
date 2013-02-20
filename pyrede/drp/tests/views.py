@@ -18,6 +18,7 @@
 """
 Unit tests for views in drp app
 """
+from datetime import datetime
 from django.test import TestCase
 from django.http import HttpRequest
 from pyrede.drp.models import Distribution

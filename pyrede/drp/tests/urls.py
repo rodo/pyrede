@@ -19,6 +19,7 @@
 Unit tests for all urls
 
 """
+from datetime import datetime
 from django.test import TestCase
 from django.test import Client
 from pyrede.drp.models import Distribution
@@ -68,7 +69,8 @@ class UrlsTests(TestCase):  # pylint: disable-msg=R0904
         pack = Package.objects.create(name='aeHohee1',
                                       latest_version='1.0.0',
                                       link='http://www.foo.bar',
-                                      description='lorem ipsum')
+                                      description='lorem ipsum',
+                                      last_update=datetime(2012,12,12,7,50,2))
 
         client = Client()
         response = client.get('/json/pypi/%s/' % pack.name)

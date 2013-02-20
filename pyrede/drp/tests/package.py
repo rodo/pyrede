@@ -19,6 +19,7 @@
 Unit tests for Package
 
 """
+from datetime import datetime
 from django.test import TestCase
 from pyrede.drp.models import Package
 

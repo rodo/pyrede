@@ -19,6 +19,7 @@
 Unit tests for drp management commands
 
 """
+from datetime import datetime
 from StringIO import StringIO
 from django.core.management import call_command
 from django.test import TestCase
