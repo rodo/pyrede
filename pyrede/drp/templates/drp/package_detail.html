@@ -150,9 +150,9 @@
 	<tr>
 	  <td>
 	    {% if package.id != pack.one.id %}
-	    <a href="{{pack.one.get_absolute_url}}" target="_blank">{{pack.one.name}}</a>
+	    <a href="{{pack.one.get_absolute_url}}">{{pack.one.name}}</a>
 	    {% else %}
-	    <a href="{{pack.two.get_absolute_url}}" target="_blank">{{pack.two.name}}</a>
+	    <a href="{{pack.two.get_absolute_url}}">{{pack.two.name}}</a>
 	    {% endif %}
 	  </td>
 	</tr>
