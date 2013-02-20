@@ -186,7 +186,7 @@ def update_pack(item, pack, version, datas):
 
     pack.latest_version = version
     pack.link = item['link']
-    pack.summary = summary,
+    pack.summary = summary
     pack.description = item['description'][:2000]
     pack.pypi_downloads = count_downloads(datas)
     pack.last_update = upload_time
