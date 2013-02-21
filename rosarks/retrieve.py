@@ -28,6 +28,13 @@ from datetime import date
 def fetch_byid_dm(name, ref, value):
     """
     Consolidate the delta by month
+
+    name : string
+    ref : string
+    value : string
+
+    return:
+     - tuple
     """
     # package_428_downloads_delta_month_201302
 

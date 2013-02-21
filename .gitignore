@@ -7,3 +7,4 @@ docs/_build/
 whoosh_index
 .coverage
 coverage.xml
+CACHE/
