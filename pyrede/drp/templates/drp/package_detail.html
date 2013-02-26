@@ -87,9 +87,14 @@
       <td>
 	{{package.distribution.name}} {{package.distribution.version_name}}
       </td>
-      <!--<td><a target="_blank"
-      href="{{package.link}}">{{package.name}}</a></td>-->
-      <td>{{package.name}}</td>
+      <!--<td></td>-->
+      <td>
+	{% if package.source_name %}
+	<a target="_blank" href="{{package.url}}">{{package.name}}</a>
+	{% else %}
+	{{package.name}}
+	{% endif %}
+      </td>
       <td>
 	<span class="badge badge-info">{{package.version}}</span> 
       </td>

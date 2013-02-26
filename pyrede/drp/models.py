@@ -145,6 +145,10 @@ class DisPack(models.Model):
     class Meta:
         unique_together = ('name', 'version', 'distribution')
 
+    def url(self):
+        return self.distribution.query_link.format(self.source_name,
+                                                   self.name)
+
     def save(self, *args, **kwargs):
         key = 'json_pypi_{}'.format(self.package.name)
         cache.delete(key)
