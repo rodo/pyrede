@@ -33,7 +33,7 @@ def mail_all_subscribers(subscrs, dispack):
     Send email to subscribers
 
     pack : Package
-    """    
+    """
     logger.debug('package %s : found %d subscriber' % (dispack.name,
                                                        len(subscrs)))
     for sub in subscrs:
@@ -48,19 +48,23 @@ def sendmail_new_dispack(dispack, subscr):
     pack_name : string
     subscr : Object PackSubscr
     """
-    logger.debug('package {} : sendmail to {}'.format(dispack.name, subscr.email))
+    logger.debug('package {} : sendmail to {}'.format(dispack.name,
+                                                      subscr.email))
 
     parms = {'package': dispack.package,
              'dispack': dispack,
              'email': subscr.email,
              'uuid': subscr.uuid}
 
+    subject_template = 'emails/subscribers/newdispack_subject.txt'
+
     body = render_to_string('emails/subscribers/newdispack_body.txt', parms)
-    subject = render_to_string('emails/subscribers/newdispack_subject.txt', parms)
+    subject = render_to_string(subject_template, parms)
 
     result = send_mail(subject.rstrip(),
                        body,
                        settings.EMAIL_FROM,
                        [subscr.email],
                        fail_silently=True)
-    logger.debug('package {} : sendmail return {}'.format(dispack.name, result))
+    logger.debug('package {} : sendmail return {}'.format(dispack.name,
+                                                          result))
