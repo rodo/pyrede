@@ -40,7 +40,7 @@ def get_req(package):
     """
     Request info by json
 
-    package : string, package name
+    package (string) : the package name
     """
     url = "http://pypi.python.org/pypi"
 
@@ -51,10 +51,15 @@ def get_req(package):
     return requests.get(url, params=params, headers=headers)
 
 
-
 def import_package(package, force=False):
     """
     Import a package from pypi
+
+    Parameters:
+
+     - package (string) : the package's name
+
+     - force (boolean) : True do not use the cache
     """
     key = 'pypi_import_flag_{}'.format(package.replace(' ', '-'))
     if force:
@@ -76,12 +81,16 @@ def import_package(package, force=False):
             item['link'] = datas['info']['package_url']
             create_update_pack(item, package, version, datas)
         else:
-            logger.warning("not found : %s" % url)
+            logger.warning("not found : %s" % package)
 
 
 def split_title(title):
     """
     Split the title
+
+    Parameters :
+
+     - title (string) : the title to split
     """
     parts = title.split(' ')
 
