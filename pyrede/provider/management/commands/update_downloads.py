@@ -36,6 +36,7 @@ class Command(BaseCommand):
         """
         Handle the command
         """
+        uag = 'Pyrede http://pyrede.quiedeville.org/about/'
         packs = PackageVersion.objects.all()
         for pack in packs:
             url = "http://pypi.python.org/pypi"
@@ -44,7 +45,7 @@ class Command(BaseCommand):
                       'name': pack.package.name,
                       'version': pack.version}
             headers = {'content-type': 'application/json',
-                       'User-agent': 'Pyrede http://pyrede.quiedeville.org/about/'}
+                       'User-agent': uag}
 
             sleep(2)  # be smart
             req = requests.get(url, params=params, headers=headers)

@@ -43,11 +43,11 @@ def get_req(package):
     package (string) : the package name
     """
     url = "http://pypi.python.org/pypi"
-    user-agent = 'Pyrede bot, contact http://pyrede.quiedeville.org/about/'
+    user_agent = 'Pyrede bot, contact http://pyrede.quiedeville.org/about/'
 
     params = {':action': 'json', 'name': package}
     headers = {'content-type': 'application/json',
-               'User-agent': user-agent}
+               'User-agent': user_agent}
 
     return requests.get(url, params=params, headers=headers)
 
