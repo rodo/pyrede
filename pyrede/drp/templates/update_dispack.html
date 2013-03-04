@@ -29,12 +29,23 @@
 	    {% trans "Version" %} : <b>{{dispack.version}}</b>
 	  </div>
 
+	  <div>
+	    {% trans "Provide" %} : <b>{{dispack.package_version}}</b>
+	  </div>
+
 	  <hr>
 
 	  <div class="control-group">
 	    <label class="control-label" for="package_version">{% trans "New version" %}</label>
 	    <div class="controls">
 	      {{form.version}} {{form.version.errors}}
+	    </div>
+	  </div>
+
+	  <div class="control-group">
+	    <label class="control-label" for="package_version">{% trans "New provide" %}</label>
+	    <div class="controls">
+	      {{form.package_version}} {{form.package_version.errors}}
 	    </div>
 	  </div>
 

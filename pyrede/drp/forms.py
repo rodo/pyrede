@@ -82,3 +82,8 @@ class UpdateDisPackForm(forms.Form):  # pylint: disable=R0924
     version = forms.CharField(max_length=50,
                               required=True,
                               widget=text_medium)
+
+
+    package_version = forms.CharField(max_length=50,
+                                      required=True,
+                                      widget=text_medium)

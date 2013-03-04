@@ -351,9 +351,13 @@ def updispack(request, pk, new_version):
         if form.is_valid():
             datas = form.cleaned_data
             dispack.version = datas['version']
+            dispack.package_version = datas['package_version']
             dispack.save()
     else:
-        form = UpdateDisPackForm(initial={'version': new_version})
+        new_pack_version = new_version.split('-')[0]
+
+        form = UpdateDisPackForm(initial={'version': new_version,
+                                          'package_version': new_pack_version})
         try:
             referer = request.META['HTTP_REFERER']
         except KeyError:
