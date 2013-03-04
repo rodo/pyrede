@@ -26,6 +26,7 @@ from pyrede.drp.models import Package
 from pyrede.drp.models import PackageVersion
 from pyrede.provider.tests.httpserver import TestServer
 from pyrede.provider.utils.main import split_title
+from django.core.cache import cache
 
 
 class CommandsTests(TestCase):  # pylint: disable-msg=R0904
@@ -39,8 +40,9 @@ class CommandsTests(TestCase):  # pylint: disable-msg=R0904
         """
         PackageVersion.objects.all().delete()
         Package.objects.all().delete()
+        cache.clear()
 
-    def test_create(self):
+    def test_import_latest(self):
         """
         Create a Package
         """
@@ -50,12 +52,16 @@ class CommandsTests(TestCase):  # pylint: disable-msg=R0904
 
         call_command('import_latest', url)
 
-        self.assertEqual(Package.objects.all().count(), 2)
+        nb_pack = Package.objects.all().count()
+
+        self.assertEqual(nb_pack, 2)
         self.assertEqual(PackageVersion.objects.all().count(), 2)
 
     def test_update(self):
         """
         Test when a package will be update
+
+        TestServer contains 2 packages, one is 'python-dikbm-adapter'
         """
         pack = Package.objects.create(name='python-dikbm-adapter',
                                       latest_version='0.0.1',
@@ -75,8 +81,11 @@ class CommandsTests(TestCase):  # pylint: disable-msg=R0904
 
         call_command('import_latest', url)
 
-        self.assertEqual(Package.objects.all().count(), 2)
-        self.assertEqual(PackageVersion.objects.all().count(), 3)
+        nb_pack = Package.objects.all().count()
+        nb_ver = PackageVersion.objects.all().count()
+
+        self.assertEqual(nb_pack, 2)
+        self.assertEqual(nb_ver, 3)
 
     def test_split_title_simple(self):
         """
