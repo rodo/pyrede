@@ -38,18 +38,15 @@ class Command(BaseCommand):
         Handle the command
         """
         packs = Package.objects.all().order_by('summary')
+        user-agent = 'Pyrede http://pyrede.quiedeville.org/about/'
         for pack in packs:
-            key = 'pypi_import_flag_{}'.format(pack.name)
-
             url = "http://pypi.python.org/pypi"
 
             params = {':action': 'json', 'name': pack.name}
             headers = {'content-type': 'application/json',
-                       'User-agent': 'Pyrede http://pyrede.quiedeville.org/about/'}
+                       'User-agent': user-agent}
 
-            item = {}
-
-            sleep(2) # be smart
+            sleep(2)
             req = requests.get(url, params=params, headers=headers)
 
             if (req.ok):
