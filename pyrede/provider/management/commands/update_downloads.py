@@ -38,17 +38,15 @@ class Command(BaseCommand):
         """
         packs = PackageVersion.objects.all()
         for pack in packs:
-            key = 'pypi_import_flag_{}'.format(pack.package.name)
-
             url = "http://pypi.python.org/pypi"
 
-            params = {':action': 'json', 'name': pack.package.name, 'version': pack.version}
+            params = {':action': 'json',
+                      'name': pack.package.name,
+                      'version': pack.version}
             headers = {'content-type': 'application/json',
                        'User-agent': 'Pyrede http://pyrede.quiedeville.org/about/'}
 
-            item = {}
-
-            sleep(2) # be smart
+            sleep(2)  # be smart
             req = requests.get(url, params=params, headers=headers)
 
             if (req.ok):
@@ -61,4 +59,5 @@ class Command(BaseCommand):
                 except:
                     print "Error on save %s" % pack.package.name
             else:
-                print "not found : {} {}".format(pack.package.name, pack.version)
+                print "not found : {} {}".format(pack.package.name,
+                                                 pack.version)

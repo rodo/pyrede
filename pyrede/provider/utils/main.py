@@ -33,8 +33,8 @@ from pyrede.drp.models import PackageVersion
 from pyrede.drp.models import PackSubscr
 from rosarks.inserts import insert_atomic
 
-
 logger = logging.getLogger(__name__)
+
 
 def get_req(package):
     """
@@ -43,10 +43,11 @@ def get_req(package):
     package (string) : the package name
     """
     url = "http://pypi.python.org/pypi"
+    user-agent = 'Pyrede bot, contact http://pyrede.quiedeville.org/about/'
 
     params = {':action': 'json', 'name': package}
     headers = {'content-type': 'application/json',
-               'User-agent': 'Pyrede bot, contact http://pyrede.quiedeville.org/about/'}
+               'User-agent': user-agent}
 
     return requests.get(url, params=params, headers=headers)
 
@@ -65,7 +66,7 @@ def import_package(package, force=False):
     if force:
         cache.delete(key)
 
-    if cache.get(key) != None:
+    if cache.get(key) is not None:
         logger.warning('package : [%s] was import less than 2 hours' % package)
     else:
         cache.set(key, 7200)
@@ -191,8 +192,6 @@ def update_pack(item, pack, version, datas):
                                                         pack.latest_version,
                                                         version))
 
-
-
     pack.latest_version = version
     pack.link = item['link']
     pack.summary = summary
@@ -222,7 +221,8 @@ def update_pack_metadata(pack, datas):
     pack.pypi_downloads = downval
     pack.save()
 
-    logger.debug('package {} : update datas down : {}'.format(pack.name, downval))
+    logger.debug('package {} : update datas down : {}'.format(pack.name,
+                                                              downval))
     insert_atomic('package_{}_downloads'.format(pack.id), downval)
 
 

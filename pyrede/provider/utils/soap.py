@@ -47,4 +47,3 @@ if __name__ == '__main__':
 
 #     print zsi_query(url, method, **args)
     print soappy_query(url, method, **args)
-

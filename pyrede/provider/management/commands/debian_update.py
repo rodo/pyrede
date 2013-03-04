@@ -20,13 +20,9 @@
 import last package
 """
 import logging
-import feedparser
-from datetime import datetime
-from django.conf import settings
 from django.core.management.base import BaseCommand
 from pyrede.provider.utils.debian import lookup_latest_version
 from pyrede.drp.models import DisPack
-from pyrede.drp.models import Package
 from pyrede.drp.models import Distribution
 from pyrede.provider.tasks import sendmail_admin
 
@@ -42,22 +38,26 @@ class Command(BaseCommand):
         """
         dispacks = DisPack.objects.all()
 
-        logger.debug("[debian_update] found {} packages".format(len(dispacks)))
+        logger.debug("[{}] found {} packages".format("debian_update",
+                                                     len(dispacks)))
 
         for pack in dispacks:
             self.update_pack(pack)
-
 
     def update_pack(self, pack):
         stable = lookup_latest_version(pack.name, "stable")
         testing = lookup_latest_version(pack.name, "testing")
 
         if testing:
-            logger.debug("[debian_update] {} testing {}".format(pack.name, testing))
+            logger.debug("[{}] {} testing {}".format('debian_update',
+                                                     pack.name,
+                                                     testing))
             self.update(pack, 'Wheezy', testing)
 
         if stable:
-            logger.debug("[debian_update] {} stable {}".format(pack.name, stable))
+            logger.debug("[{}] {} stable {}".format('debian_update',
+                                                    pack.name,
+                                                    stable))
             self.update(pack, 'Squeeze', stable)
 
     def update(self, package, dist, version):
@@ -69,7 +69,6 @@ class Command(BaseCommand):
         version : sring
         """
         data = Distribution.objects.filter(version_name=dist)
-        pname = package.package.name
         if len(data) == 1:
             lines = ["http:/pyrede.quiedeville.org/update/dispack/{}/{}".format(package.id, version),
                      "http://packages.debian.org/{}/{}".format(dist.lower(),
@@ -80,7 +79,9 @@ class Command(BaseCommand):
 
             if package.distribution.id == data[0].id:
                 if version != package.version:
-                    logger.debug("[debian_update] {} was update  {}".format(package.name, version))
+                    logger.debug("[{}] {} was update {}".format('debian_update',
+                                                                package.name,
+                                                                version))
                     subject = "{} was update to {}".format(package.name, version)
                     sendmail_admin.delay(subject, body)
                 else:
@@ -91,5 +92,6 @@ class Command(BaseCommand):
                     cot = DisPack.objects.filter(distribution=other[0],
                                                  name=package.name)
                     if len(cot) == 0:
-                        subject = "{} exists in {}".format(package.name, data[0])
+                        subject = "{} exists in {}".format(package.name,
+                                                           data[0])
                         sendmail_admin.delay(subject, body)
