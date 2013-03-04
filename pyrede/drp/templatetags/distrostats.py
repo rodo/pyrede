@@ -19,6 +19,7 @@ from django import template
 from django.core.cache import cache
 register = template.Library()
 
+
 @register.simple_tag
 def distro_nb_package(distro_id):
     """
@@ -29,5 +30,5 @@ def distro_nb_package(distro_id):
     if cache.get(key):
         value = cache.get(key)
     else:
-        value ="0"
+        value = "0"
     return '{}'.format(value)
