@@ -49,7 +49,7 @@ class Command(BaseCommand):
         packsub = PackSubscr.objects.all().count()
 
         lastmonth = datetime.now() - timedelta(days=30)
-        freshmonth = PackageVersion.objects.filter(pubdate__gte=lastmonth).count()
+        freshm = PackageVersion.objects.filter(pubdate__gte=lastmonth).count()
 
         delta = datetime.now() - timedelta(days=1)
         freshday = PackageVersion.objects.filter(pubdate__gte=delta).count()
@@ -58,7 +58,7 @@ class Command(BaseCommand):
         self.stdout.write("%s.value %s\n" % ('packageversion', packversion))
         self.stdout.write("%s.value %s\n" % ('dispack', dispack))
         self.stdout.write("%s.value %s\n" % ('packsub', packsub))
-        self.stdout.write("%s.value %s\n" % ('version_last_month', freshmonth))
+        self.stdout.write("%s.value %s\n" % ('version_last_month', freshm))
         self.stdout.write("%s.value %s\n" % ('version_last_day', freshday))
 
         cache.set("stats_nb_pack", pack)
