@@ -85,7 +85,12 @@
     {% for package in dispacks %}
     <tr>
       <td>
+	{% if user.is_authenticated %}
+	<a href="/update/dispack/{{package.id}}">
+	{{package.distribution.name}} {{package.distribution.version_name}}</a>
+	{% else %}
 	{{package.distribution.name}} {{package.distribution.version_name}}
+	{% endif %}
       </td>
       <!--<td></td>-->
       <td>

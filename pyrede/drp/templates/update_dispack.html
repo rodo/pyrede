@@ -1,0 +1,63 @@
+{% load i18n %}
+{% include "header.html" %}
+{% include "navbar.html" %}
+<div id="container" class="container">
+  <div class="row">
+    <div class="span12">
+
+      <h3>Update distribution package for : {{dispack.name}} {{package.latest_version}}</h3>
+      {% if form %}
+      <form class="well form-horizontal" action="." method="post">
+	{% csrf_token %}
+	<fieldset>
+	  {% if errors %}
+	  <div class="alert alert-error">
+	    {{ errors }}
+	  </div>
+	  {% endif %}
+
+	  <div>
+	  {% trans "Distribution" %} : 
+	  {{dispack.distribution.name}} {{dispack.distribution.version_name}}
+	  </div>
+
+	  <div>
+	  {% trans "Name" %} : <a href="/pypi/{{dispack.package.name}}/">{{dispack.name}}</a>
+	  </div>
+
+	  <div>
+	    {% trans "Version" %} : <b>{{dispack.version}}</b>
+	  </div>
+
+	  <hr>
+
+	  <div class="control-group">
+	    <label class="control-label" for="package_version">{% trans "New version" %}</label>
+	    <div class="controls">
+	      {{form.version}} {{form.version.errors}}
+	    </div>
+	  </div>
+
+	  <div class="control-group">
+	    <div class="controls">
+	      <input type="submit" class="btn btn-primary" value="{% trans 'Send' %}" />
+	    </div>
+	  </div>
+	</fieldset>
+      </form>
+      {% else %}
+      <div class="well">
+	<div>
+	  <h4>Thanks for your contribution !</h4>
+	</div>
+	<div>
+	  Return to <a href="{{referer}}">{{referer}}</a>
+	</div>
+      </div>
+      {% endif %}
+
+
+    </div><!--/row-->
+  </div><!--/row-->
+</div><!--/.container-->
+{% include "footer.html" %}

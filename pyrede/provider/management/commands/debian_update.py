@@ -42,6 +42,8 @@ class Command(BaseCommand):
         """
         dispacks = DisPack.objects.all()
 
+        logger.debug("[debian_update] found {} packages".format(len(dispacks)))
+
         for pack in dispacks:
             self.update_pack(pack)
 
@@ -51,11 +53,11 @@ class Command(BaseCommand):
         testing = lookup_latest_version(pack.name, "testing")
 
         if testing:
-            logger.debug("{} testing {}".format(pack.name, testing))
+            logger.debug("[debian_update] {} testing {}".format(pack.name, testing))
             self.update(pack, 'Wheezy', testing)
 
         if stable:
-            logger.debug("{} stable {}".format(pack.name, stable))
+            logger.debug("[debian_update] {} stable {}".format(pack.name, stable))
             self.update(pack, 'Squeeze', stable)
 
     def update(self, package, dist, version):
@@ -69,16 +71,20 @@ class Command(BaseCommand):
         data = Distribution.objects.filter(version_name=dist)
         pname = package.package.name
         if len(data) == 1:
-            body = '\n'.join(["http:/pyrede.quiedeville.org/pypi/{}/".format(pname),
-                              "http://packages.debian.org/{}/{}".format(dist.lower(),
-                                                                        package.name)])
+            lines = ["http:/pyrede.quiedeville.org/update/dispack/{}/{}".format(package.id, version),
+                     "http://packages.debian.org/{}/{}".format(dist.lower(),
+                                                               package.name),
+                     " ",
+                     "Command : debian_update"]
+            body = '\n'.join(lines)
 
             if package.distribution.id == data[0].id:
                 if version != package.version:
-                    subject = "{} update  {}".format(package.name, version)
+                    logger.debug("[debian_update] {} was update  {}".format(package.name, version))
+                    subject = "{} was update to {}".format(package.name, version)
                     sendmail_admin.delay(subject, body)
                 else:
-                    logger.debug("{} is up to date  {}".format(package.name, version))
+                    logger.debug("[debian_update] {} is up to date  {}".format(package.name, version))
             else:
                 other = Distribution.objects.filter(pk=data[0].id)
                 if len(other) == 1:

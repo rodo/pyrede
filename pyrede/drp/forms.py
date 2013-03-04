@@ -47,7 +47,7 @@ class DisPackForm(forms.Form):  # pylint: disable=R0924
     """
     Add a dispack objects in database
     """
-    small = {'class': 'input-small'}
+    small = {'class': 'input-medium'}
 
     referer = forms.CharField(max_length=150)
 
@@ -72,3 +72,13 @@ class DisPackForm(forms.Form):  # pylint: disable=R0924
     def __init__(self, distributions, *args, **kwargs):
         super(DisPackForm, self).__init__(*args, **kwargs)
         self.fields['distribution'] = forms.ChoiceField(choices=distributions)
+
+
+class UpdateDisPackForm(forms.Form):  # pylint: disable=R0924
+    """
+    Update a dispack object
+    """
+    text_medium = TextInput(attrs={'class': 'input-medium'})
+    version = forms.CharField(max_length=50,
+                              required=True,
+                              widget=text_medium)

@@ -41,6 +41,7 @@ from pyrede.drp.models import PackSubscr
 from pyrede.drp.models import DebianITP
 from pyrede.drp.forms import ReqForm
 from pyrede.drp.forms import DisPackForm
+from pyrede.drp.forms import UpdateDisPackForm
 from pyrede.drp.forms import SubForm
 from pyrede.drp.tasks import look4_pypi_missing
 from pyrede.drp.tasks import logg_pypi
@@ -332,6 +333,39 @@ def adddispack(request, slug):
                    'dispacks': dispacks,
                    'referer': referer,
                    'errors': errors
+                   })
+
+
+@login_required
+def updispack(request, pk, new_version):
+    """
+    Add a distribution package for a pypi package
+    """
+    errors = None
+    dispack = DisPack.objects.get(pk=pk)
+    distros = Distribution.objects.all().order_by('name', '-version_number')
+    dists = [(dispack.distribution.id, "%s %s" % (dispack.distribution.name, dispack.distribution.version_name))]
+
+    if request.method == 'POST':
+        form = UpdateDisPackForm(request.POST)
+        if form.is_valid():
+            datas = form.cleaned_data
+            dispack.version = datas['version']
+            dispack.save()
+    else:
+        form = UpdateDisPackForm(initial={'version': new_version})
+        try:
+            referer = request.META['HTTP_REFERER']
+        except KeyError:
+            referer = ''
+
+    return render(request,
+                  'update_dispack.html',
+                  {'form': form,
+                   'dist': dists[0],
+                   'dispack': dispack,
+                   'errors': errors,
+                   'new_version': new_version,
                    })
 
 
