@@ -192,12 +192,18 @@ def update_pack(item, pack, version, datas):
                                                         pack.latest_version,
                                                         version))
 
+    try:
+        description = item['description'][:2000]
+    except:
+        description = ''
+
     pack.latest_version = version
     pack.link = item['link']
     pack.summary = summary
-    pack.description = item['description'][:2000]
+    pack.description = description
     pack.pypi_downloads = count_downloads(datas)
     pack.last_update = upload_time
+
     try:
         pack.save()
     except:
@@ -206,7 +212,7 @@ def update_pack(item, pack, version, datas):
     PackageVersion.objects.create(package=pack,
                                   version=version,
                                   link=item['link'],
-                                  description=item['description'][:2000],
+                                  description=description,
                                   pubdate=upload_time)
 
 
