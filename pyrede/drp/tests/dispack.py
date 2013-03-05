@@ -139,3 +139,30 @@ class DisPackTests(TestCase):  # pylint: disable-msg=R0904
         result = Package.objects.get(pk=pack.id).nbdispack
 
         self.assertEqual(result, 1)
+
+    def test_sender_url(self):
+        """
+        The url method
+        """
+        dist = Distribution.objects.create(name='foodeb',
+                                           version_name='sid',
+                                           version_number='0',
+                                           query_link="qry_{}_{}")
+
+        pack = Package.objects.create(name='foobar',
+                                      latest_version='1.0.0',
+                                      link='http://www.foo.bar',
+                                      description='lorem ipsum',
+                                      nbdispack=1,
+                                      last_update=datetime.now())
+
+        dispack = DisPack.objects.create(name='python-foo',
+                                         source_name='foo',
+                                         version='1.1.2c',
+                                         distribution=dist,
+                                         package=pack,
+                                         package_version='1.1.0')
+
+        url = "qry_foo_python-foo"
+
+        self.assertEqual(dispack.url(), url)
