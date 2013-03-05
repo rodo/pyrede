@@ -46,3 +46,29 @@ class PackageTests(TestCase):  # pylint: disable-msg=R0904
                                       last_update=datetime.now())
 
         self.assertGreater(pack.id, 0)
+
+    def test_absolute_url(self):
+        """
+        The absolute url
+        """
+        pack = Package.objects.create(name='foobar',
+                                      latest_version='1.0.0',
+                                      link='http://www.foo.bar',
+                                      description='lorem ipsum',
+                                      last_update=datetime.now())
+
+        url = "/pypi/foobar/"
+
+        self.assertEqual(pack.get_absolute_url(), url)
+
+    def test_string(self):
+        """
+        The absolute url
+        """
+        pack = Package.objects.create(name='foobar',
+                                      latest_version='1.0.1',
+                                      link='http://www.foo.bar',
+                                      description='lorem ipsum',
+                                      last_update=datetime.now())
+
+        self.assertEqual('{}'.format(pack), "foobar 1.0.1")
