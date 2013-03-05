@@ -50,7 +50,7 @@ class DisPackTests(TestCase):  # pylint: disable-msg=R0904
                                       latest_version='1.0.0',
                                       link='http://www.foo.bar',
                                       description='lorem ipsum',
-                                      last_update=datetime(2012,12,12,7,50,2))
+                                      last_update=datetime.now())
 
         dispack = DisPack.objects.create(name='python-foo',
                                          version='1.1.2c',
@@ -72,7 +72,7 @@ class DisPackTests(TestCase):  # pylint: disable-msg=R0904
                                       latest_version='1.0.0',
                                       link='http://www.foo.bar',
                                       description='lorem ipsum',
-                                      last_update=datetime(2012,12,12,7,50,2))
+                                      last_update=datetime.now())
 
         DisPack.objects.create(name='python-foo',
                                version='1.1.2c',
@@ -97,7 +97,7 @@ class DisPackTests(TestCase):  # pylint: disable-msg=R0904
                                       link='http://www.foo.bar',
                                       description='lorem ipsum',
                                       nbdispack=1,
-                                      last_update=datetime(2012,12,12,7,50,2))
+                                      last_update=datetime.now())
 
         dispack = DisPack.objects.create(name='python-foo',
                                          version='1.1.2c',
@@ -125,7 +125,7 @@ class DisPackTests(TestCase):  # pylint: disable-msg=R0904
                                       link='http://www.foo.bar',
                                       description='lorem ipsum',
                                       nbdispack=1,
-                                      last_update=datetime(2012,12,12,7,50,2))
+                                      last_update=datetime.now())
 
         dispack = DisPack.objects.create(name='python-foo',
                                          version='1.1.2c',
