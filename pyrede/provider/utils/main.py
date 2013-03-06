@@ -129,7 +129,7 @@ def create_update_pack(item, name, version, datas=None):
 
 def create_pack(item, name, version, datas):
     """
-    Create a package with his firt version
+    Create a package and his first version
     """
     logger.debug('create %s %s' % (name, version))
 
@@ -143,18 +143,24 @@ def create_pack(item, name, version, datas):
     except:
         upload_time = datetime.today()
 
+    try:
+        description = item['description'][:2000]
+    except:
+        description = ''
+
+
     pack = Package.objects.create(name=name,
                                   latest_version=version,
                                   link=item['link'],
                                   summary=summary,
-                                  description=item['description'][:2000],
+                                  description=description,
                                   pypi_downloads=count_downloads(datas),
                                   last_update=upload_time)
 
     PackageVersion.objects.create(package=pack,
                                   version=version,
                                   link=item['link'],
-                                  description=item['description'][:2000],
+                                  description=description,
                                   pubdate=upload_time)
 
 
