@@ -164,3 +164,21 @@ class ViewsTests(TestCase):  # pylint: disable-msg=R0904
         result = views.analyze(requ)
         #  asserts
         self.assertEqual(result.status_code, 200)  # pylint: disable-msg=E1103
+
+    def test_analyze_fail(self):
+        """
+        Call with wrong datas
+
+        The distribution id 1042 does not exists
+        """
+        # prepare datas
+        requ = HttpRequest()
+        requ.method = 'POST'
+        requ.META = {'HTTP_REFERER': 'FOO_SERVER_NAME'}
+        requ.POST = {'content': 'fooname',
+                     'distribution': '1042'}
+
+        #  action
+        result = views.analyze(requ)
+        #  asserts
+        self.assertEqual(result.status_code, 200)  # pylint: disable-msg=E1103

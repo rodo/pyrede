@@ -28,7 +28,10 @@ def check_dispack_link(dispack):
     """
     Check if an url exists
     """
+    user_agent = 'Pyrede bot, contact http://pyrede.quiedeville.org/about/'
+    headers = {'User-agent': user_agent}
+
     logger.debug('check {}'.format(dispack.link))
-    req = requests.get(dispack.link)
+    req = requests.get(dispack.link, headers=headers)
     dispack.valid_link = req.ok
     dispack.save()

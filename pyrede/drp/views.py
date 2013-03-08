@@ -225,9 +225,7 @@ def analyze_post(request):
         return redirect('/analyze/%s/' % lkup.id)
     else:
         logger.error("form is not valid")
-        return render(request,
-                      'form.html',
-                      {'form': form})
+        return userreq(request)
 
 
 def analyze_get(request, pk):
