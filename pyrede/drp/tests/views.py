@@ -129,7 +129,7 @@ class ViewsTests(TestCase):  # pylint: disable-msg=R0904
         """
         Call with POST datas, all good datas
 
-        Assert : return a 302 to /analyze/id/ id of the created analyze
+        Assert : return a 200 to /analyze/id/ id of the created analyze
         """
         dist = Distribution.objects.create(name='Foo',
                                            version_name='Lorem',
@@ -145,7 +145,7 @@ class ViewsTests(TestCase):  # pylint: disable-msg=R0904
         #  action
         result = views.analyze(requ)
         #  asserts
-        self.assertEqual(result.status_code, 302)  # pylint: disable-msg=E1103
+        self.assertEqual(result.status_code, 200)  # pylint: disable-msg=E1103
 
     def test_analyze_fail(self):
         """
