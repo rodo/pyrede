@@ -12,3 +12,16 @@ django-haystack==1.2.7
 django-tastypie
 django-markup
 django-simple-captcha
+#
+#  following package are for running tests
+#
+nosexcover
+django-nose
+pep8
+flake8
+Whoosh
+#
+#  If you use jenkins you can add
+#
+django-jenkins
+gcovr

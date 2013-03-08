@@ -18,6 +18,7 @@
 from django import forms
 from django.forms.widgets import Textarea
 from django.forms.widgets import TextInput
+from captcha.fields import CaptchaField
 
 
 class SubForm(forms.Form):  # pylint: disable=R0924
@@ -31,6 +32,8 @@ class ReqForm(forms.Form):  # pylint: disable=R0924
 
     content = forms.CharField(required=True,
                               widget=Textarea())
+
+    captcha = CaptchaField()
 
     distribution = forms.ChoiceField(required=True)
 

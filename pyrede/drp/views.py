@@ -99,12 +99,11 @@ class PackageDetail(DetailView):
 
 def userreq(request):
     """
-    Main page containing the form
+    Main page containing the form to lookup used on homepage
     """
     queryset = Package.objects.all().order_by('-pk')[:7]
     lkups = Lookup.objects.all().order_by('-pk')[:4]
     distributions = Distribution.objects.filter(official=None).order_by('-pk')
-    #for dist in distributions:
     dists = [(r.id, "%s %s" % (r.name, r.version_name)) for r in distributions]
     form = ReqForm(dists)
 

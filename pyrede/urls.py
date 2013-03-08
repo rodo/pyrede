@@ -47,6 +47,7 @@ urlpatterns = patterns('',
                        url(r'^robots.txt$', 'pyrede.drp.views.robots'),
                        url(r'^itps/$', ListView.as_view(model=DebianITP)),
                        url(r'^api/', include(v1_api.urls)),
+                       url(r'^captcha/', include('captcha.urls')),
 )
 
 
