@@ -93,6 +93,7 @@ class DebianITP(models.Model):
         url = "http://bugs.debian.org/cgi-bin/bugreport.cgi?bug={}".format(self.number)
         return url
 
+
 class Distribution(models.Model):
     """
     A distribution
