@@ -24,8 +24,8 @@ from captcha.fields import CaptchaField
 class SubForm(forms.Form):  # pylint: disable=R0924
 
     email = forms.CharField(max_length=50,
-                           required=True,
-                           widget=TextInput(attrs={'class': 'input-xlarge'}))
+                            required=True,
+                            widget=TextInput(attrs={'class': 'input-xlarge'}))
 
 
 class ReqForm(forms.Form):  # pylint: disable=R0924
@@ -85,7 +85,6 @@ class UpdateDisPackForm(forms.Form):  # pylint: disable=R0924
     version = forms.CharField(max_length=50,
                               required=True,
                               widget=text_medium)
-
 
     package_version = forms.CharField(max_length=50,
                                       required=True,
