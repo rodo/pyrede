@@ -94,6 +94,7 @@ class PackageDetail(DetailView):
         context['versions'] = PackageVersion.objects.filter(package=self.object).order_by('-pk')[:10]
         context['itps'] = DebianITP.objects.filter(package=self.object)
         context['related'] = RelatedPackage.objects.filter(Q(one=self.object) | Q(two=self.object))
+        context['keywords'] = [self.object.name]
         return context
 
 
