@@ -1,0 +1,65 @@
+{% load i18n %}
+{% load humanize %}
+{% include "header.html" %}
+{% include "navbar.html" %}
+<div id="container" class="container">
+  <div class="row">
+    <div class="span12">
+      <div class="pager">
+	<ul>
+	  {% if page_obj.has_previous %}
+	  <li class="previous">
+	    {% if SEARCHQ %}
+	    <a href="?q={{ SEARCHQ }}&amp;page={{songs.previous_page_number}}">&larr; {% trans "Previous" %}</a>
+	    {% else %}
+	    <a href="?page={{page_obj.previous_page_number}}">&larr; {% trans "Previous" %}</a>
+	    {% endif %}
+	  </li>
+	  {% endif %}
+	  {% if page_obj.has_next %}
+	  <li class="next">
+	    {% if SEARCHQ %}
+	    <a href="?q={{SEARCHQ}}&amp;page={{page_obj.next_page_number}}">{% trans "Next" %} &rarr;</a>
+	    {% else %}
+	    <a href="?page={{page_obj.next_page_number}}">{% trans "Next" %} &rarr;</a>
+	    {% endif %}
+	  </li>
+	  {% endif %}
+	</ul>
+      </div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="span4">{% trans "Name" %}</th>
+      <th class="span2">{% trans "Version" %}</th>
+      <th class="span2">{% trans "Pack. Version" %}</th>
+      <th class="span1">Pack.</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for package in packages %}
+    <tr>
+      <td><a href="/pypi/{{package.package.name}}/">{{package.name}}</a></td>
+      <td>
+	<span class="badge badge-info">{{package.package.latest_version}}</span> 
+      </td>
+      <td>
+	<span class="badge badge-info">{{package.package_version}}</span> 
+      </td>
+      <td>
+	{% if package.nbdispack > 0 %}
+	<span class="badge badge-success">{{package.nbdispack}}</span> 
+	{% else %}
+	<span class="badge">{{package.package.nbdispack}}</span> 
+	{% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+      
+    </div><!--/row-->
+  </div><!--/row-->
+</div><!--/.container-->
+{% include "footer.html" %}

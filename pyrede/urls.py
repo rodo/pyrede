@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from pyrede.drp.views import PackageList
+from pyrede.drp.views import ObsoleteList
 from pyrede.drp.views import PackageDetail
 from pyrede.drp.views import DistributionDetail
 from pyrede.drp.views import DistributionPackages
@@ -41,6 +42,7 @@ urlpatterns = patterns('',
                        url(r'^distribution/(?P<pk>\d+)/packages/$', DistributionPackages.as_view()),
                        url(r'^distribution/(?P<pk>\d+)/$', DistributionDetail.as_view()),
                        url(r'^packages/$', ListView.as_view(model=DisPack,paginate_by=17)),
+                       url(r'^obsolete/$', ObsoleteList.as_view()),
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^search/', include('haystack.urls')),
                        url(r'^about/$', 'pyrede.drp.views.about'),
@@ -48,6 +50,7 @@ urlpatterns = patterns('',
                        url(r'^itps/$', ListView.as_view(model=DebianITP)),
                        url(r'^api/', include(v1_api.urls)),
                        url(r'^captcha/', include('captcha.urls')),
+
 )
 
 

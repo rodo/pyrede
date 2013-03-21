@@ -23,6 +23,7 @@ import logging
 from uuid import uuid4
 from django.core.cache import cache
 from django.db.models import Q
+from django.db.models import F
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
@@ -58,6 +59,17 @@ class PackageList(ListView):
     def get_queryset(self):
         qryst = Package.objects.all().order_by("-pypi_downloadstm")
         return qryst
+
+
+class ObsoleteList(ListView):
+    paginate_by = 17
+    template_name = 'obsolete.html'
+    context_object_name = 'packages'
+
+    def get_queryset(self):
+        qryst = DisPack.objects.exclude(package_version=F('package__latest_version'))
+        return qryst
+
 
 class DistributionDetail(DetailView):
     model = Distribution
