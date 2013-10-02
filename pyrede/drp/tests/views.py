@@ -53,22 +53,22 @@ class ViewsTests(TestCase):  # pylint: disable-msg=R0904
                                              version_number='1.1')
 
         Lookup.objects.create(distribution=dist_a,
-                              content='aeHohee1\n')
+                              content='eegahw2S\n')
 
-        pack = Package.objects.create(name='aeHohee1',
+        pack = Package.objects.create(name='eegahw2S',
                                       latest_version='1.0.0',
                                       link='http://www.foo.bar',
                                       description='lorem ipsum',
                                       last_update=datetime.now())
 
-        DisPack.objects.create(name='aeHohee1',
+        DisPack.objects.create(name='eegahw2S',
                                version='1.0.0',
                                distribution=dist_a,
                                link='http://www.foo.bar',
                                package=pack,
                                package_version='1.0.0')
 
-        DisPack.objects.create(name='aeHohee1',
+        DisPack.objects.create(name='eegahw2S',
                                version='1.0.0',
                                distribution=dist_b,
                                link='http://www.foo.bar',
